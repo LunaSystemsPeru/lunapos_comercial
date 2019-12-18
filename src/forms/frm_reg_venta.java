@@ -278,8 +278,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 txt_doc_cliente.setEnabled(false);
                 text_box = txt_nom_cliente;
                 sql = "select id_cliente, documento, nombre "
-                        + "from clientes "
-                        + "where LENGTH(documento) != 11 ";
+                        + "from clientes ";
                 txt_nom_cliente.requestFocus();
             }
 
@@ -1498,11 +1497,13 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 c_cliente.setCodigo(0);
                 c_cliente.comprobar_cliente();
                 txt_doc_cliente.setEnabled(false);
-                txt_nom_cliente.setEnabled(false);
+                txt_nom_cliente.setEnabled(true);
+                btn_crear_cliente.setEnabled(true);
                 txt_doc_cliente.setText(c_cliente.getDocumento());
-                txt_nom_cliente.setText(c_cliente.getNombre());
-                txt_buscar_producto.setEnabled(true);
-                txt_buscar_producto.requestFocus();
+                //txt_nom_cliente.setText(c_cliente.getNombre());
+                //txt_buscar_producto.setEnabled(true);
+                txt_nom_cliente.requestFocus();
+                cargar_clientes(3);
             }
             //si es boleta o factura salta a cliente
             if (id_tido == 1 || id_tido == 2) {

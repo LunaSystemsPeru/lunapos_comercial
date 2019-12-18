@@ -19,11 +19,15 @@ import forms.frm_reg_movimiento_caja;
 import forms.frm_reg_salida;
 import forms.frm_reg_traslado;
 import forms.frm_reg_venta;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -217,7 +221,14 @@ public class frm_principal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jLabel3 = new javax.swing.JLabel();
         lbl_empresa = new javax.swing.JLabel();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        jDesktopPane1 = new JDesktopPane(){
+
+            protected void paintComponent(Graphics grphcs) {
+                grphcs.setColor(Color.decode("#eff0f1"));
+                grphcs.fillRect(0,0, this.getWidth(), this.getHeight());
+            }
+
+        };
         jp_meses = new javax.swing.JPanel();
         jp_dias = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -1198,6 +1209,7 @@ public class frm_principal extends javax.swing.JFrame {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    javax.swing.UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.PLAIN, 15));
                     break;
                 }
             }
