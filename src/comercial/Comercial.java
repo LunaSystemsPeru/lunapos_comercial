@@ -29,7 +29,7 @@ public class Comercial {
 
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    javax.swing.UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.PLAIN, 15));
+                    javax.swing.UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.PLAIN, 17));
                     break;
                 }
             }

@@ -33,6 +33,8 @@ import json.cl_json_entidad;
 import models.m_mis_documentos;
 import org.json.simple.parser.ParseException;
 import comercial.frm_principal;
+import java.awt.Color;
+import java.awt.Graphics;
 
 /**
  *
@@ -60,7 +62,14 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form frm_ver_ventas
+     * @param grphcs
      */
+    
+    @Override
+     protected void paintComponent(Graphics grphcs) {
+        grphcs.setColor(Color.decode("#00b0f0"));
+        grphcs.fillRect(0, 0, this.getWidth(), this.getHeight());
+    }
     public frm_ver_ventas() {
         initComponents();
         query = "select v.id_ventas, v.fecha, c.documento, c.nombre, ds.abreviado, v.serie, v.numero, v.total, v.pagado, u.username, v.estado, v.tipo_venta "

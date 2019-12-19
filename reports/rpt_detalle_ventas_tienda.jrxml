@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_venta_por_tienda" pageWidth="1100" pageHeight="595" orientation="Landscape" columnWidth="1060" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="f3b30302-b696-4204-b9f2-b6636123a991">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="169"/>
@@ -22,18 +22,18 @@
      productos_ventas.`precio` AS productos_ventas_precio,
      productos.`descripcion` AS productos_descripcion,
      productos.`marca` AS productos_marca,
-     productos.`modelo` AS productos_modelo,
+     productos.marca AS productos_modelo,
      productos_clasificacion.`nombre` AS productos_clasificacion_nombre
 FROM
      `ventas` ventas INNER JOIN `usuarios` usuarios ON ventas.`id_usuarios` = usuarios.`id_usuarios`
      INNER JOIN `clientes` clientes ON ventas.`id_cliente` = clientes.`id_cliente`
      INNER JOIN `productos_ventas` productos_ventas ON ventas.`id_ventas` = productos_ventas.`id_ventas`
-     AND productos_ventas.`id_almacen` = ventas.`id_almacen`
+
      INNER JOIN `almacen` almacen ON ventas.`id_almacen` = almacen.`id_almacen`
      INNER JOIN `productos` productos ON productos_ventas.`id_producto` = productos.`id_producto`
-     INNER JOIN `productos_clasificacion` productos_clasificacion ON productos.`clase` = productos_clasificacion.`id_clasificacion`
+     INNER JOIN `productos_clasificacion` productos_clasificacion ON productos.id_clasificacion = productos_clasificacion.id_clasificacion 
 WHERE
-     ventas.`id_almacen` = $P{p_id_tienda} and ventas.fecha between  $P{p_fecha_inicio}  and  $P{p_fecha_fin} ]]>
+     ventas.`id_almacen` = $P{p_id_tienda} and ventas.fecha between  $P{p_fecha_inicio}  and  $P{p_fecha_fin}]]>
 	</queryString>
 	<field name="ventas_fecha" class="java.sql.Date"/>
 	<field name="ventas_id_ventas" class="java.lang.Integer"/>

@@ -34,7 +34,9 @@ import java.util.Locale;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import comercial.frm_principal;
+import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Graphics;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
@@ -52,6 +54,10 @@ public class rpt_ventas extends javax.swing.JDialog {
     /**
      * Creates new form rpt_reportes
      */
+     protected void paintComponent(Graphics grphcs) {
+        grphcs.setColor(Color.decode("#00b0f0"));
+        grphcs.fillRect(0, 0, this.getWidth(), this.getHeight());
+    }
     public rpt_ventas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();

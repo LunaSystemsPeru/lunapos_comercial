@@ -300,6 +300,7 @@ public class cl_varios {
         String fechahora = hourdateFormat.format(date);
 
         String sourceFileName = "reports" + File.separator + filename + ".jasper";
+        System.out.println(sourceFileName);
         String printFileName = null;
 
         try {

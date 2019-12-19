@@ -483,7 +483,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JDesktopPane(){&#xd;&#xa;            &#xd;&#xa;            protected void paintComponent(Graphics grphcs) {&#xd;&#xa;                grphcs.setColor(Color.decode(&quot;#eff0f1&quot;));&#xd;&#xa;                grphcs.fillRect(0,0, this.getWidth(), this.getHeight());&#xd;&#xa;            }&#xd;&#xa;            &#xd;&#xa;        };"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JDesktopPane(){&#xd;&#xa;            &#xd;&#xa;            protected void paintComponent(Graphics grphcs) {&#xd;&#xa;                grphcs.setColor(Color.decode(&quot;#00b0f0&quot;));&#xd;&#xa;                grphcs.fillRect(0,0, this.getWidth(), this.getHeight());&#xd;&#xa;            }&#xd;&#xa;            &#xd;&#xa;        };"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
 

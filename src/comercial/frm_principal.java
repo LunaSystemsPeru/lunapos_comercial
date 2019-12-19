@@ -181,6 +181,7 @@ public class frm_principal extends javax.swing.JFrame {
         if (!permitido4) {
             jButton19.setEnabled(false);
         }
+        
     }
 
     /**
@@ -224,7 +225,7 @@ public class frm_principal extends javax.swing.JFrame {
         jDesktopPane1 = new JDesktopPane(){
 
             protected void paintComponent(Graphics grphcs) {
-                grphcs.setColor(Color.decode("#eff0f1"));
+                grphcs.setColor(Color.decode("#00b0f0"));
                 grphcs.fillRect(0,0, this.getWidth(), this.getHeight());
             }
 

@@ -43,6 +43,8 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import comercial.frm_principal;
+import java.awt.Color;
+import java.awt.Graphics;
 
 /**
  *
@@ -99,6 +101,11 @@ public class frm_mod_separacion extends javax.swing.JDialog {
         txt_fecha_separacion.setText(c_varios.fecha_usuario(c_venta.getFecha()));
         txt_pagado.setText(c_varios.formato_totales(c_venta.getPagado()));
         lbl_total_venta.setText(c_varios.formato_totales(c_venta.getTotal()));
+    }
+
+    protected void paintComponent(Graphics grphcs) {
+        grphcs.setColor(Color.decode("#00b0f0"));
+        grphcs.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
 
     private void modelo_venta() {
@@ -908,16 +915,24 @@ public class frm_mod_separacion extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frm_mod_separacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frm_mod_separacion.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frm_mod_separacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frm_mod_separacion.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frm_mod_separacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frm_mod_separacion.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frm_mod_separacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frm_mod_separacion.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
