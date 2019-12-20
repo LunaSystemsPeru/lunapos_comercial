@@ -15,6 +15,7 @@ import clases.cl_varios;
 import clases.cl_venta;
 import clases.cl_venta_eliminada;
 import clases_autocomplete.cla_mis_documentos;
+import clases_varios.Configuracion;
 import clases_varios.leer_numeros;
 import forms.frm_mod_separacion;
 import java.awt.Frame;
@@ -72,6 +73,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     }
     public frm_ver_ventas() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         query = "select v.id_ventas, v.fecha, c.documento, c.nombre, ds.abreviado, v.serie, v.numero, v.total, v.pagado, u.username, v.estado, v.tipo_venta "
                 + "from ventas as v "
                 + "inner join clientes as c on c.id_cliente = v.id_cliente "

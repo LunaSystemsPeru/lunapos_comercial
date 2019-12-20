@@ -8,6 +8,7 @@ package vistas;
 import clases.cl_productos_traslado;
 import clases.cl_traslados;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import forms.frm_reg_traslado;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -36,7 +37,7 @@ public class frm_ver_traslados extends javax.swing.JInternalFrame {
      */
     public frm_ver_traslados() {
         initComponents();
-
+this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String query = "select t.id_traslado, t.fecha, t.fecha_recepcion, ao.nombre as tienda_origen, ad.nombre as tienda_destino, "
                 + "uo.username as usu_envia, ud.username as usu_recibe, t.u_envia, t.u_recibe, t.estado "
                 + "from traslados as t "

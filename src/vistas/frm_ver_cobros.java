@@ -6,6 +6,7 @@
 package vistas;
 
 import clases.cl_venta;
+import clases_varios.Configuracion;
 import comercial.frm_principal;
 
 /**
@@ -24,7 +25,7 @@ public class frm_ver_cobros extends javax.swing.JInternalFrame {
      */
     public frm_ver_cobros() {
         initComponents();
-        
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         query = "select v.id_ventas, v.fecha, c.documento, c.nombre, ds.abreviado, v.serie, v.numero, v.total, v.pagado, u.username, v.estado, v.tipo_venta "
                 + "from ventas as v "
                 + "inner join clientes as c on c.id_cliente = v.id_cliente "

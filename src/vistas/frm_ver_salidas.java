@@ -9,6 +9,7 @@ import clases.cl_ingresos;
 import clases.cl_productos_ingresos;
 import clases.cl_salida;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import forms.frm_reg_ingreso;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -30,6 +31,7 @@ public class frm_ver_salidas extends javax.swing.JInternalFrame {
 
     public frm_ver_salidas() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String periodo = c_varios.obtener_periodo();
         query = "select s.id_salida, s.fecha, ds.abreviado as docsunat, s.serie, s.numero,s.documento,s.datos, us.username as nomusuario, s.estado "
                 + "from salidas as s "

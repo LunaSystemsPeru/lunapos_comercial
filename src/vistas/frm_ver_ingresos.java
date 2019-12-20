@@ -8,10 +8,15 @@ package vistas;
 import clases.cl_ingresos;
 import clases.cl_productos_ingresos;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import forms.frm_reg_ingreso;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import comercial.frm_principal;
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -28,8 +33,10 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
 
     public frm_ver_ingresos() {
         initComponents();
+
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String periodo = c_varios.obtener_periodo();
-        query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
+        query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username, p.tcompra, p.tpagado "
                 + "from ingresos as i "
                 + "inner join proveedor as p on p.id_proveedor = i.id_proveedor "
                 + "inner join documentos_sunat as ds on ds.id_tido = i.id_tido "
@@ -38,18 +45,22 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                 + "order by i.fecha desc, i.numero asc ";
         c_ingreso.mostrar(t_ingresos, query);
         sumar_totales();
+        t_ingresos.setDefaultRenderer(Object.class, new CeldaColor());
+
     }
 
     private void activar_botones() {
         btn_detalle.setEnabled(true);
         btn_pdf.setEnabled(true);
         btn_eliminar.setEnabled(true);
+        btn_pagos.setEnabled(true);
     }
 
     private void desactivar_botones() {
         btn_detalle.setEnabled(false);
         btn_pdf.setEnabled(false);
         btn_eliminar.setEnabled(false);
+        btn_pagos.setEnabled(false);
     }
 
     private void sumar_totales() {
@@ -79,6 +90,22 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         txt_proveedor = new javax.swing.JTextField();
         txt_documento = new javax.swing.JTextField();
         txt_fecha = new javax.swing.JTextField();
+        jd_ver_pagos = new javax.swing.JDialog();
+        jToolBar2 = new javax.swing.JToolBar();
+        btn_pago_agregar = new javax.swing.JButton();
+        btn_pago_eliminar = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
+        btn_pago_salir = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txt_pago_documento = new javax.swing.JTextField();
+        txt_pago_proveedor = new javax.swing.JTextField();
+        txt_pago_fecha = new javax.swing.JTextField();
+        txt_pago_total = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        t_pagos = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_ingresos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -88,6 +115,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         btn_agregar = new javax.swing.JButton();
         btn_detalle = new javax.swing.JButton();
         btn_pdf = new javax.swing.JButton();
+        btn_pagos = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btn_cerrar = new javax.swing.JButton();
@@ -155,6 +183,141 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                     .addComponent(txt_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jd_ver_pagos.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jd_ver_pagos.setTitle("Ver Pago de Documento de Compra");
+
+        jToolBar2.setFloatable(false);
+
+        btn_pago_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        btn_pago_agregar.setText("Agregar");
+        btn_pago_agregar.setEnabled(false);
+        btn_pago_agregar.setFocusable(false);
+        btn_pago_agregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_pago_agregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_pago_agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pago_agregarActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btn_pago_agregar);
+
+        btn_pago_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        btn_pago_eliminar.setText("Eliminar");
+        btn_pago_eliminar.setEnabled(false);
+        btn_pago_eliminar.setFocusable(false);
+        btn_pago_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_pago_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_pago_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pago_eliminarActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btn_pago_eliminar);
+        jToolBar2.add(jSeparator4);
+
+        btn_pago_salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cross.png"))); // NOI18N
+        btn_pago_salir.setText("Salir");
+        btn_pago_salir.setFocusable(false);
+        btn_pago_salir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_pago_salir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_pago_salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pago_salirActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btn_pago_salir);
+
+        jLabel6.setText("Documento:");
+
+        jLabel7.setText("Proveedor:");
+
+        jLabel8.setText("Fecha.");
+
+        jLabel9.setText("Total:");
+
+        txt_pago_documento.setEditable(false);
+        txt_pago_documento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        txt_pago_proveedor.setEditable(false);
+
+        txt_pago_fecha.setEditable(false);
+        txt_pago_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        txt_pago_total.setEditable(false);
+        txt_pago_total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        t_pagos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        t_pagos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                t_pagosMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(t_pagos);
+
+        javax.swing.GroupLayout jd_ver_pagosLayout = new javax.swing.GroupLayout(jd_ver_pagos.getContentPane());
+        jd_ver_pagos.getContentPane().setLayout(jd_ver_pagosLayout);
+        jd_ver_pagosLayout.setHorizontalGroup(
+            jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jd_ver_pagosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jd_ver_pagosLayout.createSequentialGroup()
+                        .addGroup(jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_pago_proveedor)
+                            .addGroup(jd_ver_pagosLayout.createSequentialGroup()
+                                .addGroup(jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_pago_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_pago_total, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 112, Short.MAX_VALUE))))
+                    .addGroup(jd_ver_pagosLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_pago_documento, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jd_ver_pagosLayout.setVerticalGroup(
+            jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_ver_pagosLayout.createSequentialGroup()
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_pago_documento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_pago_proveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_pago_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_ver_pagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_pago_total, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -246,6 +409,19 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_pdf);
+
+        btn_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/coins.png"))); // NOI18N
+        btn_pagos.setText("Ver Pagos");
+        btn_pagos.setEnabled(false);
+        btn_pagos.setFocusable(false);
+        btn_pagos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_pagos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_pagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pagosActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_pagos);
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
@@ -340,8 +516,8 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txt_tot_ingresos, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_fec_inicio, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                        .addComponent(txt_fec_fin, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)))
+                        .addComponent(txt_fec_inicio)
+                        .addComponent(txt_fec_fin)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
                 .addContainerGap())
@@ -523,12 +699,65 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txt_fec_finKeyPressed
 
+    private void btn_pagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pagosActionPerformed
+        desactivar_botones();
+        txt_pago_documento.setText(t_ingresos.getValueAt(fila_seleccionada, 2).toString());
+        txt_pago_fecha.setText(t_ingresos.getValueAt(fila_seleccionada,1).toString());
+        txt_pago_proveedor.setText(t_ingresos.getValueAt(fila_seleccionada, 3).toString());
+        txt_pago_total.setText(t_ingresos.getValueAt(fila_seleccionada, 6).toString());
+        int idcompra = Integer.parseInt(t_ingresos.getValueAt(fila_seleccionada, 0).toString());
+       // c_pago.setId_compra(idcompra);
+        //c_pago.mostrar(t_pagos);
+
+        //verificar_deuda();
+
+        jd_ver_pagos.setModal(true);
+        jd_ver_pagos.setSize(400, 494);
+        jd_ver_pagos.setLocationRelativeTo(null);
+        jd_ver_pagos.setVisible(true);
+    }//GEN-LAST:event_btn_pagosActionPerformed
+
+    private void btn_pago_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pago_agregarActionPerformed
+       /* txt_registrar_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+        jd_reg_pago.setModal(true);
+        jd_reg_pago.setSize(295, 186);
+        jd_reg_pago.setLocationRelativeTo(null);
+        jd_reg_pago.setVisible(true);
+        txt_registrar_monto.requestFocus();*/
+    }//GEN-LAST:event_btn_pago_agregarActionPerformed
+
+    private void btn_pago_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pago_eliminarActionPerformed
+//        btn_pago_eliminar.setEnabled(false);
+//        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Pago?");
+//
+//        if (JOptionPane.OK_OPTION == confirmado) {
+//            c_pago.eliminar();
+//            c_pago.mostrar(t_pagos);
+//            verificar_deuda();
+//        }
+    }//GEN-LAST:event_btn_pago_eliminarActionPerformed
+
+    private void btn_pago_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pago_salirActionPerformed
+        jd_ver_pagos.dispose();
+        //cargar_tabla();
+    }//GEN-LAST:event_btn_pago_salirActionPerformed
+
+    private void t_pagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_pagosMouseClicked
+        int fila_pago = t_pagos.getSelectedRow();
+        btn_pago_eliminar.setEnabled(true);
+        //c_pago.setId_pago(Integer.parseInt(t_pagos.getValueAt(fila_pago, 0).toString()));
+    }//GEN-LAST:event_t_pagosMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_detalle;
     private javax.swing.JButton btn_eliminar;
+    private javax.swing.JButton btn_pago_agregar;
+    private javax.swing.JButton btn_pago_eliminar;
+    private javax.swing.JButton btn_pago_salir;
+    private javax.swing.JButton btn_pagos;
     private javax.swing.JButton btn_pdf;
     private javax.swing.JComboBox<String> cbx_buscar;
     private javax.swing.JLabel jLabel1;
@@ -536,19 +765,67 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
     private javax.swing.JDialog jd_detalle;
+    private javax.swing.JDialog jd_ver_pagos;
     private javax.swing.JTable t_detalle;
     private javax.swing.JTable t_ingresos;
+    private javax.swing.JTable t_pagos;
     private javax.swing.JTextField txt_buscar;
     private javax.swing.JTextField txt_documento;
     private javax.swing.JFormattedTextField txt_fec_fin;
     private javax.swing.JFormattedTextField txt_fec_inicio;
     private javax.swing.JTextField txt_fecha;
+    private javax.swing.JTextField txt_pago_documento;
+    private javax.swing.JTextField txt_pago_fecha;
+    private javax.swing.JTextField txt_pago_proveedor;
+    private javax.swing.JTextField txt_pago_total;
     private javax.swing.JTextField txt_proveedor;
     private javax.swing.JTextField txt_tot_ingresos;
     // End of variables declaration//GEN-END:variables
+}
+
+class CeldaColor extends DefaultTableCellRenderer {
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected,
+            boolean hasFocus,
+            int row,
+            int column) {
+
+        double total = Double.parseDouble(table.getValueAt(row, 6) + "");
+        double pagado = Double.parseDouble(table.getValueAt(row, 7) + "");
+        setBackground(Color.WHITE);
+        setForeground(Color.BLACK);
+        
+        if (total - pagado != 0) {
+            setBackground(Configuracion.COLOR_CELDA_DEUDA);
+            setForeground(Configuracion.COLOR_CELDA_TEXT_DEUDA);
+        }
+        
+        /*if (numero >= 10) {
+            setBackground(Color.GREEN);
+            setForeground(Color.BLACK);
+        } else if (numero >= 5 && numero < 10) {
+            setBackground(Color.YELLOW);
+            setForeground(Color.BLACK);
+        } else {
+            setBackground(Color.RED);
+            setForeground(Color.BLACK);
+        }*/
+
+        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    }
+
 }

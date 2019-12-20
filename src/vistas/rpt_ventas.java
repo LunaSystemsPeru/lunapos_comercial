@@ -26,6 +26,7 @@
 package vistas;
 
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import clases_varios.cl_grafica_mensual;
 import java.io.File;
 import java.io.IOException;
@@ -54,13 +55,11 @@ public class rpt_ventas extends javax.swing.JDialog {
     /**
      * Creates new form rpt_reportes
      */
-     protected void paintComponent(Graphics grphcs) {
-        grphcs.setColor(Color.decode("#00b0f0"));
-        grphcs.fillRect(0, 0, this.getWidth(), this.getHeight());
-    }
+     
     public rpt_ventas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
     }
 
     /**
@@ -102,10 +101,11 @@ public class rpt_ventas extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ver Reportes");
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(204, 204, 0));
         setModal(true);
         setResizable(false);
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Reportes en PDF"));
 
         cbx_pdf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -170,6 +170,7 @@ public class rpt_ventas extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel2.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Reportes Graficos"));
 
         cbx_graficas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ventas y Cobros (Iingresos) - 7 Ultimos dias", "Ingresos Mensuales - Mi tienda", "Ingresos x Año - Mi tienda", "Comparativa Ingresos Ayer y hoy", "Comparativa Ingresos este mes", "Comparativa Ingresos este año", "Ingresos segun Clasificacion de Productos en el Mes", "Ingresos segun Clasificacion de Productos en el Año" }));
@@ -202,6 +203,8 @@ public class rpt_ventas extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        panel_graficas.setBackground(Configuracion.COLOR_PANEL_INTERNO);
+
         javax.swing.GroupLayout panel_graficasLayout = new javax.swing.GroupLayout(panel_graficas);
         panel_graficas.setLayout(panel_graficasLayout);
         panel_graficasLayout.setHorizontalGroup(
@@ -213,6 +216,7 @@ public class rpt_ventas extends javax.swing.JDialog {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jPanel3.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Reportes en Excel"));
 
         cbx_excel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Detalle de Venta - Tienda - Cliente - Producto - Clasificacion - Vendedor" }));
@@ -282,6 +286,7 @@ public class rpt_ventas extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        jPanel4.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Libros / Registros para SUNAT"));
 
         jLabel5.setText("Periodo:");

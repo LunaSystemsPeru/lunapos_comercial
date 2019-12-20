@@ -18,6 +18,7 @@ import clases.cl_varios;
 import clases_autocomplete.cla_almacen;
 import clases_autocomplete.cla_mis_documentos;
 import clases_autocomplete.cla_producto;
+import clases_varios.Configuracion;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.Frame;
@@ -250,6 +251,7 @@ public class frm_reg_salida extends javax.swing.JInternalFrame {
 
         setTitle("Reg. Documento de Salida de Mercaderia");
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del Documento"));
 
         jLabel1.setText("Fecha:");
@@ -385,6 +387,7 @@ public class frm_reg_salida extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel2.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Agregar Productos"));
 
         jLabel8.setText("Producto:");
@@ -522,6 +525,7 @@ public class frm_reg_salida extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jPanel3.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Productos a Ingresar"));
 
         t_detalle.setModel(new javax.swing.table.DefaultTableModel(

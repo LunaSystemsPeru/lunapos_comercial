@@ -7,6 +7,7 @@ package forms;
 
 import clases.cl_cliente;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import java.awt.event.KeyEvent;
 import java.security.SecureRandom;
 import javax.swing.JOptionPane;
@@ -32,7 +33,7 @@ public class frm_reg_cliente extends javax.swing.JDialog {
     public frm_reg_cliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         if (accion.equals("registrar")) {
             this.setTitle("Agregar Cliente");
             c_cliente.setCodigo(0);

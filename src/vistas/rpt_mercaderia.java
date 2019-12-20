@@ -28,6 +28,7 @@ package vistas;
 import clases.cl_varios;
 import clases_autocomplete.cla_almacen;
 import clases_autocomplete.cla_empresa;
+import clases_varios.Configuracion;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -53,6 +54,7 @@ public class rpt_mercaderia extends javax.swing.JDialog {
     public rpt_mercaderia(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         m_empresa.cbx_empresas(cbx_empresa);
         m_tienda.cbx_todos_almacenes(cbx_tienda);
     }
@@ -84,6 +86,7 @@ public class rpt_mercaderia extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Reportes de Mercaderia - Stock");
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Por Empresa"));
 
         jLabel1.setText("Empresa:");
@@ -148,6 +151,7 @@ public class rpt_mercaderia extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel2.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Por Tienda"));
 
         jLabel3.setText("Tienda:");

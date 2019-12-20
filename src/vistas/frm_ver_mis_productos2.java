@@ -36,6 +36,7 @@ import clases.cl_traslados;
 import clases.cl_usuario;
 import clases.cl_varios;
 import clases.cl_venta;
+import clases_varios.Configuracion;
 import clases_varios.leer_numeros;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -72,6 +73,7 @@ public class frm_ver_mis_productos2 extends javax.swing.JInternalFrame {
      */
     public frm_ver_mis_productos2() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         c_mis_productos.setAlmacen(id_almacen);
         cargar_tabla();
     }

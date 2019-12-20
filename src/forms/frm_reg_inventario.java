@@ -13,6 +13,7 @@ import clases.cl_productos_empresa;
 import clases.cl_productos_inventarios;
 import clases.cl_varios;
 import clases_autocomplete.cla_producto;
+import clases_varios.Configuracion;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.event.KeyEvent;
@@ -355,6 +356,7 @@ public class frm_reg_inventario extends javax.swing.JInternalFrame {
         lbl_ayuda.setText("jLabel2");
         jToolBar1.add(lbl_ayuda);
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar Producto"));
 
         jLabel1.setText("Buscar:");

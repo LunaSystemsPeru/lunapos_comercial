@@ -6,6 +6,7 @@
 package vistas;
 
 import clases.cl_producto;
+import clases_varios.Configuracion;
 import forms.frm_reg_producto;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -27,6 +28,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
      */
     public frm_ver_productos_todos() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String query = "select * from productos "
                 + "order by descripcion asc, marca asc "
                 + "limit 0";

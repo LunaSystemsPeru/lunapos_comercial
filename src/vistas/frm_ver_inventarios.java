@@ -8,6 +8,7 @@ package vistas;
 import clases.cl_inventarios;
 import clases.cl_productos_inventarios;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import forms.frm_reg_inventario;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -31,6 +32,7 @@ public class frm_ver_inventarios extends javax.swing.JInternalFrame {
      */
     public frm_ver_inventarios() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String query = "select i.anio, i.id_inventario, i.fecha, u.username  "
                 + "from inventario as i "
                 + "inner join usuarios as u on u.id_usuarios = i.id_usuarios "

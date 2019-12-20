@@ -18,6 +18,7 @@ import clases.cl_varios;
 import clases.cl_venta;
 import clases_autocomplete.cla_almacen;
 import clases_autocomplete.cla_producto;
+import clases_varios.Configuracion;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.event.KeyEvent;
@@ -644,6 +645,7 @@ public class frm_reg_traslado extends javax.swing.JInternalFrame {
         setTitle("Registrar Traslados a otras Tiendas");
         setToolTipText("");
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
         jLabel1.setText("Tienda Origen:");
@@ -825,6 +827,7 @@ public class frm_reg_traslado extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btn_salir);
 
+        jPanel2.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle de Traslado"));
 
         jLabel7.setText("Buscar Producto:");

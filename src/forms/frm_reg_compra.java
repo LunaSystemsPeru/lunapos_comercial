@@ -10,6 +10,7 @@ import clases.cl_proveedor;
 import clases.cl_varios;
 import clases_autocomplete.cla_empresa;
 import clases_autocomplete.cla_mis_documentos;
+import clases_varios.Configuracion;
 import comercial.frm_principal;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -42,6 +43,7 @@ public class frm_reg_compra extends javax.swing.JInternalFrame {
      */
     public frm_reg_compra() {
         initComponents();
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         m_empresa.cbx_empresas(cbx_empresa);
         m_tido.cbx_documentos_compra(cbx_tido);
         

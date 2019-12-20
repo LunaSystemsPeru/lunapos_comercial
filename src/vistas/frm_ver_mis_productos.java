@@ -11,6 +11,7 @@ import clases.cl_productos_almacen;
 import clases.cl_traslados;
 import clases.cl_usuario;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import forms.frm_reg_producto;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -40,12 +41,14 @@ public class frm_ver_mis_productos extends javax.swing.JDialog {
     int id_traslado = 0;
     String query;
 
+
     /**
      * Creates new form frm_ver_mis_productos
      */
     public frm_ver_mis_productos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         c_mis_productos.setAlmacen(id_almacen);
         cargar_tabla();
     }

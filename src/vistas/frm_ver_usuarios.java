@@ -9,6 +9,7 @@ import clases.cl_almacen;
 import clases.cl_usuario;
 import clases.cl_varios;
 import clases_autocomplete.cla_almacen;
+import clases_varios.Configuracion;
 import forms.frm_reg_permiso_usuario;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -36,6 +37,7 @@ public class frm_ver_usuarios extends javax.swing.JInternalFrame {
      */
     public frm_ver_usuarios() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         mostrar_tablar();
     }
 

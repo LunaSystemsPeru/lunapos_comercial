@@ -7,6 +7,7 @@ package vistas;
 
 import clases.cl_empresa;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import json.cl_json_entidad;
@@ -24,10 +25,12 @@ public class frm_ver_empresas extends javax.swing.JInternalFrame {
 
     public frm_ver_empresas() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String query = "select * "
                 + "from empresa "
                 + "order by razon asc";
         c_empresa.mostrar(t_empresas, query);
+        
     }
 
     private void llenar() {

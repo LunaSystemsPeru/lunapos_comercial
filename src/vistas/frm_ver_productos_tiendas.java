@@ -7,6 +7,7 @@ package vistas;
 
 import clases.cl_productos_almacen;
 import clases_autocomplete.cla_almacen;
+import clases_varios.Configuracion;
 import java.awt.event.KeyEvent;
 import models.m_almacen;
 
@@ -21,6 +22,7 @@ public class frm_ver_productos_tiendas extends javax.swing.JInternalFrame {
 
     public frm_ver_productos_tiendas() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String query = "select pa.id_producto, p.descripcion, p.marca, p.precio, pa.cactual, p.comision, a.nombre as nalmacen "
                 + "from productos_almacen as pa "
                 + "inner join productos as p on p.id_producto = pa.id_producto "

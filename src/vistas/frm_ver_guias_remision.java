@@ -8,6 +8,7 @@ package vistas;
 import clases.cl_cliente;
 import clases.cl_guia_remision;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class frm_ver_guias_remision extends javax.swing.JInternalFrame {
 
     public frm_ver_guias_remision() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String query = "select gr.id_venta, v.fecha, gr.hash, gr.serie, gr.numero, v.serie as serventa, v.numero as numventa, c.nombre, u.username "
                 + "from guia_remision as gr "
                 + "inner join ventas as v on v.id_ventas = gr.id_venta and v.id_almacen = gr.id_almacen "

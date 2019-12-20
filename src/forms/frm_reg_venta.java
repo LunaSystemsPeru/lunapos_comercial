@@ -21,6 +21,7 @@ import clases_autocomplete.cla_mis_documentos;
 import clases_autocomplete.cla_presentaciones;
 import clases_autocomplete.cla_producto;
 import clases_hilos.cl_enviar_venta;
+import clases_varios.Configuracion;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.Frame;
@@ -34,6 +35,7 @@ import javax.swing.table.DefaultTableModel;
 import models.m_mis_documentos;
 import models.m_ubigeo;
 import comercial.frm_principal;
+import java.awt.Color;
 import models.m_presentaciones;
 
 /**
@@ -91,6 +93,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         modelo_venta();
 
         m_t_documentos.cbx_documentos_venta(cbx_tipo_doc);
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
 
     }
 
@@ -533,7 +536,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_pago_venta, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                .addComponent(lbl_pago_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 44, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -820,6 +823,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Reg. Documento Venta");
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Agregar Productos"));
 
         jLabel1.setText("Buscar:");
@@ -989,6 +993,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jPanel2.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales Venta"));
 
         jLabel4.setText("Fecha:");
@@ -1221,6 +1226,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel3.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Ver Productos en Venta"));
 
         t_detalle.setModel(new javax.swing.table.DefaultTableModel(

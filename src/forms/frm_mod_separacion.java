@@ -34,6 +34,7 @@ import clases.cl_productos_ventas;
 import clases.cl_varios;
 import clases.cl_venta;
 import clases_autocomplete.cla_producto;
+import clases_varios.Configuracion;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.event.KeyEvent;
@@ -80,7 +81,7 @@ public class frm_mod_separacion extends javax.swing.JDialog {
     public frm_mod_separacion(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         modelo_venta();
         c_producto_almacen.setAlmacen(id_almacen);
         c_producto_empresa.setId_empresa(id_empresa);
@@ -403,6 +404,7 @@ public class frm_mod_separacion extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cambio de Productos de la Separacion");
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar Productos"));
 
         jLabel1.setText("Busqueda:");
@@ -502,6 +504,7 @@ public class frm_mod_separacion extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel2.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
         jLabel4.setText("Fecha Separacion:");
@@ -610,6 +613,7 @@ public class frm_mod_separacion extends javax.swing.JDialog {
         lbl_ayuda.setText("lb_ayuda");
         jToolBar1.add(lbl_ayuda);
 
+        jPanel3.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Productos Escogidos")));
 
         t_detalle.setModel(new javax.swing.table.DefaultTableModel(

@@ -7,6 +7,7 @@ package forms;
 
 import clases.cl_proveedor;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import json.cl_json_entidad;
@@ -29,7 +30,7 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
     public frm_reg_proveedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         if (accion.equals("registrar")) {
             this.setTitle("Agregar Proveedor");
             c_proveedor.setId_proveedor(0);

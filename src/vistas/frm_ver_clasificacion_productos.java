@@ -7,6 +7,7 @@ package vistas;
 
 import clases.cl_productos_clasificacion;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import javax.swing.JOptionPane;
 import comercial.frm_principal;
 import java.awt.event.KeyEvent;
@@ -27,7 +28,9 @@ public class frm_ver_clasificacion_productos extends javax.swing.JInternalFrame 
      */
     public frm_ver_clasificacion_productos() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         c_clasificacion.mostrar(t_clasificacion);
+        
     }
 
     private void activar_botones() {

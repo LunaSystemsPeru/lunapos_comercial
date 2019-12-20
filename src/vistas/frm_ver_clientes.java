@@ -6,6 +6,7 @@
 package vistas;
 
 import clases.cl_cliente;
+import clases_varios.Configuracion;
 import forms.frm_reg_cliente;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -23,6 +24,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
 
     public frm_ver_clientes() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         query = "select * "
                 + "from clientes "
                 + "where (venta - pago) > 0 "

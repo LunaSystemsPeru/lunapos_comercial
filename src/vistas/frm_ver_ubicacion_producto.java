@@ -7,6 +7,7 @@ package vistas;
 
 import clases.cl_producto;
 import clases.cl_productos_almacen;
+import clases_varios.Configuracion;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,6 +27,7 @@ public class frm_ver_ubicacion_producto extends javax.swing.JDialog {
     public frm_ver_ubicacion_producto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
 
         if (id_producto > 0) {
             c_producto.setId(id_producto);

@@ -8,6 +8,7 @@ package forms;
 import clases.cl_caja;
 import clases.cl_movimiento_caja;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import comercial.frm_principal;
@@ -36,6 +37,7 @@ public class frm_reg_cierre_caja extends javax.swing.JDialog {
     public frm_reg_cierre_caja(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         cargar_datos();
     }
 
@@ -188,6 +190,7 @@ public class frm_reg_cierre_caja extends javax.swing.JDialog {
         txt_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_fecha.setFocusable(false);
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle Ingresos"));
 
         jLabel2.setText("Apertura de Caja");
@@ -292,6 +295,7 @@ public class frm_reg_cierre_caja extends javax.swing.JDialog {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
+        jPanel2.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle Egresos"));
 
         jLabel8.setText("Tot. Pagos Compras");
@@ -360,6 +364,7 @@ public class frm_reg_cierre_caja extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel3.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Resumen"));
 
         jLabel11.setText("Caja Efectivo");

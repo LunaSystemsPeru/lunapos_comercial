@@ -8,6 +8,7 @@ package vistas;
 import clases.cl_compra;
 import clases.cl_compra_pago;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import forms.frm_reg_compra;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -33,6 +34,7 @@ public class frm_ver_compras extends javax.swing.JInternalFrame {
      */
     public frm_ver_compras() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         query = "SELECT c.id_compra, c.fecha, em.ruc as ruc_empresa, c.estado, p.nro_documento, "
                 + "p.razon_social, ds.abreviado as doc_sunat, c.serie, c.numero, c.total, c.pagado "
                 + "FROM compras as c "

@@ -12,7 +12,9 @@ import clases.cl_empresa;
 import clases.cl_usuario;
 import clases.cl_usuario_permisos;
 import clases.cl_varios;
+
 import clases_hilos.cl_notificaciones;
+import clases_varios.Configuracion;
 import clases_varios.cl_grafica_mensual;
 import forms.frm_reg_cierre_caja;
 import forms.frm_reg_movimiento_caja;
@@ -60,7 +62,7 @@ import vistas.rpt_ventas;
  * @author luis
  */
 public class frm_principal extends javax.swing.JFrame {
-
+  
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
 
@@ -78,6 +80,7 @@ public class frm_principal extends javax.swing.JFrame {
      */
     public frm_principal() {
         initComponents();
+        
         if (c_conectar.verificar_conexion()) {
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
             System.out.println(c_varios.getHoraActual());
@@ -225,7 +228,7 @@ public class frm_principal extends javax.swing.JFrame {
         jDesktopPane1 = new JDesktopPane(){
 
             protected void paintComponent(Graphics grphcs) {
-                grphcs.setColor(Color.decode("#00b0f0"));
+                grphcs.setColor( Configuracion.COLOR_FORMULARIO_1);
                 grphcs.fillRect(0,0, this.getWidth(), this.getHeight());
             }
 
@@ -580,6 +583,7 @@ public class frm_principal extends javax.swing.JFrame {
         jToolBar4.setBorder(null);
         jToolBar4.setFloatable(false);
         jToolBar4.setBorderPainted(false);
+        jToolBar4.setOpaque(false);
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Office-Customer-Male-Light-icon.png"))); // NOI18N
         jButton5.setText("Clientes");
@@ -901,7 +905,7 @@ public class frm_principal extends javax.swing.JFrame {
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jp_dias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jp_meses, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))

@@ -13,6 +13,7 @@ import clases.cl_unidad_medida;
 import clases.cl_varios;
 import clases_autocomplete.cla_producto_clasificacion;
 import clases_autocomplete.cla_unidad_medida;
+import clases_varios.Configuracion;
 import java.awt.event.KeyEvent;
 import javax.swing.table.DefaultTableModel;
 import models.m_empresas;
@@ -51,7 +52,7 @@ public class frm_reg_producto extends javax.swing.JDialog {
     public frm_reg_producto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         m_clasificacion.cbx_clasificaciones(cbx_clasificacion);
         m_unidad.llenar_combo(cbx_unidad_medida);
 

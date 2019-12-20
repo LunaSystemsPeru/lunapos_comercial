@@ -10,6 +10,7 @@ import clases.cl_documento_almacen;
 import clases.cl_empresa;
 import clases_autocomplete.cla_empresa;
 import clases_autocomplete.cla_mis_documentos;
+import clases_varios.Configuracion;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -33,17 +34,15 @@ public class frm_ver_almacenes extends javax.swing.JInternalFrame {
      * Creates new form frm_ver_almacenes
      */
     
-     protected void paintComponent(Graphics grphcs) {
-        grphcs.setColor(Color.decode("#00b0f0"));
-        grphcs.fillRect(0, 0, this.getWidth(), this.getHeight());
-    }
+     
     public frm_ver_almacenes() {
         initComponents();
         mostrar_tabla();
-
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         //cargar documentos sunat en combobox
         m_documentos_sunat m_documentos = new m_documentos_sunat();
         m_documentos.cbx_documentos(cbx_doc_sunat);
+        
     }
 
     private void mostrar_tabla() {

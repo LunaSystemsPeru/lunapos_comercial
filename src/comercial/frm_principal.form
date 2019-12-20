@@ -483,7 +483,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JDesktopPane(){&#xd;&#xa;            &#xd;&#xa;            protected void paintComponent(Graphics grphcs) {&#xd;&#xa;                grphcs.setColor(Color.decode(&quot;#00b0f0&quot;));&#xd;&#xa;                grphcs.fillRect(0,0, this.getWidth(), this.getHeight());&#xd;&#xa;            }&#xd;&#xa;            &#xd;&#xa;        };"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JDesktopPane(){&#xd;&#xa;            &#xd;&#xa;            protected void paintComponent(Graphics grphcs) {&#xd;&#xa;                grphcs.setColor( Configuracion.COLOR_FORMULARIO_1);&#xd;&#xa;                grphcs.fillRect(0,0, this.getWidth(), this.getHeight());&#xd;&#xa;            }&#xd;&#xa;            &#xd;&#xa;        };"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
 
@@ -503,7 +503,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <Component id="jTabbedPane1" min="-2" pref="120" max="-2" attributes="0"/>
-                  <EmptySpace pref="93" max="32767" attributes="0"/>
+                  <EmptySpace pref="105" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jp_dias" max="32767" attributes="0"/>
                       <Component id="jp_meses" max="32767" attributes="0"/>
@@ -568,6 +568,7 @@
                 </Property>
                 <Property name="floatable" type="boolean" value="false"/>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">

@@ -6,6 +6,7 @@
  */
 package comercial;
 
+
 import java.awt.Font;
 import javax.swing.JFrame;
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -29,7 +30,7 @@ public class Comercial {
 
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    javax.swing.UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.PLAIN, 17));
+                    javax.swing.UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.BOLD, 17));
                     break;
                 }
             }

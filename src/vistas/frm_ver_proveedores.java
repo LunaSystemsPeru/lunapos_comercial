@@ -7,6 +7,7 @@ package vistas;
 
 import clases.cl_proveedor;
 import clases.cl_varios;
+import clases_varios.Configuracion;
 import forms.frm_reg_proveedor;
 import java.awt.Frame;
 import javax.swing.JOptionPane;
@@ -26,6 +27,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
      */
     public frm_ver_proveedores() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String query = "select * "
                 + "from proveedor "
                 + "order by razon_social asc";

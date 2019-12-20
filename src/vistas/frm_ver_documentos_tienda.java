@@ -5,6 +5,8 @@
  */
 package vistas;
 
+import clases_varios.Configuracion;
+
 /**
  *
  * @author luis
@@ -16,6 +18,7 @@ public class frm_ver_documentos_tienda extends javax.swing.JInternalFrame {
      */
     public frm_ver_documentos_tienda() {
         initComponents();
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
     }
 
     /**

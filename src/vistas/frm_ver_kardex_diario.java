@@ -15,6 +15,7 @@ import clases.cl_traslados;
 import clases.cl_usuario;
 import clases.cl_varios;
 import clases.cl_venta;
+import clases_varios.Configuracion;
 import clases_varios.leer_numeros;
 import comercial.frm_principal;
 import java.io.File;
@@ -45,6 +46,7 @@ public class frm_ver_kardex_diario extends javax.swing.JDialog {
     public frm_ver_kardex_diario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         c_kardex.setId_almacen(frm_principal.c_almacen.getId());
         c_kardex.setFecha(c_varios.getFechaActual());
         c_kardex.ver_kardex_diario(t_kardex_diario);

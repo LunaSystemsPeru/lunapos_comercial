@@ -28,6 +28,7 @@ package forms;
 import clases.cl_almacen;
 import clases.cl_usuario;
 import clases.cl_usuario_permisos;
+import clases_varios.Configuracion;
 
 /**
  *
@@ -38,8 +39,8 @@ public class frm_reg_permiso_usuario extends javax.swing.JDialog {
     cl_usuario_permisos c_permiso = new cl_usuario_permisos();
     cl_usuario c_usuario = new cl_usuario();
     cl_almacen c_almacen = new cl_almacen();
-    
-    public static int id_usuario; 
+
+    public static int id_usuario;
     int fila_seleccionada;
 
     /**
@@ -48,16 +49,16 @@ public class frm_reg_permiso_usuario extends javax.swing.JDialog {
     public frm_reg_permiso_usuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         c_permiso.setId_usuario(id_usuario);
         c_permiso.mostrar(t_permisos);
-        
+
         c_usuario.setId_usuario(id_usuario);
         c_usuario.validar_usuario();
-        
+
         c_almacen.setId(c_usuario.getId_almacen());
         c_almacen.validar_almacen();
-        
+
         txt_usuario.setText(c_usuario.getUsername() + " | " + c_usuario.getNombre());
         txt_almacen.setText(c_almacen.getNombre());
 
