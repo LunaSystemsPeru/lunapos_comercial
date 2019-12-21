@@ -14,11 +14,11 @@ import java.io.Serializable;
  */
 public class Configuracion implements Serializable {
 
-    public static Color COLOR_FORMULARIO_1 = Color.white;
+    public static Color COLOR_FORMULARIO_1 = Color.white; // color mas oscuro #F5F5F5
     public static Color COLOR_PANEL_INTERNO = Color.white;
     
     /* configuracion de  color de la celda que comprar la deuda -> frm_ver_ingreso */
-    public static Color COLOR_CELDA_DEUDA = Color.GREEN;
-    public static Color COLOR_CELDA_TEXT_DEUDA = Color.BLACK;
+    public static Color COLOR_CELDA_DEUDA = Color.RED;
+    public static Color COLOR_CELDA_TEXT_DEUDA = Color.WHITE;
 
 }

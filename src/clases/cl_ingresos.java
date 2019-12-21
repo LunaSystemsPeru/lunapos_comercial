@@ -223,10 +223,10 @@ public class cl_ingresos {
             tmodelo.addColumn("Fecha");
             tmodelo.addColumn("Documento");
             tmodelo.addColumn("Proveedor");
-            tmodelo.addColumn("Total");
+            
             tmodelo.addColumn("Usuario");
-            tmodelo.addColumn("T. Compra");
-            tmodelo.addColumn("T. Pagado");
+            tmodelo.addColumn("Total");
+            tmodelo.addColumn("Pagado");
             
             int contar = 0;
             //Creando las filas para el JTable
@@ -237,11 +237,10 @@ public class cl_ingresos {
                 fila[1] = rs.getString("fecha");
                 fila[2] = rs.getString("abreviado") + " | " + c_varios.ceros_izquieda_letras(4, rs.getString("serie")) + " - " + c_varios.ceros_izquieda_numero(7, rs.getInt("numero"));
                 fila[3] = rs.getString("nro_documento") + " | " + rs.getString("razon_social");
-                fila[4] = c_varios.formato_numero(rs.getDouble("total"));
-                fila[5] = rs.getString("username");
-                fila[6] = rs.getString("tcompra");
-                fila[7] = rs.getString("tpagado");
-
+                
+                fila[4] = rs.getString("username");
+                fila[5] = c_varios.formato_numero(rs.getDouble("total"));
+                fila[6] = c_varios.formato_numero(rs.getDouble("tpagado"));
                 tmodelo.addRow(fila);
             }
             
@@ -253,14 +252,13 @@ public class cl_ingresos {
             tabla.setModel(tmodelo);
             tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(160);
             tabla.getColumnModel().getColumn(3).setPreferredWidth(450);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(90);
             tabla.getColumnModel().getColumn(5).setPreferredWidth(120);
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(80);
-            tabla.getColumnModel().getColumn(7).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(90);
             tabla.setRowSorter(sorter);
-            c_varios.derecha_celda(tabla, 4);
+            //c_varios.derecha_celda(tabla, 4);
 
         } catch (SQLException e) {
             System.out.print(e);
@@ -272,7 +270,7 @@ public class cl_ingresos {
         Statement st = c_conectar.conexion();
         String query = "insert into ingresos "
                 + "values ('" + id_ingreso + "', '" + fecha + "', '" + id_almacen + "', '" + id_proveedor + "', '" + id_tido + "', '" + serie + "', '" + numero + "', "
-                + "'" + total + "', '" + id_moneda + "', '" + tc + "', '" + id_usuario + "')";
+                + "'" + total + "', '" + id_moneda + "', '" + tc + "', '" + id_usuario + "','0')";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {

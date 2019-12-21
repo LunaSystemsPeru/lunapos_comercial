@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import clases.cl_ingreso_pagos;
 import clases.cl_ingresos;
 import clases.cl_productos_ingresos;
 import clases.cl_varios;
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
 import comercial.frm_principal;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -27,6 +29,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
     cl_varios c_varios = new cl_varios();
     cl_ingresos c_ingreso = new cl_ingresos();
     cl_productos_ingresos c_detalle = new cl_productos_ingresos();
+    cl_ingreso_pagos c_ingreso_pagos = new cl_ingreso_pagos();
 
     int fila_seleccionada;
     String query;
@@ -36,19 +39,47 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
 
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String periodo = c_varios.obtener_periodo();
-        query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username, p.tcompra, p.tpagado "
+        query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username, i.tpagado   "
                 + "from ingresos as i "
                 + "inner join proveedor as p on p.id_proveedor = i.id_proveedor "
                 + "inner join documentos_sunat as ds on ds.id_tido = i.id_tido "
                 + "inner join usuarios as u on u.id_usuarios = i.id_usuarios "
                 + "where concat(year(i.fecha), lpad(month(i.fecha), 2, 0)) = '" + periodo + "' "
                 + "order by i.fecha desc, i.numero asc ";
-        c_ingreso.mostrar(t_ingresos, query);
+        //c_ingreso.mostrar(t_ingresos, query);
+        cargar_tabla();
         sumar_totales();
         t_ingresos.setDefaultRenderer(Object.class, new CeldaColor());
-
+        jd_ver_pagos.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        
     }
-
+    private void verificar_deuda() {
+        double total = Double.parseDouble(t_ingresos.getValueAt(fila_seleccionada, 5) + "");
+        double pagado = Double.parseDouble(t_ingresos.getValueAt(fila_seleccionada, 6) + "");
+        
+        double total_compra = Double.parseDouble(t_ingresos.getValueAt(fila_seleccionada, 5).toString());
+        double total_pagos = 0;
+        int filas_pagos = t_pagos.getRowCount();
+        for (int i = 0; i < filas_pagos; i++) {
+            total_pagos += Double.parseDouble(t_pagos.getValueAt(i, 2).toString());
+        }
+        
+        if (total-pagado != 0) {
+            btn_pago_agregar.setEnabled(true);
+        } else {
+            btn_pago_agregar.setEnabled(false);
+        }
+    }
+    
+    private void cargar_tabla() {
+        c_ingreso.mostrar(t_ingresos, query);
+        int total_compras = t_ingresos.getRowCount();
+        double suma_deuda = 0;
+        for (int i = 0; i < total_compras; i++) {
+            suma_deuda += Double.parseDouble(t_ingresos.getValueAt(i, 6).toString());
+        }
+        lbl_total_deuda.setText(c_varios.formato_totales(suma_deuda));
+    }
     private void activar_botones() {
         btn_detalle.setEnabled(true);
         btn_pdf.setEnabled(true);
@@ -67,7 +98,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         int nrofilas = t_ingresos.getRowCount();
         double totales = 0;
         for (int i = 0; i < nrofilas; i++) {
-            totales += Double.parseDouble(t_ingresos.getValueAt(i, 4).toString());
+            totales += Double.parseDouble(t_ingresos.getValueAt(i, 5).toString());
         }
         txt_tot_ingresos.setText(c_varios.formato_totales(totales));
     }
@@ -106,6 +137,15 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         txt_pago_total = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         t_pagos = new javax.swing.JTable();
+        jd_reg_pago = new javax.swing.JDialog();
+        jToolBar3 = new javax.swing.JToolBar();
+        btn_reg_agregar = new javax.swing.JButton();
+        jSeparator5 = new javax.swing.JToolBar.Separator();
+        btn_reg_salir = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        txt_registrar_monto = new javax.swing.JTextField();
+        txt_registrar_fecha = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_ingresos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -123,6 +163,8 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         txt_tot_ingresos = new javax.swing.JTextField();
         txt_fec_inicio = new javax.swing.JFormattedTextField();
         txt_fec_fin = new javax.swing.JFormattedTextField();
+        jLabel12 = new javax.swing.JLabel();
+        lbl_total_deuda = new javax.swing.JTextField();
 
         jd_detalle.setTitle("Ver Detalle de Ingreso de Mercaderia");
 
@@ -188,6 +230,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
 
         jd_ver_pagos.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jd_ver_pagos.setTitle("Ver Pago de Documento de Compra");
+        jd_ver_pagos.setBackground(new java.awt.Color(255, 255, 255));
 
         jToolBar2.setFloatable(false);
 
@@ -318,6 +361,92 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                     .addComponent(txt_pago_total, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jd_reg_pago.setTitle("Agregar Pago");
+
+        jToolBar3.setFloatable(false);
+
+        btn_reg_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        btn_reg_agregar.setText("Agregar");
+        btn_reg_agregar.setEnabled(false);
+        btn_reg_agregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_reg_agregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_reg_agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_reg_agregarActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btn_reg_agregar);
+        jToolBar3.add(jSeparator5);
+
+        btn_reg_salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cross.png"))); // NOI18N
+        btn_reg_salir.setText("Salir");
+        btn_reg_salir.setFocusable(false);
+        btn_reg_salir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_reg_salir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_reg_salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_reg_salirActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btn_reg_salir);
+
+        jLabel10.setText("Fecha.");
+
+        jLabel11.setText("Monto:");
+
+        txt_registrar_monto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txt_registrar_monto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_registrar_montoKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_registrar_montoKeyPressed(evt);
+            }
+        });
+
+        try {
+            txt_registrar_fecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txt_registrar_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_registrar_fecha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_registrar_fechaKeyPressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jd_reg_pagoLayout = new javax.swing.GroupLayout(jd_reg_pago.getContentPane());
+        jd_reg_pago.getContentPane().setLayout(jd_reg_pagoLayout);
+        jd_reg_pagoLayout.setHorizontalGroup(
+            jd_reg_pagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jd_reg_pagoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jd_reg_pagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel10))
+                .addGap(50, 50, 50)
+                .addGroup(jd_reg_pagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_registrar_fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(txt_registrar_monto))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jd_reg_pagoLayout.setVerticalGroup(
+            jd_reg_pagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_reg_pagoLayout.createSequentialGroup()
+                .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_reg_pagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_registrar_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_reg_pagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_registrar_monto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -478,10 +607,13 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel12.setText("Total Pagado:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,7 +633,12 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txt_tot_ingresos, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_total_deuda, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -519,8 +656,12 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         .addComponent(txt_fec_inicio)
                         .addComponent(txt_fec_fin)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_total_deuda, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -704,12 +845,12 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         txt_pago_documento.setText(t_ingresos.getValueAt(fila_seleccionada, 2).toString());
         txt_pago_fecha.setText(t_ingresos.getValueAt(fila_seleccionada,1).toString());
         txt_pago_proveedor.setText(t_ingresos.getValueAt(fila_seleccionada, 3).toString());
-        txt_pago_total.setText(t_ingresos.getValueAt(fila_seleccionada, 6).toString());
-        int idcompra = Integer.parseInt(t_ingresos.getValueAt(fila_seleccionada, 0).toString());
-       // c_pago.setId_compra(idcompra);
-        //c_pago.mostrar(t_pagos);
+        txt_pago_total.setText(t_ingresos.getValueAt(fila_seleccionada, 5).toString());
+        int idIngreso = Integer.parseInt(t_ingresos.getValueAt(fila_seleccionada, 0).toString());
+        c_ingreso_pagos.setId_ingreso(idIngreso);
+        c_ingreso_pagos.mostrar(t_pagos);
 
-        //verificar_deuda();
+        verificar_deuda();
 
         jd_ver_pagos.setModal(true);
         jd_ver_pagos.setSize(400, 494);
@@ -718,35 +859,71 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_pagosActionPerformed
 
     private void btn_pago_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pago_agregarActionPerformed
-       /* txt_registrar_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+        txt_registrar_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
         jd_reg_pago.setModal(true);
         jd_reg_pago.setSize(295, 186);
         jd_reg_pago.setLocationRelativeTo(null);
         jd_reg_pago.setVisible(true);
-        txt_registrar_monto.requestFocus();*/
+        txt_registrar_monto.requestFocus();
     }//GEN-LAST:event_btn_pago_agregarActionPerformed
 
     private void btn_pago_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pago_eliminarActionPerformed
-//        btn_pago_eliminar.setEnabled(false);
-//        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Pago?");
-//
-//        if (JOptionPane.OK_OPTION == confirmado) {
-//            c_pago.eliminar();
-//            c_pago.mostrar(t_pagos);
-//            verificar_deuda();
-//        }
+        btn_pago_eliminar.setEnabled(false);
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Pago?");
+
+       if (JOptionPane.OK_OPTION == confirmado) {
+            c_ingreso_pagos.eliminar();
+            c_ingreso_pagos.mostrar(t_pagos);
+            verificar_deuda();
+        }
     }//GEN-LAST:event_btn_pago_eliminarActionPerformed
 
     private void btn_pago_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pago_salirActionPerformed
         jd_ver_pagos.dispose();
-        //cargar_tabla();
+        cargar_tabla();
     }//GEN-LAST:event_btn_pago_salirActionPerformed
 
     private void t_pagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_pagosMouseClicked
         int fila_pago = t_pagos.getSelectedRow();
         btn_pago_eliminar.setEnabled(true);
-        //c_pago.setId_pago(Integer.parseInt(t_pagos.getValueAt(fila_pago, 0).toString()));
+        c_ingreso_pagos.setId_ingreso_pago(Integer.parseInt(t_pagos.getValueAt(fila_pago, 0).toString()));
     }//GEN-LAST:event_t_pagosMouseClicked
+
+    private void btn_reg_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reg_agregarActionPerformed
+        c_ingreso_pagos.setFecha(c_varios.fecha_myql(txt_registrar_fecha.getText()));
+        c_ingreso_pagos.setMonto(Double.parseDouble(txt_registrar_monto.getText()));
+        c_ingreso_pagos.obtener_codigo();
+        if (c_ingreso_pagos.registrar()) {
+            btn_reg_salir.doClick();
+        }
+    }//GEN-LAST:event_btn_reg_agregarActionPerformed
+
+    private void btn_reg_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reg_salirActionPerformed
+        jd_reg_pago.dispose();
+        c_ingreso_pagos.mostrar(t_pagos);
+        verificar_deuda();
+    }//GEN-LAST:event_btn_reg_salirActionPerformed
+
+    private void txt_registrar_montoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_registrar_montoKeyTyped
+        c_varios.solo_precio(evt);
+        c_varios.limitar_caracteres(evt, txt_registrar_monto, 10);
+    }//GEN-LAST:event_txt_registrar_montoKeyTyped
+
+    private void txt_registrar_montoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_registrar_montoKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String numero = txt_registrar_monto.getText();
+            if (c_varios.esDecimal(numero)) {
+                btn_reg_agregar.setEnabled(true);
+                btn_reg_agregar.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_txt_registrar_montoKeyPressed
+
+    private void txt_registrar_fechaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_registrar_fechaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txt_registrar_monto.requestFocus();
+        }
+    }//GEN-LAST:event_txt_registrar_fechaKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -759,8 +936,13 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_pago_salir;
     private javax.swing.JButton btn_pagos;
     private javax.swing.JButton btn_pdf;
+    private javax.swing.JButton btn_reg_agregar;
+    private javax.swing.JButton btn_reg_salir;
     private javax.swing.JComboBox<String> cbx_buscar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -774,10 +956,14 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator4;
+    private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JToolBar jToolBar3;
     private javax.swing.JDialog jd_detalle;
+    private javax.swing.JDialog jd_reg_pago;
     private javax.swing.JDialog jd_ver_pagos;
+    private javax.swing.JTextField lbl_total_deuda;
     private javax.swing.JTable t_detalle;
     private javax.swing.JTable t_ingresos;
     private javax.swing.JTable t_pagos;
@@ -791,6 +977,8 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txt_pago_proveedor;
     private javax.swing.JTextField txt_pago_total;
     private javax.swing.JTextField txt_proveedor;
+    private javax.swing.JFormattedTextField txt_registrar_fecha;
+    private javax.swing.JTextField txt_registrar_monto;
     private javax.swing.JTextField txt_tot_ingresos;
     // End of variables declaration//GEN-END:variables
 }
@@ -804,8 +992,8 @@ class CeldaColor extends DefaultTableCellRenderer {
             int row,
             int column) {
 
-        double total = Double.parseDouble(table.getValueAt(row, 6) + "");
-        double pagado = Double.parseDouble(table.getValueAt(row, 7) + "");
+        double total = Double.parseDouble(table.getValueAt(row, 5) + "");
+        double pagado = Double.parseDouble(table.getValueAt(row, 6) + "");
         setBackground(Color.WHITE);
         setForeground(Color.BLACK);
         
@@ -814,16 +1002,7 @@ class CeldaColor extends DefaultTableCellRenderer {
             setForeground(Configuracion.COLOR_CELDA_TEXT_DEUDA);
         }
         
-        /*if (numero >= 10) {
-            setBackground(Color.GREEN);
-            setForeground(Color.BLACK);
-        } else if (numero >= 5 && numero < 10) {
-            setBackground(Color.YELLOW);
-            setForeground(Color.BLACK);
-        } else {
-            setBackground(Color.RED);
-            setForeground(Color.BLACK);
-        }*/
+
 
         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     }

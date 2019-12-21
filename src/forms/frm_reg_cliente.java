@@ -347,7 +347,7 @@ getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
                 if (c_cliente.registrar()) {
                     Notification.show("Clientes", "CLIENTE REGISTRADO CORRECTAMENTE");
                     if (origen.equals("reg_venta")) {
-                        frm_reg_venta.btn_actualizar.doClick();
+//                        frm_reg_venta.btn_actualizar.doClick();
                     }
                     btn_cerrar.doClick();
                 }
@@ -357,7 +357,7 @@ getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
                 c_cliente.modificar();
                 Notification.show("Clientes", "CLIENTE MODIFICADO CORRECTAMENTE");
                 if (origen.equals("reg_venta")) {
-                    frm_reg_venta.btn_actualizar.doClick();
+//                    frm_reg_venta.btn_actualizar.doClick();
                 }
                 if (origen.equals("ver_clientes")) {
                     //
