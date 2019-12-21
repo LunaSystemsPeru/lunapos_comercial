@@ -4,6 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="p_id_cliente" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select v.id_ventas, v.id_almacen, v.fecha, ds.abreviado, v.serie, v.numero, v.total, v.pagado, c.documento, c.nombre
 from ventas as v
@@ -225,7 +226,7 @@ where v.id_cliente =  $P{p_id_cliente} and v.total > v.pagado]]>
 					<subreportParameterExpression><![CDATA[$F{id_ventas}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["rpt_deudas_cliente_detalle.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"rpt_deudas_cliente_detalle.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

@@ -192,16 +192,16 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_buscarKeyPressed
 
     private void t_proveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_proveedoresMouseClicked
-       if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 2) {
             fila_seleccionada = t_proveedores.getSelectedRow();
             btn_modificar.setEnabled(true);
             jButton1.setEnabled(true);
         }
-       
+
     }//GEN-LAST:event_t_proveedoresMouseClicked
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-   
+
         int id_proveedor = Integer.parseInt(t_proveedores.getValueAt(fila_seleccionada, 0).toString());
         btn_modificar.setEnabled(false);
         Frame f = JOptionPane.getRootFrame();
@@ -214,39 +214,39 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-   jButton1.setEnabled(false);
-        
-          int id_proveedor = Integer.parseInt(t_proveedores.getValueAt(fila_seleccionada, 0).toString());
-          
+        jButton1.setEnabled(false);
+
+        int id_proveedor = Integer.parseInt(t_proveedores.getValueAt(fila_seleccionada, 0).toString());
+
         File miDir = new File(".");
         try {
             Map<String, Object> parametros = new HashMap<>();
             String path = miDir.getCanonicalPath();
-            String direccion = path + File.separator + "reports" + File.separator + "subreports" + File.separator;
-            
+            String direccion = path + File.separator + "reports" + File.separator;//+ "subreports" + File.separator;
+
             System.out.println(direccion);
-            //parametros.put("SUBREPORT_DIR", direccion);
+            parametros.put("SUBREPORT_DIR", direccion);
             parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("p_id_proveedor", id_proveedor);
-                c_varios.ver_reporte("rpt_deudas_proveedor", parametros);
+            c_varios.ver_reporte("rpt_deudas_proveedor", parametros);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-          File miDir = new File(".");
+        File miDir = new File(".");
         try {
             Map<String, Object> parametros = new HashMap<>();
             String path = miDir.getCanonicalPath();
-            String direccion = path + File.separator + "reports" + File.separator + "subreports" + File.separator;
-            
+            String direccion = path + File.separator + "reports" + File.separator;//+ "subreports" + File.separator;
+
             System.out.println(direccion);
-            //parametros.put("SUBREPORT_DIR", direccion);
+            parametros.put("SUBREPORT_DIR", direccion);
             parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("REPORT_LOCALE", Locale.ENGLISH);
-                            c_varios.ver_reporte("rpt_deudas_todos", parametros);
+            c_varios.ver_reporte("rpt_deudas_fechas", parametros);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }

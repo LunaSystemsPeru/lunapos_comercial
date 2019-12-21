@@ -4,6 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="p_id_proveedor" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select i.id_ingreso, i.id_almacen, i.fecha, ds.abreviado, i.numero, i.serie, p.nro_documento, p.razon_social, i.total, i.tpagado
 from ingresos as i
@@ -225,7 +226,7 @@ where i.tpagado < i.total and i.id_proveedor =  $P{p_id_proveedor}]]>
 					<subreportParameterExpression><![CDATA[$F{id_ingreso}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["rpt_deudas_proveedor_detalle.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"rpt_deudas_proveedor_detalle.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

@@ -275,10 +275,10 @@ c_cliente.mostrar(t_clientes, query);
         try {
             Map<String, Object> parametros = new HashMap<>();
             String path = miDir.getCanonicalPath();
-            String direccion = path + File.separator + "reports" + File.separator + "subreports" + File.separator;
+            String direccion = path + File.separator + "reports" + File.separator ;//+ "subreports" + File.separator;
             
             System.out.println(direccion);
-            //parametros.put("SUBREPORT_DIR", direccion);
+            parametros.put("SUBREPORT_DIR", direccion);
             parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("p_id_cliente", id_cliente);
@@ -293,10 +293,10 @@ c_cliente.mostrar(t_clientes, query);
         try {
             Map<String, Object> parametros = new HashMap<>();
             String path = miDir.getCanonicalPath();
-            String direccion = path + File.separator + "reports" + File.separator + "subreports" + File.separator;
+            String direccion = path + File.separator + "reports" + File.separator ;//+ "subreports" + File.separator;
             
             System.out.println(direccion);
-            //parametros.put("SUBREPORT_DIR", direccion);
+            parametros.put("SUBREPORT_DIR", direccion);
             parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("REPORT_LOCALE", Locale.ENGLISH);
                 c_varios.ver_reporte("rpt_deudas_clientes_todos", parametros);

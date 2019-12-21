@@ -3,6 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_deudas_proveedor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3036867-73e9-436e-9ea0-032e915192b3">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select v.id_ventas, v.id_almacen, v.fecha, ds.abreviado, v.serie, v.numero, v.total, v.pagado, c.documento, c.nombre
 from ventas as v
@@ -231,7 +232,7 @@ where v.total > v.pagado]]>
 					<subreportParameterExpression><![CDATA[$F{id_ventas}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["rpt_deudas_cliente_detalle.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"rpt_deudas_cliente_detalle.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

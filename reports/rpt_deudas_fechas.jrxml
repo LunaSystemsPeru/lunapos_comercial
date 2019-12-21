@@ -3,12 +3,13 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_deudas_proveedor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3036867-73e9-436e-9ea0-032e915192b3">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select i.id_ingreso, i.id_almacen, i.fecha, ds.abreviado, i.numero, i.serie, p.nro_documento, p.razon_social, i.total, i.tpagado
 from ingresos as i
 inner join proveedor p on i.id_proveedor = p.id_proveedor
 inner join documentos_sunat ds on i.id_tido = ds.id_tido
-where i.tpagado < i.total ]]>
+where i.tpagado < i.total]]>
 	</queryString>
 	<field name="id_ingreso" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id_ingreso"/>
@@ -283,7 +284,7 @@ where i.tpagado < i.total ]]>
 					<subreportParameterExpression><![CDATA[$F{id_ingreso}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["rpt_deudas_proveedor_detalle.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"rpt_deudas_proveedor_detalle.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
