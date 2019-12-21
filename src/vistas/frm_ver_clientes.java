@@ -6,10 +6,16 @@
 package vistas;
 
 import clases.cl_cliente;
+import clases.cl_varios;
 import clases_varios.Configuracion;
 import forms.frm_reg_cliente;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,6 +25,8 @@ import javax.swing.JOptionPane;
 public class frm_ver_clientes extends javax.swing.JInternalFrame {
 
     cl_cliente c_cliente = new cl_cliente();
+    cl_varios c_varios = new cl_varios();
+    
     int fila_seleccionada;
     String query;
 
@@ -51,6 +59,8 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         cbx_boton = new javax.swing.JComboBox();
         jToolBar1 = new javax.swing.JToolBar();
         btn_modificar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         btn_cerrar = new javax.swing.JButton();
 
         setTitle("Ver Clientes");
@@ -114,6 +124,30 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_modificar);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
+        jButton1.setText("por Cobrar Cliente");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton1);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
+        jButton2.setText("por Cobrar Todos");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton2);
 
         btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
         btn_cerrar.setText("Cerrar");
@@ -183,6 +217,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 2) {
             fila_seleccionada = t_clientes.getSelectedRow();
             btn_modificar.setEnabled(true);
+            jButton1.setEnabled(true);
         }
     }//GEN-LAST:event_t_clientesMouseClicked
 
@@ -231,11 +266,52 @@ c_cliente.mostrar(t_clientes, query);
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_buscarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jButton1.setEnabled(false);
+        
+          int id_cliente = Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString());
+          
+        File miDir = new File(".");
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            String path = miDir.getCanonicalPath();
+            String direccion = path + File.separator + "reports" + File.separator ;//+ "subreports" + File.separator;
+            
+            System.out.println(direccion);
+            parametros.put("SUBREPORT_DIR", direccion);
+            parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
+            parametros.put("REPORT_LOCALE", Locale.ENGLISH);
+            parametros.put("p_id_cliente", id_cliente);
+                c_varios.ver_reporte("rpt_deudas_cliente", parametros);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        File miDir = new File(".");
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            String path = miDir.getCanonicalPath();
+            String direccion = path + File.separator + "reports" + File.separator ;//+ "subreports" + File.separator;
+            
+            System.out.println(direccion);
+            parametros.put("SUBREPORT_DIR", direccion);
+            parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
+            parametros.put("REPORT_LOCALE", Locale.ENGLISH);
+                c_varios.ver_reporte("rpt_deudas_clientes_todos", parametros);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JComboBox cbx_boton;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
