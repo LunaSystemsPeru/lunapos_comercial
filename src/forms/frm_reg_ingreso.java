@@ -61,7 +61,6 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 
     int fila_seleccionada;
     int id_almacen = frm_principal.c_almacen.getId();
-
     /**
      * Creates new form frm_reg_ingreso
      */
@@ -74,6 +73,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         modelo_ingreso();
         modelo_bono();
     }
+
 
     private void modelo_ingreso() {
         //formato de tabla detalle de venta
@@ -394,6 +394,11 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         jLabel7.setText("TC. Compra:");
 
         txt_razon_social.setEnabled(false);
+        txt_razon_social.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_razon_socialKeyPressed(evt);
+            }
+        });
 
         txt_tc.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_tc.setText("1.000");
@@ -626,7 +631,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_bono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btn_bono, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -885,35 +890,42 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 
     private void txt_ruc_proveedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ruc_proveedorKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_ruc_proveedor.getText().length() == 11) {
-                c_proveedor.setRuc(txt_ruc_proveedor.getText());
-                boolean existe = c_proveedor.buscar_ruc();
-                if (existe) {
-                    //validar documento
-                    c_ingreso.setId_proveedor(c_proveedor.getId_proveedor());
-                    c_ingreso.setSerie(txt_serie.getText());
-                    c_ingreso.setNumero(Integer.parseInt(txt_numero.getText()));
-                    boolean existe_documento = c_ingreso.validar_documento();
-                    if (existe_documento) {
-                        JOptionPane.showMessageDialog(null, "ESTE DOCUMENTO YA ESTA INGRESADO, SALIR DE LA VENTANA");
-                        btn_salir.doClick();
-                    } else //cargar datos de proveedor
-                    {
-                        c_proveedor.cargar_datos();
-                    }
-                    txt_razon_social.setText(c_proveedor.getRazon_social());
-                    cbx_moneda.setEnabled(true);
-                    cbx_moneda.requestFocus();
-                } else {
-                    Frame f = JOptionPane.getRootFrame();
-                    frm_reg_proveedor dialog = new frm_reg_proveedor(f, true);
-                    frm_reg_proveedor.txt_ndoc.setText(c_proveedor.getRuc());
-                    frm_reg_proveedor.accion = "registrar";
-                    frm_reg_proveedor.origen = "reg_ingreso";
-                    dialog.setLocationRelativeTo(null);
-                    dialog.setVisible(true);
-                }
 
+            if (txt_ruc_proveedor.getText().trim().length() != 0) {
+                if (txt_ruc_proveedor.getText().length() == 11) {
+                    c_proveedor.setRuc(txt_ruc_proveedor.getText());
+                    boolean existe = c_proveedor.buscar_ruc();
+                    if (existe) {
+                        //validar documento
+                        c_ingreso.setId_proveedor(c_proveedor.getId_proveedor());
+                        c_ingreso.setSerie(txt_serie.getText());
+                        c_ingreso.setNumero(Integer.parseInt(txt_numero.getText()));
+                        boolean existe_documento = c_ingreso.validar_documento();
+                        if (existe_documento) {
+                            JOptionPane.showMessageDialog(null, "ESTE DOCUMENTO YA ESTA INGRESADO, SALIR DE LA VENTANA");
+                            btn_salir.doClick();
+                        } else //cargar datos de proveedor
+                        {
+                            c_proveedor.cargar_datos();
+                        }
+                        txt_razon_social.setText(c_proveedor.getRazon_social());
+                        cbx_moneda.setEnabled(true);
+                        cbx_moneda.requestFocus();
+                    } else {
+                        Frame f = JOptionPane.getRootFrame();
+                        frm_reg_proveedor dialog = new frm_reg_proveedor(f, true);
+                        frm_reg_proveedor.txt_ndoc.setText(c_proveedor.getRuc());
+                        frm_reg_proveedor.accion = "registrar";
+                        frm_reg_proveedor.origen = "reg_ingreso";
+                        dialog.setLocationRelativeTo(null);
+                        dialog.setVisible(true);
+                    }
+
+                }
+            } else {
+                txt_razon_social.setEnabled(true);
+                txt_razon_social.requestFocus();
+                cargar_proveedores();
             }
         }
     }//GEN-LAST:event_txt_ruc_proveedorKeyPressed
@@ -1088,6 +1100,18 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Guardar el ingreso de Mercaderia?");
 
         if (JOptionPane.OK_OPTION == confirmado) {
+            
+            if (c_proveedor.getId_proveedor() == -1 || c_proveedor.getId_proveedor() == 0) {
+                c_proveedor.obtener_codigo();
+                c_proveedor.setRazon_social(txt_razon_social.getText());
+                c_proveedor.setRuc("SR" + c_proveedor.getId_proveedor());
+                if (!c_proveedor.registrar()) {
+                    JOptionPane.showMessageDialog(null, "Problemas al Registrar al cliente");
+                }
+
+            }
+            
+            
             c_ingreso.setFecha(c_varios.fecha_myql(txt_fecha.getText()));
             c_ingreso.setId_almacen(id_almacen);
             c_ingreso.setId_moneda(cbx_moneda.getSelectedIndex() + 1);
@@ -1118,7 +1142,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 for (int i = 0; i < nro_filas_bono; i++) {
                     c_bono.setId_producto(Integer.parseInt(t_bonificaciones.getValueAt(i, 0).toString()));
                     c_bono.setCantidad(Double.parseDouble(t_bonificaciones.getValueAt(i, 3).toString()));
-                    
+
                     c_bono.registrar();
                 }
 
@@ -1172,6 +1196,33 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
             btn_agregar_producto.requestFocus();
         }
     }//GEN-LAST:event_btn_bonoKeyPressed
+
+    private void txt_razon_socialKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_razon_socialKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (txt_razon_social.getText().length() > 4) {
+                //validar cliente
+                if (c_proveedor.buscar_ruc()) {
+                    //txt_razon_social.setText(c_proveedor.getDocumento());
+                    //  txt_dir_cliente.setText(c_cliente.getDireccion());
+                    cargar_productos();
+                    txt_buscar_productos.setEnabled(true);
+                    txt_buscar_productos.requestFocus();
+                } else {
+                    /*limpiar_cliente();
+                    JOptionPane.showMessageDialog(null, "CLIENTE NO SELECCIONADO \nSELECCIONE CON ENTER");*/
+                    c_proveedor.setRazon_social(txt_razon_social.getText().toUpperCase());
+                    c_proveedor.setId_proveedor(-1);
+                    cargar_productos();
+                    txt_buscar_productos.setEnabled(true);
+                    txt_buscar_productos.requestFocus();
+
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "EL NOMBRE DEL PROVEEDOR \nTIENE UE TENER MAS DE 2 DIJITOS");
+            }
+        }
+        
+    }//GEN-LAST:event_txt_razon_socialKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

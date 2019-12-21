@@ -316,6 +316,9 @@
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_razon_socialKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_tc">
           <Properties>
@@ -403,7 +406,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btn_bono" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btn_bono" min="-2" pref="58" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
