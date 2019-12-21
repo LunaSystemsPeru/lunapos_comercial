@@ -263,7 +263,7 @@ public class cl_cliente {
 
         try {
             Statement st = c_conectar.conexion();
-            String query = "select id_cliente "
+            String query = "select id_cliente , nombre "
                     + "from clientes "
                     + "where documento = '" + documento + "'";
             //System.out.println(query);
@@ -272,6 +272,7 @@ public class cl_cliente {
             while (rs.next()) {
                 existe = true;
                 codigo = rs.getInt("id_cliente");
+                nombre= rs.getString("nombre");
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
