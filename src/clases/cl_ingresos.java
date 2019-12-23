@@ -251,12 +251,12 @@ public class cl_ingresos {
             c_conectar.cerrar(rs);
             tabla.setModel(tmodelo);
             tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(160);
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(450);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(90);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(220);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(500);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
             tabla.getColumnModel().getColumn(5).setPreferredWidth(120);
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(90);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(120);
             tabla.setRowSorter(sorter);
             //c_varios.derecha_celda(tabla, 4);
 

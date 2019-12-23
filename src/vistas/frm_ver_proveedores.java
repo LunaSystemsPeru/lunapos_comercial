@@ -50,6 +50,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
 
         jToolBar1 = new javax.swing.JToolBar();
         btn_modificar = new javax.swing.JButton();
+        btn_agregar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
@@ -75,6 +76,18 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_modificar);
+
+        btn_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        btn_agregar.setText("Agregar");
+        btn_agregar.setFocusable(false);
+        btn_agregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_agregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_agregarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_agregar);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
         jButton1.setText("ver Pagos Proveedor");
@@ -252,8 +265,16 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
+        frm_reg_proveedor modal=new frm_reg_proveedor(null, true);
+        frm_reg_proveedor.accion="registrar";
+        modal.setLocationRelativeTo(this);
+        modal.setVisible(true); 
+    }//GEN-LAST:event_btn_agregarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_agregar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

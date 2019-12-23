@@ -81,6 +81,7 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         txt_condicion = new javax.swing.JTextField();
         txt_estado = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -90,17 +91,16 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
 
         txt_ndoc.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_ndoc.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_ndocKeyTyped(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_ndocKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_ndocKeyTyped(evt);
             }
         });
 
         jLabel4.setText("Direccion:");
 
-        txt_nom.setEnabled(false);
         txt_nom.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_nomKeyPressed(evt);
@@ -110,13 +110,12 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
             }
         });
 
-        txt_dir.setEnabled(false);
         txt_dir.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_dirKeyTyped(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_dirKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_dirKeyTyped(evt);
             }
         });
 
@@ -126,7 +125,6 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
 
         btn_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/accept.png"))); // NOI18N
         btn_guardar.setText("Guardar");
-        btn_guardar.setEnabled(false);
         btn_guardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_guardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btn_guardar.addActionListener(new java.awt.event.ActionListener() {
@@ -153,9 +151,12 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
 
         jLabel8.setText("Estado:");
 
-        txt_condicion.setEnabled(false);
-
-        txt_estado.setEnabled(false);
+        jButton1.setText("Comprobar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,11 +179,14 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
                             .addComponent(txt_nom)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_ndoc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(txt_estado, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                        .addComponent(txt_condicion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
-                                .addGap(0, 283, Short.MAX_VALUE))))
+                                        .addComponent(txt_condicion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txt_ndoc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton1)))
+                                .addGap(0, 192, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -197,7 +201,8 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_ndoc, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_ndoc, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -303,7 +308,7 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
     }//GEN-LAST:event_btn_salirActionPerformed
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
-
+        
         btn_guardar.setEnabled(false);
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Modificar al proveedor?");
         if (confirmado == JOptionPane.OK_OPTION) {
@@ -340,6 +345,52 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
             this.dispose();
         }
     }//GEN-LAST:event_btn_guardarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        String documento = txt_ndoc.getText();
+        if (documento.length() > 0) {
+            if (documento.length() == 8) {
+                System.out.println("buscar dni");
+                try {
+                    String json = cl_json_entidad.getJSONDNI_LUNASYSTEMS(documento);
+                    //Lo mostramos
+                    String datos = cl_json_entidad.showJSONDNIL(json);
+                    txt_nom.setText(datos);
+                    txt_condicion.setText("HABIDO");
+                    txt_estado.setText("ACTIVO");
+                    txt_dir.setText("");
+                    txt_dir.setEnabled(true);
+                    txt_dir.requestFocus();
+
+                } catch (org.json.simple.parser.ParseException ex) {
+                    JOptionPane.showMessageDialog(null, "ERROR EN BUSCAR RUC " + ex.getLocalizedMessage());
+                }
+            }
+            if (documento.length() == 11) {
+                JOptionPane.showMessageDialog(null, "Espere, se esta buscando los datos en la base de datos de SUNAT");
+                System.out.println("buscar ruc");
+                try {
+                    String json = cl_json_entidad.getJSONRUC_LUNASYSTEMS(documento);
+                    //Lo mostramos
+                    String[] datos = cl_json_entidad.showJSONRUC_JMP(json);
+                    txt_nom.setText(datos[0]);
+                    txt_dir.setText(datos[1]);
+                    txt_condicion.setText(datos[2]);
+                    txt_estado.setText(datos[3]);
+                    btn_guardar.setEnabled(true);
+                    btn_guardar.requestFocus();
+
+                } catch (org.json.simple.parser.ParseException ex) {
+                    JOptionPane.showMessageDialog(null, "ERROR EN BUSCAR RUC " + ex.getLocalizedMessage());
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "INGRESE DOCUMENTO DEL PROVEEDOR");
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -386,6 +437,7 @@ public class frm_reg_proveedor extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_guardar;
     private javax.swing.JButton btn_salir;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
