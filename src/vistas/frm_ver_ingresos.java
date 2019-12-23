@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JDialog;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -51,26 +52,27 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         sumar_totales();
         t_ingresos.setDefaultRenderer(Object.class, new CeldaColor());
         jd_ver_pagos.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
-        
+
     }
+
     private void verificar_deuda() {
         double total = Double.parseDouble(t_ingresos.getValueAt(fila_seleccionada, 5) + "");
         double pagado = Double.parseDouble(t_ingresos.getValueAt(fila_seleccionada, 6) + "");
-        
+
         double total_compra = Double.parseDouble(t_ingresos.getValueAt(fila_seleccionada, 5).toString());
         double total_pagos = 0;
         int filas_pagos = t_pagos.getRowCount();
         for (int i = 0; i < filas_pagos; i++) {
             total_pagos += Double.parseDouble(t_pagos.getValueAt(i, 2).toString());
         }
-        
-        if (total-pagado != 0) {
+
+        if (total - pagado != 0) {
             btn_pago_agregar.setEnabled(true);
         } else {
             btn_pago_agregar.setEnabled(false);
         }
     }
-    
+
     private void cargar_tabla() {
         c_ingreso.mostrar(t_ingresos, query);
         int total_compras = t_ingresos.getRowCount();
@@ -80,6 +82,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         }
         lbl_total_deuda.setText(c_varios.formato_totales(suma_deuda));
     }
+
     private void activar_botones() {
         btn_detalle.setEnabled(true);
         btn_pdf.setEnabled(true);
@@ -617,7 +620,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -631,14 +634,13 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_tot_ingresos, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_tot_ingresos, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_total_deuda, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbl_total_deuda, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -653,15 +655,15 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txt_tot_ingresos, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_fec_inicio)
-                        .addComponent(txt_fec_fin)))
+                        .addComponent(txt_fec_inicio, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                        .addComponent(txt_fec_fin, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_total_deuda, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -682,7 +684,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
             String buscar = txt_buscar.getText().trim();
             int tipo_busqueda = cbx_buscar.getSelectedIndex();
 
-            if (tipo_busqueda == 0) {
+            if (tipo_busqueda == 1) {
                 query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
                         + "from ingresos as i "
                         + "inner join proveedor as p on p.id_proveedor = i.id_proveedor "
@@ -692,7 +694,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         + "order by i.fecha asc, i.numero asc";
             }
 
-            if (tipo_busqueda == 1) {
+            if (tipo_busqueda == 2) {
                 // buscar fechas con rango 
                 buscar = c_varios.fecha_myql(buscar);
                 query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
@@ -704,7 +706,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         + "order by i.numero asc";
             }
 
-            if (tipo_busqueda == 2) {
+            if (tipo_busqueda == 3) {
                 query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
                         + "from ingresos as i "
                         + "inner join proveedor as p on p.id_proveedor = i.id_proveedor "
@@ -713,7 +715,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         + "where p.nro_documento = '" + buscar + "' or p.razon_social like '%" + buscar + "%' "
                         + "order by i.fecha asc";
             }
-            if (tipo_busqueda == 3) {
+            if (tipo_busqueda == 4) {
                 query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
                         + "from ingresos as i "
                         + "inner join proveedor as p on p.id_proveedor = i.id_proveedor "
@@ -833,17 +835,31 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
 
     private void txt_fec_finKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fec_finKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_fec_inicio.getText().length() == 10) {
-                txt_fec_fin.setEnabled(true);
-                txt_fec_fin.requestFocus();
+            String fec_ini = txt_fec_inicio.getText().trim();
+            String fec_fin = txt_fec_fin.getText().trim();
+            int tipo_busqueda = cbx_buscar.getSelectedIndex();
+
+            if (tipo_busqueda == 2) {
+                // buscar fechas con rango 
+                fec_ini = c_varios.fecha_myql(fec_ini);
+                fec_fin = c_varios.fecha_myql(fec_fin);
+                query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
+                        + "from ingresos as i "
+                        + "inner join proveedor as p on p.id_proveedor = i.id_proveedor "
+                        + "inner join documentos_sunat as ds on ds.id_tido = i.id_tido "
+                        + "inner join usuarios as u on u.id_usuarios = i.id_usuarios "
+                        + "where i.fecha between '" + fec_ini + "' and '" + fec_fin + "' "
+                        + "order by i.numero asc";
             }
+            c_ingreso.mostrar(t_ingresos, query);
+            sumar_totales();
         }
     }//GEN-LAST:event_txt_fec_finKeyPressed
 
     private void btn_pagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pagosActionPerformed
         desactivar_botones();
         txt_pago_documento.setText(t_ingresos.getValueAt(fila_seleccionada, 2).toString());
-        txt_pago_fecha.setText(t_ingresos.getValueAt(fila_seleccionada,1).toString());
+        txt_pago_fecha.setText(t_ingresos.getValueAt(fila_seleccionada, 1).toString());
         txt_pago_proveedor.setText(t_ingresos.getValueAt(fila_seleccionada, 3).toString());
         txt_pago_total.setText(t_ingresos.getValueAt(fila_seleccionada, 5).toString());
         int idIngreso = Integer.parseInt(t_ingresos.getValueAt(fila_seleccionada, 0).toString());
@@ -871,7 +887,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         btn_pago_eliminar.setEnabled(false);
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Pago?");
 
-       if (JOptionPane.OK_OPTION == confirmado) {
+        if (JOptionPane.OK_OPTION == confirmado) {
             c_ingreso_pagos.eliminar();
             c_ingreso_pagos.mostrar(t_pagos);
             verificar_deuda();
@@ -996,13 +1012,33 @@ class CeldaColor extends DefaultTableCellRenderer {
         double pagado = Double.parseDouble(table.getValueAt(row, 6) + "");
         setBackground(Color.WHITE);
         setForeground(Color.BLACK);
-        
+
         if (total - pagado != 0) {
             setBackground(Configuracion.COLOR_CELDA_DEUDA);
             setForeground(Configuracion.COLOR_CELDA_TEXT_DEUDA);
         }
-        
-
+         if (column == 0) {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+         if (column == 1) {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+         if (column == 2) {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+         if (column == 3) {
+            setHorizontalAlignment(SwingConstants.LEFT);
+        }
+         if (column == 4) {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+         if (column == 5) {
+            setHorizontalAlignment(SwingConstants.RIGHT);
+        }
+         if (column == 6) {
+            setHorizontalAlignment(SwingConstants.RIGHT);
+        }
+         
 
         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     }
