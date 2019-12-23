@@ -682,8 +682,8 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
             String buscar = txt_buscar.getText().trim();
             int tipo_busqueda = cbx_buscar.getSelectedIndex();
 
-            if (tipo_busqueda == 0) {
-                query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
+            if (tipo_busqueda == 1) {
+                query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username, i.tpagado "
                         + "from ingresos as i "
                         + "inner join proveedor as p on p.id_proveedor = i.id_proveedor "
                         + "inner join documentos_sunat as ds on ds.id_tido = i.id_tido "
@@ -692,7 +692,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         + "order by i.fecha asc, i.numero asc";
             }
 
-            if (tipo_busqueda == 1) {
+            if (tipo_busqueda == 2) {
                 // buscar fechas con rango 
                 buscar = c_varios.fecha_myql(buscar);
                 query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
@@ -704,7 +704,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         + "order by i.numero asc";
             }
 
-            if (tipo_busqueda == 2) {
+            if (tipo_busqueda == 3) {
                 query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username "
                         + "from ingresos as i "
                         + "inner join proveedor as p on p.id_proveedor = i.id_proveedor "

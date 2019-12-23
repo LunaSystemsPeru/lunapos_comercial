@@ -1206,6 +1206,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                     //  txt_dir_cliente.setText(c_cliente.getDireccion());
                     cargar_productos();
                     txt_buscar_productos.setEnabled(true);
+                    btn_recargar.setEnabled(true);
                     txt_buscar_productos.requestFocus();
                 } else {
                     /*limpiar_cliente();
@@ -1214,6 +1215,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                     c_proveedor.setId_proveedor(-1);
                     cargar_productos();
                     txt_buscar_productos.setEnabled(true);
+                    btn_recargar.setEnabled(true);
                     txt_buscar_productos.requestFocus();
 
                 }
