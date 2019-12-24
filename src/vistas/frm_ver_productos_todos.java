@@ -29,9 +29,10 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
     public frm_ver_productos_todos() {
         initComponents();
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
-        String query = "select * from productos "
-                + "order by descripcion asc, marca asc "
-                + "limit 0";
+        String query = "SELECT pro.*, cla.nombre AS clasificacion "
+                + "FROM productos pro INNER JOIN  productos_clasificacion cla "
+                + "ON pro.id_clasificacion=cla.id_clasificacion "
+                + "ORDER BY pro.descripcion ASC, pro.marca ASC LIMIT 0";
         c_producto.mostrar(t_productos, query);
         contar_resultados();
     }
@@ -265,26 +266,47 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
             String query = "";
 
             if (tipo_busqueda == 0) {
-                query = "select * from productos "
-                        + "where concat (descripcion, ' ', marca) like '%" + texto + "%' "
-                        + "order by descripcion asc,  marca asc";
+                query = "SELECT \n"
+                        + "  pro.*,\n"
+                        + "  cla.nombre AS clasificacion \n"
+                        + "FROM\n"
+                        + "  productos pro \n"
+                        + "  INNER JOIN productos_clasificacion cla \n"
+                        + "    ON pro.id_clasificacion = cla.id_clasificacion \n"
+                        + "    \n"
+                        + "WHERE CONCAT (pro.descripcion, ' ', pro.marca) LIKE '%" + texto + "%'  ORDER BY pro.descripcion ASC,  pro.marca ASC ";
             }
 
             if (tipo_busqueda == 1) {
-                query = "select * from productos "
-                        + "where id_producto =  '" + texto + "' "
-                        + "order by descripcion asc,  marca asc";
+                query = "SELECT  "
+                        + "  pro.*, "
+                        + "  cla.nombre AS clasificacion  "
+                        + "FROM "
+                        + "  productos pro  "
+                        + "  INNER JOIN productos_clasificacion cla  "
+                        + "    ON pro.id_clasificacion = cla.id_clasificacion  "
+                        + "WHERE pro.id_producto =  '" + texto + "'  ORDER BY pro.descripcion ASC,  pro.marca ASC";
             }
 
             if (tipo_busqueda == 2) {
-                query = "select * from productos "
-                        + "where marca like  '%" + texto + "%' "
-                        + "order by descripcion asc, marca asc";
+                query = "SELECT "
+                        + "  pro.*, "
+                        + "  cla.nombre AS clasificacion "
+                        + "FROM "
+                        + "  productos pro  "
+                        + "  INNER JOIN productos_clasificacion cla  "
+                        + "    ON pro.id_clasificacion = cla.id_clasificacion  "
+                        + "WHERE pro.marca LIKE  '%" + texto + "%'  ORDER BY pro.descripcion ASC, pro.marca ASC";
             }
             if (tipo_busqueda == 3) {
-                query = "select * from productos "
-                        + "where precio = '" + texto + "' "
-                        + "order by descripcion asc, marca asc";
+                query = "SELECT  "
+                        + "  pro.*, "
+                        + "  cla.nombre AS clasificacion  "
+                        + "FROM "
+                        + "  productos pro  "
+                        + "  INNER JOIN productos_clasificacion cla  "
+                        + "    ON pro.id_clasificacion = cla.id_clasificacion  "
+                        + "WHERE pro.precio = '" + texto + "'  ORDER BY pro.descripcion ASC, pro.marca ASC";
             }
 
             c_producto.mostrar(t_productos, query);
@@ -322,10 +344,10 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        frm_reg_producto.registrar=true;
-        frm_reg_producto modal=new frm_reg_producto(null, true);
+        frm_reg_producto.registrar = true;
+        frm_reg_producto modal = new frm_reg_producto(null, true);
         modal.setLocationRelativeTo(this);
-        modal.setVisible(true); 
+        modal.setVisible(true);
     }//GEN-LAST:event_btn_agregarActionPerformed
 
 

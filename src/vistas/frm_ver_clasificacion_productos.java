@@ -29,6 +29,7 @@ public class frm_ver_clasificacion_productos extends javax.swing.JInternalFrame 
     public frm_ver_clasificacion_productos() {
         initComponents();
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        jd_reg_clasificacion.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         c_clasificacion.mostrar(t_clasificacion);
         
     }
@@ -84,6 +85,7 @@ public class frm_ver_clasificacion_productos extends javax.swing.JInternalFrame 
 
         jd_reg_clasificacion.setTitle("Registrar Usuario");
 
+        jPanel1.setBackground(Configuracion.COLOR_PANEL_INTERNO);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
         txt_reg_id.setEnabled(false);

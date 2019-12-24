@@ -38,6 +38,7 @@ public class frm_reg_cierre_caja extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        jd_ver_movimientos.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         cargar_datos();
     }
 

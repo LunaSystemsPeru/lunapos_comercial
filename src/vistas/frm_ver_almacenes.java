@@ -39,6 +39,9 @@ public class frm_ver_almacenes extends javax.swing.JInternalFrame {
         initComponents();
         mostrar_tabla();
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        jd_reg_doc_sunat.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        jd_reg_tienda.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        jd_ver_doc_sunat.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         //cargar documentos sunat en combobox
         m_documentos_sunat m_documentos = new m_documentos_sunat();
         m_documentos.cbx_documentos(cbx_doc_sunat);

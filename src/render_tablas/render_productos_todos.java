@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class render_productos_todos extends DefaultTableCellRenderer {
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
-        if (Integer.parseInt(table.getValueAt(row, 5).toString()) <= 0) {
+        if (Integer.parseInt(table.getValueAt(row, 4).toString()) <= 0) {
             setBackground(Color.red);
             setForeground(Color.white);
         } else {
