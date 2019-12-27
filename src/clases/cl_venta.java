@@ -336,14 +336,14 @@ public class cl_venta {
             c_conectar.cerrar(st);
             c_conectar.cerrar(rs);
             tabla.setModel(tmodelo);
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(350);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(80);
-            tabla.getColumnModel().getColumn(5).setPreferredWidth(80);
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(90);
-            tabla.getColumnModel().getColumn(7).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(220);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(450);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(110);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(110);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(7).setPreferredWidth(150);
             tabla.setDefaultRenderer(Object.class, new render_ventas());
             //   t_productos.setRowSorter(sorter);
 
@@ -362,7 +362,7 @@ public class cl_venta {
             Statement st = c_conectar.conexion();
             String query = "select day(v.fecha) as dia, sum(v.total) as total_dia "
                     + "from ventas as v "
-                    + "where v.id_almacen = '" + id_almacen + "' and month(v.fecha) = month(CURRENT_DATE()) and year(v.fecha) = year(CURRENT_DATE()) "
+                    + "where v.id_almacen = '" + id_almacen + "' and month(v.fecha) = month(CURRENT_DATE()) and year(v.fecha) = year(CURRENT_DATE()) and v.estado != 3 "
                     + "GROUP by day(v.fecha)";
             // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
@@ -387,7 +387,7 @@ public class cl_venta {
             Statement st = c_conectar.conexion();
             String query = "select month(v.fecha) as mes, sum(v.total) as total_mes "
                     + "from ventas as v "
-                    + "where v.id_almacen = '" + id_almacen + "' and year(v.fecha) = year(CURRENT_DATE()) "
+                    + "where v.id_almacen = '" + id_almacen + "' and year(v.fecha) = year(CURRENT_DATE()) and v.estado != 3 "
                     + "GROUP by month(v.fecha)";
             //   System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);

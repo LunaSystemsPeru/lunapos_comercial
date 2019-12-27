@@ -13,8 +13,9 @@ import clases.cl_productos_almacen;
 import clases.cl_productos_ingresos;
 import clases.cl_productos_ingresos_bono;
 import clases.cl_proveedor;
+import clases.cl_unidad_medida;
 import clases.cl_varios;
-import clases_autocomplete.cla_almacen;
+import clases_autocomplete.cla_empresa;
 import clases_autocomplete.cla_mis_documentos;
 import clases_autocomplete.cla_producto;
 import clases_varios.Configuracion;
@@ -31,7 +32,6 @@ import models.m_almacen;
 import models.m_documentos_sunat;
 import nicon.notify.core.Notification;
 import comercial.frm_principal;
-import java.awt.AWTEvent;
 import vistas.frm_ver_ingresos;
 
 /**
@@ -50,6 +50,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
     cl_producto c_producto = new cl_producto();
     cl_productos_almacen c_producto_almacen = new cl_productos_almacen();
     cl_documento_almacen c_doc_tienda = new cl_documento_almacen();
+    cl_unidad_medida c_unidad = new cl_unidad_medida();
 
     m_documentos_sunat m_documentos = new m_documentos_sunat();
     m_almacen m_almacen = new m_almacen();
@@ -86,7 +87,6 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         };
         detalle.addColumn("Id");
         detalle.addColumn("Producto");
-        detalle.addColumn("Marca");
         detalle.addColumn("Cant.");
         detalle.addColumn("Costo");
         detalle.addColumn("Precio");
@@ -94,17 +94,15 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         t_detalle.setModel(detalle);
         t_detalle.getColumnModel().getColumn(0).setPreferredWidth(20);
         t_detalle.getColumnModel().getColumn(1).setPreferredWidth(400);
-        t_detalle.getColumnModel().getColumn(2).setPreferredWidth(100);
+        t_detalle.getColumnModel().getColumn(2).setPreferredWidth(50);
         t_detalle.getColumnModel().getColumn(3).setPreferredWidth(50);
         t_detalle.getColumnModel().getColumn(4).setPreferredWidth(50);
-        t_detalle.getColumnModel().getColumn(5).setPreferredWidth(50);
-        t_detalle.getColumnModel().getColumn(6).setPreferredWidth(70);
+        t_detalle.getColumnModel().getColumn(5).setPreferredWidth(70);
         c_varios.centrar_celda(t_detalle, 0);
         c_varios.centrar_celda(t_detalle, 2);
         c_varios.derecha_celda(t_detalle, 3);
         c_varios.derecha_celda(t_detalle, 4);
         c_varios.derecha_celda(t_detalle, 5);
-        c_varios.derecha_celda(t_detalle, 6);
     }
 
     private void modelo_bono() {
@@ -117,17 +115,13 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         };
         detalle_bono.addColumn("Id");
         detalle_bono.addColumn("Producto");
-        detalle_bono.addColumn("Marca");
         detalle_bono.addColumn("Cant.");
         t_bonificaciones.setModel(detalle_bono);
         t_bonificaciones.getColumnModel().getColumn(0).setPreferredWidth(20);
         t_bonificaciones.getColumnModel().getColumn(1).setPreferredWidth(400);
-        t_bonificaciones.getColumnModel().getColumn(2).setPreferredWidth(100);
-        t_bonificaciones.getColumnModel().getColumn(3).setPreferredWidth(50);
+        t_bonificaciones.getColumnModel().getColumn(2).setPreferredWidth(50);
         c_varios.centrar_celda(t_detalle, 0);
-        c_varios.centrar_celda(t_detalle, 2);
-        c_varios.derecha_celda(t_detalle, 3);
-        c_varios.derecha_celda(t_detalle, 4);
+        c_varios.derecha_celda(t_detalle, 2);
     }
 
     private void cargar_proveedores() {
@@ -143,7 +137,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
             String sql = "select * from proveedor";
             ResultSet rs = c_conectar.consulta(st, sql);
             while (rs.next()) {
-                tac_proveedores.addItem(rs.getString("nro_documento")+" | "+rs.getString("razon_social"));
+                tac_proveedores.addItem(rs.getString("nro_documento") + " | " + rs.getString("razon_social"));
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
@@ -158,15 +152,29 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
             if (tac_razon_proveedores != null) {
                 tac_razon_proveedores.removeAllItems();
             }
-            tac_razon_proveedores = new TextAutoCompleter(txt_razon_social);
+            tac_razon_proveedores = new TextAutoCompleter(txt_razon_social, new AutoCompleterCallback() {
+                @Override
+                public void callback(Object selectedItem) {
+                    Object itemSelected = selectedItem;
+                    c_proveedor.setId_proveedor(0);
+                    if (itemSelected instanceof cla_empresa) {
+                        int pcodigo = ((cla_empresa) itemSelected).getId_empresa();
+                        String pnombre = ((cla_empresa) itemSelected).getRazon_social();
+                        System.out.println("producto seleccionado " + pnombre);
+                        c_proveedor.setId_proveedor(pcodigo);
+                    } else {
+                        System.out.println("El item es de un tipo desconocido");
+                    }
+                }
+            });
 
             tac_razon_proveedores.setMode(0);
             tac_razon_proveedores.setCaseSensitive(false);
             Statement st = c_conectar.conexion();
-            String sql = "select razon_social, nro_documento from proveedor";
+            String sql = "select id_proveedor, razon_social, nro_documento from proveedor";
             ResultSet rs = c_conectar.consulta(st, sql);
             while (rs.next()) {
-                tac_razon_proveedores.addItem(rs.getString("nro_documento")+" | "+rs.getString("razon_social"));
+                tac_razon_proveedores.addItem(new cla_empresa(rs.getInt("id_proveedor"), rs.getString("nro_documento"), rs.getString("razon_social")));
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
@@ -200,12 +208,13 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
             tac_productos.setMode(0);
             tac_productos.setCaseSensitive(false);
             Statement st = c_conectar.conexion();
-            String sql = "select p.descripcion, p.precio, p.costo, p.id_producto, p.marca "
-                    + "from productos as p ";
+            String sql = "select p.descripcion, p.precio, p.costo, p.id_producto, p.marca, um.nombre as und_medida "
+                    + "from productos as p "
+                    + "inner join unidades_medida um on p.id_unidad = um.id_unidad ";
             ResultSet rs = c_conectar.consulta(st, sql);
             while (rs.next()) {
                 int id_producto = rs.getInt("id_producto");
-                String descripcion = rs.getString("descripcion") + " | " + rs.getString("marca")
+                String descripcion = rs.getString("descripcion").trim() + " | " + rs.getString("und_medida")
                         + "    |    Precio: S/ " + c_varios.formato_numero(rs.getDouble("precio")) + "    |    Costo: S/ " + c_varios.formato_numero(rs.getDouble("costo"));
                 tac_productos.addItem(new cla_producto(id_producto, descripcion));
             }
@@ -266,7 +275,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         double total = 0;
         int contar_filas = t_detalle.getRowCount();
         for (int i = 0; i < contar_filas; i++) {
-            total = total + Double.parseDouble(t_detalle.getValueAt(i, 6).toString());
+            total = total + Double.parseDouble(t_detalle.getValueAt(i, 5).toString());
         }
         c_ingreso.setTotal(total);
         txt_total.setText("S/ " + c_varios.formato_totales(total));
@@ -636,44 +645,42 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txt_buscar_productos))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btn_recargar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_add_producto)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btn_recargar)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_add_producto)
+                                .addComponent(txt_cingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_cactual, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_utilidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_costo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_precio, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_cingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_cactual, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_utilidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txt_costo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel12)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_precio, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel15)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btn_bono, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btn_agregar_producto)))))
-                        .addContainerGap())))
+                                .addComponent(btn_bono, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
+                                .addComponent(btn_agregar_producto)))))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -759,7 +766,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -1098,22 +1105,20 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         double parcial = costo * cantidad;
 
         if (btn_bono.getSelectedIndex() == 0) {
-            Object fila[] = new Object[7];
+            Object fila[] = new Object[6];
             fila[0] = c_producto.getId();
             fila[1] = c_producto.getDescripcion();
-            fila[2] = c_producto.getMarca();
-            fila[3] = cantidad;
-            fila[4] = c_varios.formato_precio(costo);
-            fila[5] = c_varios.formato_precio(precio);
-            fila[6] = c_varios.formato_numero(parcial);
+            fila[2] = cantidad;
+            fila[3] = c_varios.formato_precio(costo);
+            fila[4] = c_varios.formato_precio(precio);
+            fila[5] = c_varios.formato_numero(parcial);
 
             detalle.addRow(fila);
         } else {
-            Object fila[] = new Object[7];
+            Object fila[] = new Object[3];
             fila[0] = c_producto.getId();
             fila[1] = c_producto.getDescripcion();
-            fila[2] = c_producto.getMarca();
-            fila[3] = cantidad;
+            fila[2] = cantidad;
             detalle_bono.addRow(fila);
         }
         calcular_total();
@@ -1131,7 +1136,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 c_proveedor.setRazon_social(txt_razon_social.getText());
                 c_proveedor.setRuc("SR" + c_proveedor.getId_proveedor());
                 if (!c_proveedor.registrar()) {
-                    JOptionPane.showMessageDialog(null, "Problemas al Registrar al cliente");
+                    JOptionPane.showMessageDialog(null, "Problemas al Registrar al proveedor");
                 }
 
             }
@@ -1155,9 +1160,9 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 int nro_filas = t_detalle.getRowCount();
                 for (int i = 0; i < nro_filas; i++) {
                     c_detalle.setId_producto(Integer.parseInt(t_detalle.getValueAt(i, 0).toString()));
-                    c_detalle.setCantidad(Double.parseDouble(t_detalle.getValueAt(i, 3).toString()));
-                    c_detalle.setCosto(Double.parseDouble(t_detalle.getValueAt(i, 4).toString()));
-                    c_detalle.setPrecio(Double.parseDouble(t_detalle.getValueAt(i, 5).toString()));
+                    c_detalle.setCantidad(Double.parseDouble(t_detalle.getValueAt(i, 2).toString()));
+                    c_detalle.setCosto(Double.parseDouble(t_detalle.getValueAt(i, 3).toString()));
+                    c_detalle.setPrecio(Double.parseDouble(t_detalle.getValueAt(i, 4).toString()));
 
                     c_detalle.registrar();
                 }
@@ -1165,7 +1170,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 int nro_filas_bono = t_bonificaciones.getRowCount();
                 for (int i = 0; i < nro_filas_bono; i++) {
                     c_bono.setId_producto(Integer.parseInt(t_bonificaciones.getValueAt(i, 0).toString()));
-                    c_bono.setCantidad(Double.parseDouble(t_bonificaciones.getValueAt(i, 3).toString()));
+                    c_bono.setCantidad(Double.parseDouble(t_bonificaciones.getValueAt(i, 2).toString()));
 
                     c_bono.registrar();
                 }
@@ -1189,6 +1194,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_add_proveedorActionPerformed
 
     private void btn_add_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_add_productoActionPerformed
+        btn_recargar.setEnabled(true);
         Frame f = JOptionPane.getRootFrame();
         frm_reg_producto.registrar = true;
         frm_reg_producto dialog = new frm_reg_producto(f, true);
@@ -1223,26 +1229,20 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 
     private void txt_razon_socialKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_razon_socialKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_razon_social.getText().length() > 4) {
-                //validar cliente
-                if (c_proveedor.buscar_ruc()) {
-                    //txt_razon_social.setText(c_proveedor.getDocumento());
-                    //  txt_dir_cliente.setText(c_cliente.getDireccion());
-                    cargar_productos();
-                    txt_buscar_productos.setEnabled(true);
-                    txt_buscar_productos.requestFocus();
-                } else {
-                    /*limpiar_cliente();
-                    JOptionPane.showMessageDialog(null, "CLIENTE NO SELECCIONADO \nSELECCIONE CON ENTER");*/
+            //System.out.println("codigo proveedor " + c_proveedor.getId_proveedor());
+            if (c_proveedor.getId_proveedor() == 0) {
+                if (txt_razon_social.getText().length() > 4) {
                     c_proveedor.setRazon_social(txt_razon_social.getText().toUpperCase());
                     c_proveedor.setId_proveedor(-1);
                     cargar_productos();
                     txt_buscar_productos.setEnabled(true);
-                    txt_buscar_productos.requestFocus();
-
+                } else {
+                  JOptionPane.showMessageDialog(null, "EL NOMBRE DEL PROVEEDOR \nTIENE UE TENER MAS DE 2 DIJITOS");
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "EL NOMBRE DEL PROVEEDOR \nTIENE UE TENER MAS DE 2 DIJITOS");
+                cargar_productos();
+                txt_buscar_productos.setEnabled(true);
+                txt_buscar_productos.requestFocus();
             }
         }
 

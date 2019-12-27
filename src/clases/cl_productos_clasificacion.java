@@ -161,7 +161,7 @@ public class cl_productos_clasificacion {
             c_conectar.cerrar(rs);
             tabla.setModel(modelo);
             tabla.getColumnModel().getColumn(0).setPreferredWidth(40);
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(180);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(280);
         } catch (SQLException e) {
             System.out.print(e);
         }

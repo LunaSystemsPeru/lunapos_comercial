@@ -31,7 +31,7 @@ public class frm_ver_clasificacion_productos extends javax.swing.JInternalFrame 
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         jd_reg_clasificacion.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         c_clasificacion.mostrar(t_clasificacion);
-        
+
     }
 
     private void activar_botones() {
@@ -185,7 +185,6 @@ public class frm_ver_clasificacion_productos extends javax.swing.JInternalFrame 
 
         setTitle("Ver Clasificacion de Productos");
 
-        t_clasificacion.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         t_clasificacion.setGridColor(new java.awt.Color(255, 255, 255));
         t_clasificacion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -294,10 +293,10 @@ public class frm_ver_clasificacion_productos extends javax.swing.JInternalFrame 
         jd_reg_clasificacion.setModal(true);
         jd_reg_clasificacion.setSize(721, 239);
         jd_reg_clasificacion.setLocationRelativeTo(null);
-        
+
         txt_reg_nombre.setEnabled(true);
         txt_reg_nombre.requestFocus();
-        
+
         jd_reg_clasificacion.setVisible(true);
     }//GEN-LAST:event_btn_modificarActionPerformed
 

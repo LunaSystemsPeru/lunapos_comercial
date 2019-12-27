@@ -683,6 +683,7 @@ public class frm_principal extends javax.swing.JFrame {
 
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/eccomerce_-_receipt-512.png"))); // NOI18N
         jButton10.setText("Compras");
+        jButton10.setEnabled(false);
         jButton10.setFocusable(false);
         jButton10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton10.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -715,6 +716,7 @@ public class frm_principal extends javax.swing.JFrame {
 
         jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/transport-512.png"))); // NOI18N
         jButton11.setText("Mis Productos");
+        jButton11.setEnabled(false);
         jButton11.setFocusable(false);
         jButton11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton11.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -727,6 +729,7 @@ public class frm_principal extends javax.swing.JFrame {
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/warehouse-512.png"))); // NOI18N
         jButton12.setText("Otras tiendas");
+        jButton12.setEnabled(false);
         jButton12.setFocusable(false);
         jButton12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton12.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -778,6 +781,7 @@ public class frm_principal extends javax.swing.JFrame {
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/shopping2-02-512.png"))); // NOI18N
         jButton7.setText("Traslados");
+        jButton7.setEnabled(false);
         jButton7.setFocusable(false);
         jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);

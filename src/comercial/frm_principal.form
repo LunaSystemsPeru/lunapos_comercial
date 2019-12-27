@@ -717,6 +717,7 @@
                       <Image iconType="3" name="/icons/eccomerce_-_receipt-512.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Compras"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -770,6 +771,7 @@
                       <Image iconType="3" name="/icons/transport-512.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Mis Productos"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -784,6 +786,7 @@
                       <Image iconType="3" name="/icons/warehouse-512.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Otras tiendas"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -846,6 +849,7 @@
                       <Image iconType="3" name="/icons/shopping2-02-512.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Traslados"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
