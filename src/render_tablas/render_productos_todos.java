@@ -38,19 +38,13 @@ public class render_productos_todos extends DefaultTableCellRenderer {
             setHorizontalAlignment(SwingConstants.LEFT);
         }
         if (column == 2) {
-            setHorizontalAlignment(SwingConstants.CENTER);
+            setHorizontalAlignment(SwingConstants.RIGHT);
         }
         if (column == 3) {
             setHorizontalAlignment(SwingConstants.RIGHT);
         }
         if (column == 4) {
             setHorizontalAlignment(SwingConstants.CENTER);
-        }
-        if (column == 5) {
-            setHorizontalAlignment(SwingConstants.RIGHT);
-        }
-        if (column == 6) {
-            setHorizontalAlignment(SwingConstants.RIGHT);
         }
 
         super.getTableCellRendererComponent(table, value, selected, focused, row, column);

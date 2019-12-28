@@ -33,9 +33,9 @@ import java.sql.Statement;
  * @author luis
  */
 public class cl_reportes_graficas {
-    
+
     cl_conectar c_conectar = new cl_conectar();
-    
+
     private int id_almacen;
 
     public cl_reportes_graficas() {
@@ -44,7 +44,7 @@ public class cl_reportes_graficas {
     public void setId_almacen(int id_almacen) {
         this.id_almacen = id_almacen;
     }
-    
+
     public ResultSet ver_ventas_ayer() {
         Statement st = c_conectar.conexion();
         String query = "select  a.nombre, (select max(vc.fecha) from ventas_cobros as vc where vc.fecha != CURRENT_DATE()) as fecha, ifnull(sum(vc.monto), 0) as monto "
@@ -56,7 +56,7 @@ public class cl_reportes_graficas {
         ResultSet rs = c_conectar.consulta(st, query);
         return rs;
     }
-    
+
     public ResultSet ver_ventas_hoy() {
         Statement st = c_conectar.conexion();
         String query = "select  a.nombre, CURRENT_DATE() as fecha, ifnull(sum(vc.monto), 0) as monto "
@@ -66,8 +66,8 @@ public class cl_reportes_graficas {
                 + "group by a.id_almacen";
         System.out.println(query);
         ResultSet rs = c_conectar.consulta(st, query);
-       // c_conectar.cerrar(rs);
-      //  c_conectar.cerrar(st);
+        // c_conectar.cerrar(rs);
+        //  c_conectar.cerrar(st);
         return rs;
     }
 
@@ -75,27 +75,27 @@ public class cl_reportes_graficas {
         Statement st = c_conectar.conexion();
         String query = "select date_format(v.fecha, '%m-%d') as dia, sum(v.total) as total_venta, sum(vc.monto) as total_ingreso "
                 + "from ventas as v "
-                + "inner join ventas_cobros as vc on vc.id_ventas = v.id_ventas and vc.id_almacen = v.id_almacen and vc.fecha = v.fecha "
+                + "inner join ventas_cobros as vc on vc.id_ventas = v.id_ventas and vc.fecha = v.fecha "
                 + "where v.id_almacen = '" + this.id_almacen + "' and v.fecha <= CURRENT_DATE() "
                 + "group by v.fecha "
                 + "order by v.fecha desc "
                 + "limit 7";
         ResultSet rs = c_conectar.consulta(st, query);
-       // c_conectar.cerrar(rs);
-       // c_conectar.cerrar(st);
+        // c_conectar.cerrar(rs);
+        // c_conectar.cerrar(st);
         return rs;
     }
 
     public ResultSet ver_cobros_mensuales() {
         Statement st = c_conectar.conexion();
         String query = "select m.nombre, ifnull(sum(vc.monto), 0) as monto "
-                + "from mes as m left join ventas_cobros as vc on month(vc.fecha) = m.id and "
-                + "year(vc.fecha) = year(CURRENT_DATE()) and vc.id_almacen = '" + this.id_almacen + "'  "
-                + "group by m.id "
-                + "order by m.id asc";
+                + "from mes as m left join ventas_cobros as vc on month(vc.fecha) = m.id_mes and "
+                + "year(vc.fecha) = year(CURRENT_DATE())   "
+                + "group by m.id_mes "
+                + "order by m.id_mes asc";
         ResultSet rs = c_conectar.consulta(st, query);
-      //  c_conectar.cerrar(rs);
-       // c_conectar.cerrar(st);
+        //  c_conectar.cerrar(rs);
+        // c_conectar.cerrar(st);
         return rs;
     }
 
@@ -103,40 +103,41 @@ public class cl_reportes_graficas {
         Statement st = c_conectar.conexion();
         String query = "select year(vc.fecha) as anio, sum(vc.monto) as monto "
                 + "from ventas_cobros as vc "
-                + "where vc.id_almacen = '" + this.id_almacen + "' "
                 + "group by year(vc.fecha) "
                 + "order by year(vc.fecha) asc";
         ResultSet rs = c_conectar.consulta(st, query);
-      //  c_conectar.cerrar(rs);
-       // c_conectar.cerrar(st);
+        //  c_conectar.cerrar(rs);
+        // c_conectar.cerrar(st);
         return rs;
     }
-    
+
     public ResultSet ver_ingresos_tienda_mes() {
         Statement st = c_conectar.conexion();
         String query = "select a.nombre as tienda, sum(vc.monto) as monto "
                 + "from ventas_cobros as vc "
-                + "inner join almacen as a on a.id_almacen = vc.id_almacen "
+                + "inner join ventas v on vc.id_ventas = v.id_ventas "
+                + "inner join almacen a on v.id_almacen = a.id_almacen "
                 + "where month(vc.fecha) = month(CURRENT_DATE()) and year(vc.fecha) = year(CURRENT_DATE()) "
                 + "group by a.id_almacen "
                 + "order by a.nombre asc";
         ResultSet rs = c_conectar.consulta(st, query);
-      //  c_conectar.cerrar(rs);
-       // c_conectar.cerrar(st);
+        //  c_conectar.cerrar(rs);
+        // c_conectar.cerrar(st);
         return rs;
     }
-    
+
     public ResultSet ver_ingresos_tienda_anio() {
         Statement st = c_conectar.conexion();
         String query = "select a.nombre as tienda, sum(vc.monto) as monto "
                 + "from ventas_cobros as vc "
-                + "inner join almacen as a on a.id_almacen = vc.id_almacen "
+                + "inner join ventas v on vc.id_ventas = v.id_ventas "
+                + "inner join almacen a on v.id_almacen = a.id_almacen "
                 + "where year(vc.fecha) = year(CURRENT_DATE()) "
                 + "group by a.id_almacen "
                 + "order by a.nombre asc";
         ResultSet rs = c_conectar.consulta(st, query);
-      //  c_conectar.cerrar(rs);
-       // c_conectar.cerrar(st);
+        //  c_conectar.cerrar(rs);
+        // c_conectar.cerrar(st);
         return rs;
     }
 }

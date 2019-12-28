@@ -33,7 +33,7 @@ public class frm_reg_cliente extends javax.swing.JDialog {
     public frm_reg_cliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         if (accion.equals("registrar")) {
             this.setTitle("Agregar Cliente");
             c_cliente.setCodigo(0);
@@ -42,7 +42,7 @@ getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         if (accion.equals("modificar")) {
             this.setTitle("Modificar Cliente");
             btn_reg.setText("Modificar");
-            System.out.println(accion);
+          //  System.out.println(accion);
             c_cliente.comprobar_cliente();
             txt_ndoc.setText(c_cliente.getDocumento());
             txt_nom.setText(c_cliente.getNombre());

@@ -32,7 +32,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
         String query = "SELECT pro.*, cla.nombre AS clasificacion "
                 + "FROM productos pro INNER JOIN  productos_clasificacion cla "
                 + "ON pro.id_clasificacion=cla.id_clasificacion "
-                + "ORDER BY pro.descripcion ASC, pro.marca ASC LIMIT 0";
+                + "ORDER BY cla.nombre asc, pro.descripcion ASC, pro.marca ASC LIMIT 0";
         c_producto.mostrar(t_productos, query);
         contar_resultados();
     }
@@ -69,9 +69,11 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         t_productos = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
-        btn_modificar = new javax.swing.JButton();
-        btn_ubicar = new javax.swing.JButton();
         btn_agregar = new javax.swing.JButton();
+        btn_modificar = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        btn_ubicar = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         btn_eliminar = new javax.swing.JButton();
         btn_cerrar = new javax.swing.JButton();
         lbl_encontrados = new javax.swing.JLabel();
@@ -125,6 +127,19 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
         jToolBar1.setFloatable(false);
         jToolBar1.setOpaque(false);
 
+        btn_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        btn_agregar.setText("Agregar");
+        btn_agregar.setFocusable(false);
+        btn_agregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_agregar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btn_agregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_agregarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_agregar);
+
         btn_modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/application_edit.png"))); // NOI18N
         btn_modificar.setText("Modificar");
         btn_modificar.setEnabled(false);
@@ -137,6 +152,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_modificar);
+        jToolBar1.add(jSeparator1);
 
         btn_ubicar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/find.png"))); // NOI18N
         btn_ubicar.setText("Donde Hay?");
@@ -150,19 +166,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_ubicar);
-
-        btn_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
-        btn_agregar.setText("Agregar");
-        btn_agregar.setFocusable(false);
-        btn_agregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btn_agregar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        btn_agregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btn_agregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_agregarActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btn_agregar);
+        jToolBar1.add(jSeparator2);
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
@@ -266,15 +270,15 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
             String query = "";
 
             if (tipo_busqueda == 0) {
-                query = "SELECT \n"
-                        + "  pro.*,\n"
-                        + "  cla.nombre AS clasificacion \n"
-                        + "FROM\n"
-                        + "  productos pro \n"
-                        + "  INNER JOIN productos_clasificacion cla \n"
-                        + "    ON pro.id_clasificacion = cla.id_clasificacion \n"
-                        + "    \n"
-                        + "WHERE CONCAT (pro.descripcion, ' ', pro.marca) LIKE '%" + texto + "%'  ORDER BY pro.descripcion ASC,  pro.marca ASC ";
+                query = "SELECT "
+                        + "  pro.*, "
+                        + "  cla.nombre AS clasificacion "
+                        + "FROM "
+                        + "  productos pro "
+                        + "  INNER JOIN productos_clasificacion cla "
+                        + "    ON pro.id_clasificacion = cla.id_clasificacion "
+                        + "WHERE CONCAT (cla.nombre, ' ', pro.descripcion, ' ', pro.marca) LIKE '%" + texto + "%'  "
+                        + "ORDER BY cla.nombre asc, pro.descripcion ASC,  pro.marca ASC ";
             }
 
             if (tipo_busqueda == 1) {
@@ -285,7 +289,8 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
                         + "  productos pro  "
                         + "  INNER JOIN productos_clasificacion cla  "
                         + "    ON pro.id_clasificacion = cla.id_clasificacion  "
-                        + "WHERE pro.id_producto =  '" + texto + "'  ORDER BY pro.descripcion ASC,  pro.marca ASC";
+                        + "WHERE pro.id_producto =  '" + texto + "'  "
+                        + "ORDER BY cla.nombre asc, pro.descripcion ASC,  pro.marca ASC";
             }
 
             if (tipo_busqueda == 2) {
@@ -296,7 +301,8 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
                         + "  productos pro  "
                         + "  INNER JOIN productos_clasificacion cla  "
                         + "    ON pro.id_clasificacion = cla.id_clasificacion  "
-                        + "WHERE pro.marca LIKE  '%" + texto + "%'  ORDER BY pro.descripcion ASC, pro.marca ASC";
+                        + "WHERE pro.marca LIKE  '%" + texto + "%'  "
+                        + "ORDER BY cla.nombre asc, pro.descripcion ASC, pro.marca ASC";
             }
             if (tipo_busqueda == 3) {
                 query = "SELECT  "
@@ -306,7 +312,8 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
                         + "  productos pro  "
                         + "  INNER JOIN productos_clasificacion cla  "
                         + "    ON pro.id_clasificacion = cla.id_clasificacion  "
-                        + "WHERE pro.precio = '" + texto + "'  ORDER BY pro.descripcion ASC, pro.marca ASC";
+                        + "WHERE pro.precio = '" + texto + "'  "
+                        + "ORDER BY cla.nombre asc, pro.descripcion ASC, pro.marca ASC";
             }
 
             c_producto.mostrar(t_productos, query);
@@ -360,6 +367,8 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cbx_buscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lbl_encontrados;
     private javax.swing.JTable t_productos;

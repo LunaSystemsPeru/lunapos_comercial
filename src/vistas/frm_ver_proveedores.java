@@ -49,8 +49,9 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        btn_modificar = new javax.swing.JButton();
         btn_agregar = new javax.swing.JButton();
+        btn_modificar = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
@@ -64,6 +65,18 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
 
         jToolBar1.setFloatable(false);
 
+        btn_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        btn_agregar.setText("Agregar");
+        btn_agregar.setFocusable(false);
+        btn_agregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_agregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_agregarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_agregar);
+
         btn_modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/application_edit.png"))); // NOI18N
         btn_modificar.setText("Modificar");
         btn_modificar.setEnabled(false);
@@ -76,18 +89,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_modificar);
-
-        btn_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
-        btn_agregar.setText("Agregar");
-        btn_agregar.setFocusable(false);
-        btn_agregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btn_agregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btn_agregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_agregarActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btn_agregar);
+        jToolBar1.add(jSeparator2);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
         jButton1.setText("ver Pagos Proveedor");
@@ -282,6 +284,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable t_proveedores;
     private javax.swing.JTextField txt_buscar;

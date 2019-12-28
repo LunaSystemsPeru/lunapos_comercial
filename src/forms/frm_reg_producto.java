@@ -57,12 +57,10 @@ public class frm_reg_producto extends javax.swing.JDialog {
         m_clasificacion.cbx_clasificaciones(cbx_clasificacion);
         m_unidad.llenar_combo(cbx_unidad_medida);
 
-        modelo_presentaciones();
-
         if (!registrar) {
             this.setTitle("Modificar Producto");
 
-            /*cl_proveedor c_proveedor = new cl_proveedor();
+            cl_proveedor c_proveedor = new cl_proveedor();
             c_presentacion = new cl_productos_presentacion();
 
             c_producto.validar_id();
@@ -72,8 +70,6 @@ public class frm_reg_producto extends javax.swing.JDialog {
             c_proveedor.cargar_datos();
 
             txt_descripcion.setText(c_producto.getDescripcion());
-            txt_marca.setText(c_producto.getMarca());
-            txt_cod_barra.setText(c_producto.getCod_barra());
             txt_precio_minimo.setText(c_varios.formato_numero(c_producto.getPrecio()));
             txt_proveedor.setText(c_proveedor.getRuc() + " | " + c_proveedor.getRazon_social());
 
@@ -90,38 +86,10 @@ public class frm_reg_producto extends javax.swing.JDialog {
             cbx_clasificacion.setEnabled(true);
             cbx_clasificacion.getModel().setSelectedItem(new cla_producto_clasificacion(c_clasificacion.getId_clasificacion(), c_clasificacion.getDescripcion()));
 
-            c_presentacion.setId_producto(c_producto.getId());
-            c_presentacion.mostrar(t_presentaciones, detalle);
-
-            txt_nombre_presentacion.setEnabled(true);
-
             txt_descripcion.setEnabled(true);
-            txt_cod_barra.setEnabled(true);
-            txt_marca.setEnabled(true);
-            btn_guardar.setEnabled(true);*/
+            txt_precio_minimo.setEnabled(true);
+            btn_guardar.setEnabled(true);
         }
-    }
-
-    private void modelo_presentaciones() {
-        //formato de tabla detalle de venta
-        detalle = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int fila, int columna) {
-                return false;
-            }
-        };
-        detalle.addColumn("Item");
-        detalle.addColumn("Descripcion");
-        detalle.addColumn("Factor");
-        detalle.addColumn("Precio Unit.");
-        /*t_presentaciones.setModel(detalle);
-        t_presentaciones.getColumnModel().getColumn(0).setPreferredWidth(20);
-        t_presentaciones.getColumnModel().getColumn(1).setPreferredWidth(300);
-        t_presentaciones.getColumnModel().getColumn(2).setPreferredWidth(50);
-        t_presentaciones.getColumnModel().getColumn(3).setPreferredWidth(80);
-        c_varios.centrar_celda(t_presentaciones, 0);
-        c_varios.centrar_celda(t_presentaciones, 2);
-        c_varios.derecha_celda(t_presentaciones, 3);*/
     }
 
     /**
@@ -302,13 +270,13 @@ public class frm_reg_producto extends javax.swing.JDialog {
         c_producto.setComision(0);
         c_producto.setCosto(0);
         c_producto.setPrecio(Double.parseDouble(txt_precio_minimo.getText()));
-        
+
         c_producto.setTipo_producto(0);
         cla_producto_clasificacion cla_clasificacion = (cla_producto_clasificacion) cbx_clasificacion.getSelectedItem();
         c_producto.setId_clasificacion(cla_clasificacion.getId_clasificacion());
         c_producto.setIcbper(0);
         if (cla_clasificacion.getId_clasificacion() == 3) {
-            c_producto.setIcbper(1);
+           // c_producto.setIcbper(1);
         }
         cla_unidad_medida cla_unidad = (cla_unidad_medida) cbx_unidad_medida.getSelectedItem();
         c_producto.setId_unidad(cla_unidad.getId());
@@ -330,7 +298,7 @@ public class frm_reg_producto extends javax.swing.JDialog {
             if (!registrar) {
                 c_presentacion.eliminar_todo();
             }
-           /* int contar_presentaciones = t_presentaciones.getRowCount();
+            /* int contar_presentaciones = t_presentaciones.getRowCount();
             for (int i = 0; i < contar_presentaciones; i++) {
                 c_presentacion.setId_presentacion(i + 1);
                 c_presentacion.setNombre(t_presentaciones.getValueAt(i, 1).toString());
@@ -371,14 +339,6 @@ public class frm_reg_producto extends javax.swing.JDialog {
                     txt_precio_minimo.setEditable(false);
                     cla_unidad_medida cla_unidad = (cla_unidad_medida) cbx_unidad_medida.getSelectedItem();
 
-                    //crear objeto unidad 
-                    Object fila[] = new Object[4];
-                    fila[0] = 1;
-                    fila[1] = cla_unidad.getNombre();
-                    fila[2] = 1;
-                    fila[3] = Double.parseDouble(texto);
-                    detalle.addRow(fila);
-
                     //pasar a presentacion y activar boton grabar
                     btn_guardar.setEnabled(true);
                     //txt_proveedor.setEnabled(true);
@@ -397,7 +357,7 @@ public class frm_reg_producto extends javax.swing.JDialog {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (registrar) {
                 if (!txt_precio_minimo.isEditable() && txt_precio_minimo.isEnabled()) {
-                   txt_precio_minimo.setEnabled(true);
+                    txt_precio_minimo.setEnabled(true);
                     txt_precio_minimo.requestFocus();
                 }
                 if (!txt_precio_minimo.isEnabled()) {
@@ -409,7 +369,7 @@ public class frm_reg_producto extends javax.swing.JDialog {
     }//GEN-LAST:event_cbx_unidad_medidaKeyPressed
 
     private void cbx_clasificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_clasificacionActionPerformed
-  
+
     }//GEN-LAST:event_cbx_clasificacionActionPerformed
 
     private void txt_proveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_proveedorActionPerformed
@@ -418,7 +378,7 @@ public class frm_reg_producto extends javax.swing.JDialog {
 
     /**
      * @param args the command line arguments
-                     */
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

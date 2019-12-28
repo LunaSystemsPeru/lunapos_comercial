@@ -58,6 +58,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         t_clientes = new javax.swing.JTable();
         cbx_boton = new javax.swing.JComboBox();
         jToolBar1 = new javax.swing.JToolBar();
+        jButton3 = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -111,6 +112,18 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
 
         jToolBar1.setFloatable(false);
         jToolBar1.setOpaque(false);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        jButton3.setText("Nuevo");
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton3);
 
         btn_modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/application_edit.png"))); // NOI18N
         btn_modificar.setText("Modificar");
@@ -305,6 +318,16 @@ c_cliente.mostrar(t_clientes, query);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Frame f = JOptionPane.getRootFrame();
+        frm_reg_cliente.accion = "registrar";
+        frm_reg_cliente.origen = "ver_clientes";
+        frm_reg_cliente.c_cliente.setCodigo(0);
+        frm_reg_cliente dialog = new frm_reg_cliente(f, true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cerrar;
@@ -312,6 +335,7 @@ c_cliente.mostrar(t_clientes, query);
     private javax.swing.JComboBox cbx_boton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
