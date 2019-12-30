@@ -1820,10 +1820,11 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     private void txt_fechaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fechaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txt_fecha.getText().length() == 10) {
-                txt_doc_cliente.setEnabled(true);
-                txt_doc_cliente.requestFocus();
+                txt_nom_cliente.setEnabled(true);
+                txt_nom_cliente.requestFocus();
                 jButton1.setEnabled(true);
                 selecion_dedocumento();
+                //cargar_clientes(WIDTH);
             }
         }
     }//GEN-LAST:event_txt_fechaKeyPressed

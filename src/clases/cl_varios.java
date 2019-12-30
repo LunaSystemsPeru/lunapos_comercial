@@ -5,6 +5,7 @@
  */
 package clases;
 
+import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -40,6 +41,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -62,7 +64,7 @@ public class cl_varios {
         numero = formato.format(number);
         return numero;
     }
-    
+
     /*
     @param number = 123548.00000
     return ######0.00000 a dos decimales sin comas de miles
@@ -169,7 +171,7 @@ public class cl_varios {
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         return formateador.format(ahora);
     }
-    
+
     public String getanio() {
         Date ahora = new Date();
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy");
@@ -255,6 +257,26 @@ public class cl_varios {
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.RIGHT);
         table.getColumnModel().getColumn(col).setCellRenderer(tcr);
+    }
+
+    public void vista_previa_reporte(String filename, Map<String, Object> parametros) {
+        Connection st = con.conx();
+
+        String direccion = obtenerDireccionCarpeta();
+
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("_dd_MM_yyyy_HH_mm_ss");
+        String fechahora = hourdateFormat.format(date);
+
+        try {
+            JasperPrint print = JasperFillManager.fillReport(direccion + File.separator + "reports" + File.separator + filename + ".jasper", parametros, st);
+            JRViewer viewer = new JRViewer(print);
+
+        } catch (JRException ex) {
+            System.out.print(ex + " -- error jre");
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error con el Reporte -- \n" + ex.getLocalizedMessage());
+        }
     }
 
     public void ver_reporte(String filename, Map<String, Object> parametros) {

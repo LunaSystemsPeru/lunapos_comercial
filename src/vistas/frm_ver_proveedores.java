@@ -93,6 +93,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
         jButton1.setText("ver Pagos Proveedor");
+        jButton1.setEnabled(false);
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -104,7 +105,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         jToolBar1.add(jButton1);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
-        jButton3.setText("ver Pagos Todos");
+        jButton3.setText("ver estado de Cuenta");
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -261,7 +262,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
             parametros.put("SUBREPORT_DIR", direccion);
             parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("REPORT_LOCALE", Locale.ENGLISH);
-            c_varios.ver_reporte("rpt_deudas_fechas", parametros);
+            c_varios.ver_reporte("rpt_deudas_proveedores_todos", parametros);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }

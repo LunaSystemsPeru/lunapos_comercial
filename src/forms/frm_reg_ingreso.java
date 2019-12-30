@@ -160,8 +160,10 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                     if (itemSelected instanceof cla_empresa) {
                         int pcodigo = ((cla_empresa) itemSelected).getId_empresa();
                         String pnombre = ((cla_empresa) itemSelected).getRazon_social();
+                        int ruc = Integer.parseInt(((cla_empresa) itemSelected).getRuc());
                         System.out.println("producto seleccionado " + pnombre);
                         c_proveedor.setId_proveedor(pcodigo);
+                        txt_ruc_proveedor.setText(ruc + "");
                     } else {
                         System.out.println("El item es de un tipo desconocido");
                     }
@@ -890,9 +892,10 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 c_doc_tienda.comprobar_documento();
                 txt_serie.setText(c_doc_tienda.getSerie());
                 txt_numero.setText(c_doc_tienda.getNumero() + "");
-                txt_ruc_proveedor.setEnabled(true);
+                txt_razon_social.setEnabled(true);
                 btn_add_proveedor.setEnabled(true);
-                txt_ruc_proveedor.requestFocus();
+                txt_razon_social.requestFocus();
+                cargar_proveedores_todos();
             } else {
                 txt_serie.setEnabled(true);
                 txt_serie.requestFocus();
@@ -1230,19 +1233,29 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
     private void txt_razon_socialKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_razon_socialKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             //System.out.println("codigo proveedor " + c_proveedor.getId_proveedor());
-            if (c_proveedor.getId_proveedor() == 0) {
-                if (txt_razon_social.getText().length() > 4) {
-                    c_proveedor.setRazon_social(txt_razon_social.getText().toUpperCase());
-                    c_proveedor.setId_proveedor(-1);
+//            if (c_proveedor.getId_proveedor() == 0) {
+//                if (txt_razon_social.getText().length() > 4) {
+//                    c_proveedor.setRazon_social(txt_razon_social.getText().toUpperCase());
+//                    c_proveedor.setId_proveedor(-1);
+//            cargar_productos();
+//            txt_buscar_productos.setEnabled(true);
+//                } else {
+//                  JOptionPane.showMessageDialog(null, "EL NOMBRE DEL PROVEEDOR \nTIENE UE TENER MAS DE 2 DIJITOS");
+//                }
+//            } else {
+//                cargar_productos();
+//                txt_buscar_productos.setEnabled(true);
+//                txt_buscar_productos.requestFocus();
+//            }
+
+            if (txt_razon_social.getText().length() > 8) {
+                if (c_proveedor.getId_proveedor() != 0) {
                     cargar_productos();
                     txt_buscar_productos.setEnabled(true);
+                    txt_buscar_productos.requestFocus();
                 } else {
-                  JOptionPane.showMessageDialog(null, "EL NOMBRE DEL PROVEEDOR \nTIENE UE TENER MAS DE 2 DIJITOS");
+                    JOptionPane.showMessageDialog(null, "ERROR AL SELECCIONAR PROVEEDOR");
                 }
-            } else {
-                cargar_productos();
-                txt_buscar_productos.setEnabled(true);
-                txt_buscar_productos.requestFocus();
             }
         }
 

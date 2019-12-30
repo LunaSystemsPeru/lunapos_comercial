@@ -5,3 +5,5 @@ encoding/rpt_deudas_clientes_todos.jrxml=UTF-8
 encoding/rpt_deudas_fechas.jrxml=UTF-8
 encoding/rpt_deudas_proveedor.jrxml=UTF-8
 encoding/rpt_deudas_proveedor_detalle.jrxml=UTF-8
+encoding/rpt_deudas_proveedores_documentos.jrxml=UTF-8
+encoding/rpt_deudas_proveedores_todos.jrxml=UTF-8

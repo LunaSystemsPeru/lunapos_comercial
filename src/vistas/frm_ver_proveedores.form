@@ -98,6 +98,7 @@
               <Image iconType="3" name="/icons/clipboard_text.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="ver Pagos Proveedor"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -111,7 +112,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icons/clipboard_text.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="ver Pagos Todos"/>
+            <Property name="text" type="java.lang.String" value="ver estado de Cuenta"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>

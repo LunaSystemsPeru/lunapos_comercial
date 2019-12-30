@@ -42,35 +42,36 @@ import java.awt.Graphics;
  * @author luis
  */
 public class frm_ver_ventas extends javax.swing.JInternalFrame {
-
+    
     cl_varios c_varios = new cl_varios();
     cl_venta c_venta = new cl_venta();
     cl_venta c_separacion = new cl_venta();
     cl_documento_firmado c_hash = new cl_documento_firmado();
-
+    
     cl_venta_eliminada c_cupon = new cl_venta_eliminada();
     cl_productos_ventas c_detalle = new cl_productos_ventas();
     cl_cobros_ventas c_cobros = new cl_cobros_ventas();
     cl_cliente c_cliente = new cl_cliente();
-
+    
     int id_almacen = frm_principal.c_almacen.getId();
     int id_usuario = frm_principal.c_usuario.getId_usuario();
-
+    
     int fila_seleccionada = -1;
     int fila_cobro = -1;
-
+    
     String query = "";
 
     /**
      * Creates new form frm_ver_ventas
+     *
      * @param grphcs
      */
-    
     @Override
-     protected void paintComponent(Graphics grphcs) {
+    protected void paintComponent(Graphics grphcs) {
         grphcs.setColor(Color.decode("#00b0f0"));
         grphcs.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
+    
     public frm_ver_ventas() {
         initComponents();
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
@@ -82,25 +83,25 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 + "where v.fecha = current_date() and v.id_almacen = '" + id_almacen + "' "
                 + "order by v.id_ventas asc";
         c_venta.mostrar(t_ventas, query);
-
+        
         sumar_totales();
     }
-
+    
     private void sumar_totales() {
         double total_ventas = 0;
         double total_pagados = 0;
-
+        
         int contar_filar = t_ventas.getRowCount();
-
+        
         for (int i = 0; i < contar_filar; i++) {
             total_ventas = total_ventas + Double.parseDouble(t_ventas.getValueAt(i, 4).toString());
             total_pagados = total_pagados + Double.parseDouble(t_ventas.getValueAt(i, 5).toString());
         }
-
+        
         txt_total_ventas.setText(c_varios.formato_totales(total_ventas));
         txt_total_pagos.setText(c_varios.formato_totales(total_pagados));
     }
-
+    
     private void activar_botones() {
         String estado = t_ventas.getValueAt(fila_seleccionada, 7).toString();
         if (estado.equals("ANULADO")) {
@@ -128,7 +129,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             btn_imprimir.setEnabled(true);
         }
     }
-
+    
     private void desactivar_botones() {
         btn_ver_cupon.setEnabled(false);
         btn_ver_detalle.setEnabled(false);
@@ -182,8 +183,8 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         btn_cobro_salir = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        txt_pago_fecha = new javax.swing.JTextField();
         txt_pago_monto = new javax.swing.JTextField();
+        txt_pago_fecha = new javax.swing.JFormattedTextField();
         jd_entrega_separacion = new javax.swing.JDialog();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -221,7 +222,6 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         btn_imprimir = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btn_anular_venta = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         btn_ver_cupon = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jButton6 = new javax.swing.JButton();
@@ -490,7 +490,6 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         btn_cobro_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
         btn_cobro_guardar.setText("Agregar");
         btn_cobro_guardar.setEnabled(false);
-        btn_cobro_guardar.setFocusable(false);
         btn_cobro_guardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_cobro_guardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btn_cobro_guardar.addActionListener(new java.awt.event.ActionListener() {
@@ -516,13 +515,22 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
         jLabel12.setText("Monto:");
 
-        txt_pago_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_pago_fecha.setEnabled(false);
-
         txt_pago_monto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_pago_monto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_pago_montoKeyPressed(evt);
+            }
+        });
+
+        try {
+            txt_pago_fecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txt_pago_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_pago_fecha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_pago_fechaKeyPressed(evt);
             }
         });
 
@@ -581,10 +589,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
         txt_doc_venta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_doc_venta.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txt_doc_ventaInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         txt_doc_venta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -858,13 +866,6 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btn_anular_venta);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
-        jButton1.setText("Generar N.C.");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton1);
-
         btn_ver_cupon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/comment.png"))); // NOI18N
         btn_ver_cupon.setText("Ver Anulacion");
         btn_ver_cupon.setEnabled(false);
@@ -906,11 +907,11 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_total_ventas, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_total_ventas, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_total_pagos, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txt_total_pagos, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -965,11 +966,11 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private void btn_anular_ventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_anular_ventaActionPerformed
         frm_principal.c_permiso.setId_permiso(2);
         boolean permitido = frm_principal.c_permiso.validar();
-
+        
         if (permitido) {
             if (fila_seleccionada > -1) {
                 desactivar_botones();
-
+                
                 double total = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
                 double pagado = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 5).toString());
                 jd_anular_documento.setModal(true);
@@ -978,10 +979,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 txt_jd_total.setText(c_varios.formato_numero(total));
                 txt_jd_pagado.setText(c_varios.formato_numero(pagado));
                 txt_jd_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-
+                
                 txt_jd_motivo.requestFocus();
                 jd_anular_documento.setVisible(true);
-
+                
             }
         } else {
             JOptionPane.showMessageDialog(null, "Usted no tiene permiso para realizar esta operacion!!");
@@ -1019,13 +1020,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             c_cupon.setMotivo(txt_jd_motivo.getText().toUpperCase().trim());
             c_cupon.setMonto(monto_cupon);
             c_cupon.setUsado(0);
-
+            
             c_cupon.registrar();
-
+            
         }
-
+        
         c_venta.anular();
-
+        
         jd_anular_documento.dispose();
         c_venta.mostrar(t_ventas, query);
         //si es venta dar de baja
@@ -1049,10 +1050,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             //cargar datos
             int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 8).toString());
             double monto_cupon = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 5).toString());
-
+            
             c_cupon.setId_venta(id_venta);
             c_cupon.validar_cupon();
-
+            
             jd_anular_documento.setModal(true);
             jd_anular_documento.setSize(691, 249);
             jd_anular_documento.setLocationRelativeTo(null);
@@ -1064,7 +1065,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             txt_jd_motivo.setEditable(false);
             btn_jd_grabar.setEnabled(false);
             jd_anular_documento.setVisible(true);
-
+            
         }
     }//GEN-LAST:event_btn_ver_cuponActionPerformed
 
@@ -1073,12 +1074,12 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             desactivar_botones();
             //cargar datos
             int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 8).toString());
-
+            
             String venta = t_ventas.getValueAt(fila_seleccionada, 2).toString() + " | " + t_ventas.getValueAt(fila_seleccionada, 3).toString();
-
+            
             c_detalle.setId_venta(id_venta);
             c_detalle.mostrar(t_detalle);
-
+            
             jd_ver_productos.setModal(true);
             jd_ver_productos.setSize(685, 387);
             jd_ver_productos.setLocationRelativeTo(null);
@@ -1092,32 +1093,32 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             desactivar_botones();
             //cargar datos
             int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 8).toString());
-
+            
             String venta = t_ventas.getValueAt(fila_seleccionada, 2).toString();
             String cliente = t_ventas.getValueAt(fila_seleccionada, 3).toString();
             double total = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
-
+            
             c_cobros.setId_venta(id_venta);
             c_cobros.mostrar(t_cobros);
-
+            
             double pagos = 0;
             int contar_filas_cobro = t_cobros.getRowCount();
             System.out.println(contar_filas_cobro);
             for (int i = 0; i < contar_filas_cobro; i++) {
                 pagos = pagos + Double.parseDouble(t_cobros.getValueAt(i, 2).toString());
             }
-
+            
             if (pagos == total) {
                 btn_jd_cobro_graba.setEnabled(false);
             }
-
+            
             txt_jd_cobro_documento.setText(venta);
             txt_jd_cobro_cliente.setText(cliente);
-
+            
             jd_ver_cobros.setModal(true);
             jd_ver_cobros.setSize(434, 473);
             jd_ver_cobros.setLocationRelativeTo(null);
-
+            
             jd_ver_cobros.setVisible(true);
         }
     }//GEN-LAST:event_btn_ver_cobrosActionPerformed
@@ -1132,7 +1133,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
     private void btn_cobro_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cobro_guardarActionPerformed
         c_cobros.setId_cobro(c_cobros.obtener_codigo());
-        c_cobros.setFecha(c_varios.getFechaActual());
+        c_cobros.setFecha(c_varios.fecha_myql(txt_pago_fecha.getText()));
         double efectivo = Double.parseDouble(txt_pago_monto.getText());
         c_cobros.setMonto(efectivo);
         c_cobros.setTipo_pago(1);
@@ -1140,14 +1141,14 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             jd_reg_cobro.dispose();
             double total = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
             c_cobros.mostrar(t_cobros);
-
+            
             double pagos = 0;
             int contar_filas_cobro = t_cobros.getRowCount();
             System.out.println(contar_filas_cobro);
             for (int i = 0; i < contar_filas_cobro; i++) {
                 pagos = pagos + Double.parseDouble(t_cobros.getValueAt(i, 2).toString());
             }
-
+            
             if (pagos == total) {
                 btn_jd_cobro_graba.setEnabled(false);
             }
@@ -1172,6 +1173,9 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         jd_reg_cobro.setModal(true);
         jd_reg_cobro.setSize(374, 199);
         jd_reg_cobro.setLocationRelativeTo(null);
+        txt_pago_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+        txt_pago_fecha.setEnabled(true);
+        txt_pago_fecha.requestFocus();
         jd_reg_cobro.setVisible(true);
     }//GEN-LAST:event_btn_jd_cobro_grabaActionPerformed
 
@@ -1262,7 +1266,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                     + "order by v.id_ventas asc";
         }
         c_venta.mostrar(t_ventas, query);
-
+        
         sumar_totales();
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
@@ -1278,26 +1282,26 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             //llenar documentos sunat
             m_mis_documentos m_documentos = new m_mis_documentos();
             m_documentos.cbx_documentos_venta(cbx_doc_venta);
-
+            
             String venta = t_ventas.getValueAt(fila_seleccionada, 2).toString();
             String fecha = t_ventas.getValueAt(fila_seleccionada, 1).toString();
             String cliente = t_ventas.getValueAt(fila_seleccionada, 3).toString();
             double total = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
-
+            
             jd_entrega_separacion.setModal(true);
             jd_entrega_separacion.setSize(400, 383);
             jd_entrega_separacion.setLocationRelativeTo(null);
-
+            
             txt_fecha_separacion.setText(fecha);
             txt_doc_separacion.setText(venta);
             txt_cliente_separacion.setText(cliente);
             txt_total_separacion.setText(c_varios.formato_totales(total));
-
+            
             jd_entrega_separacion.setVisible(true);
-
+            
         }
     }//GEN-LAST:event_btn_entregar_productosActionPerformed
-
+    
     private void limpiar_entrega() {
         txt_fecha_separacion.setText("");
         txt_doc_separacion.setText("");
@@ -1306,27 +1310,27 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         txt_doc_venta.setText("");
         txt_datos_venta.setText("");
     }
-
+    
 
     private void btn_grabar_ventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_grabar_ventaActionPerformed
         btn_grabar_venta.setEnabled(false);
-
+        
         c_venta.setId_almacen(c_separacion.getId_almacen());
         c_venta.obtener_codigo();
         c_venta.setFecha(c_varios.getFechaActual());
-
+        
         c_venta.setId_usuario(c_separacion.getId_usuario());
         c_venta.setId_cliente(c_cliente.getCodigo());
 
         //obtener documento seleccionado por cliente y sus valores de serie y numero
         cla_mis_documentos c_dcumento = (cla_mis_documentos) cbx_doc_venta.getSelectedItem();
         c_venta.setId_tido(c_dcumento.getId_tido());
-
+        
         cl_documento_almacen c_doc_almacen = new cl_documento_almacen();
         c_doc_almacen.setId_almacen(id_almacen);
         c_doc_almacen.setId_tido(c_dcumento.getId_tido());
         c_doc_almacen.comprobar_documento();
-
+        
         c_venta.setSerie(c_doc_almacen.getSerie());
         c_venta.setNumero(c_doc_almacen.getNumero());
         c_venta.setTotal(c_separacion.getTotal());
@@ -1334,9 +1338,9 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         c_venta.setPagado(c_separacion.getTotal());
         c_venta.setEstado(1);
         c_venta.setEnviado_sunat(0);
-
+        
         cl_productos_ventas c_nuevo_detalle = new cl_productos_ventas();
-
+        
         if (c_venta.registrar()) {
             c_separacion.entregar_separacion();
 
@@ -1368,10 +1372,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             } catch (InterruptedException e) {
                 System.out.println(e);
             }
-
+            
             String[] envio_sunat;
             envio_sunat = cl_envio_server.enviar_documento(c_venta.getId_venta(), c_venta.getId_tido(), c_venta.getId_almacen());
-
+            
             String nombre_archivo = envio_sunat[0];
             String url_codigo_qr = envio_sunat[2];
             String hash = envio_sunat[3];
@@ -1384,13 +1388,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 String letras_numeros = c_letras.Convertir(c_venta.getTotal() + "", true) + " SOLES";
                 System.out.println(letras_numeros);
                 System.out.println(url_codigo_qr);
-
+                
                 File miDir = new File(".");
                 try {
                     Map<String, Object> parametros = new HashMap<>();
                     String path = miDir.getCanonicalPath();
                     String direccion = path + "//reports//subreports//";
-
+                    
                     System.out.println(direccion);
                     parametros.put("SUBREPORT_DIR", direccion);
                     parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
@@ -1406,7 +1410,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
                 }
             }
-
+            
             jd_entrega_separacion.setVisible(false);
             limpiar_entrega();
             c_venta.mostrar(t_ventas, query);
@@ -1416,10 +1420,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private void txt_doc_ventaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_doc_ventaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String documento = txt_doc_venta.getText();
-
+            
             cla_mis_documentos c_dcumento = (cla_mis_documentos) cbx_doc_venta.getSelectedItem();
             c_venta.setId_tido(c_dcumento.getId_tido());
-
+            
             if (documento.length() > 0) {
                 c_cliente.setDocumento(documento);
                 if (c_dcumento.getId_tido() == 1) {
@@ -1444,10 +1448,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                             c_cliente.comprobar_cliente();
                             txt_datos_venta.setText(c_cliente.getNombre());
                         }
-
+                        
                     }
                 }
-
+                
                 if (c_dcumento.getId_tido() == 2) {
                     if (documento.length() == 11) {
                         if (!c_cliente.comprobar_cliente_doc()) {
@@ -1471,9 +1475,9 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                             txt_datos_venta.setText(c_cliente.getNombre());
                         }
                     }
-
+                    
                 }
-
+                
                 c_venta.setId_cliente(c_cliente.getCodigo());
             }
         }
@@ -1510,7 +1514,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         c_venta.setId_venta(id_venta);
         c_venta.setId_almacen(id_almacen);
         c_venta.validar_venta();
-
+        
         leer_numeros c_letras = new leer_numeros();
         String letras_numeros = c_letras.Convertir(c_venta.getTotal() + "", true) + " SOLES";
         System.out.println(letras_numeros);
@@ -1522,13 +1526,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             c_hash.validar_firma();
             String url_codigo_qr = "http://www.lunasystemsperu.com/clientes/comercial_penia/greenter/generate_qr/temp/" + c_hash.getNombre() + ".png";
             System.out.println(url_codigo_qr);
-
+            
             File miDir = new File(".");
             try {
                 Map<String, Object> parametros = new HashMap<>();
                 String path = miDir.getCanonicalPath();
                 String direccion = path + "//reports//subreports//";
-
+                
                 System.out.println(direccion);
                 parametros.put("SUBREPORT_DIR", direccion);
                 parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
@@ -1547,13 +1551,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
         //imprimir si es nota de ventaonota de separacion
         if (c_venta.getId_tido() == 6 || c_venta.getId_tido() == 7) {
-
+            
             File miDir = new File(".");
             try {
                 Map<String, Object> parametros = new HashMap<>();
                 String path = miDir.getCanonicalPath();
                 String direccion = path + "//reports//subreports//";
-
+                
                 System.out.println(direccion);
                 parametros.put("SUBREPORT_DIR", direccion);
                 parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
@@ -1563,7 +1567,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 parametros.put("p_letras_numero", letras_numeros);
                 //   c_varios.imp_reporte("rpt_documento_venta", parametros);
                 if (id_almacen == 1) {
-                    c_varios.ver_reporte("rpt_documento_venta_nota_rodson", parametros);
+                    c_varios.ver_reporte("rpt_documento_venta_nota", parametros);
                 } else {
                     c_varios.ver_reporte("rpt_documento_venta_nota", parametros);
                 }
@@ -1580,7 +1584,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbx_buscarKeyPressed
 
     private void btn_mod_separacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mod_separacionActionPerformed
-
+        
         int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 8).toString());
         Frame f = JOptionPane.getRootFrame();
         frm_mod_separacion.c_venta.setId_venta(id_venta);
@@ -1597,18 +1601,29 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private void btn_eliminar_cobroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_cobroActionPerformed
         frm_principal.c_permiso.setId_permiso(2);
         boolean permitido = frm_principal.c_permiso.validar();
-
+        
         if (permitido) {
             int id_cobro = Integer.parseInt(t_cobros.getValueAt(fila_cobro, 0).toString());
             c_cobros.setId_cobro(id_cobro);
             c_cobros.eliminar_cobro();
             c_cobros.mostrar(t_cobros);
-
+            
             btn_jd_cobro_graba.setEnabled(true);
         } else {
             JOptionPane.showMessageDialog(null, "Usted no tiene permiso para realizar esta operacion!!");
         }
     }//GEN-LAST:event_btn_eliminar_cobroActionPerformed
+
+    private void txt_pago_fechaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_pago_fechaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (txt_pago_fecha.getText().length() == 10) {
+                txt_pago_monto.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "Complete la fecha");
+                txt_pago_fecha.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_txt_pago_fechaKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1628,7 +1643,6 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_ver_detalle;
     private javax.swing.JComboBox<String> cbx_buscar;
     private javax.swing.JComboBox<String> cbx_doc_venta;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox2;
@@ -1685,7 +1699,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txt_jd_motivo;
     private javax.swing.JTextField txt_jd_pagado;
     private javax.swing.JTextField txt_jd_total;
-    private javax.swing.JTextField txt_pago_fecha;
+    private javax.swing.JFormattedTextField txt_pago_fecha;
     private javax.swing.JTextField txt_pago_monto;
     private javax.swing.JTextField txt_total_pagos;
     private javax.swing.JTextField txt_total_separacion;

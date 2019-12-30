@@ -5,12 +5,12 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select sum(v.total) as total, sum(v.pagado) as pagado, c.id_cliente, c.documento, c.nombre
-from ventas as v
-         inner join clientes c on v.id_cliente = c.id_cliente
-where v.total > v.pagado and v.estado != 3
-group by v.id_cliente
-order by c.nombre asc]]>
+		<![CDATA[select sum(i.total) as total, sum(i.tpagado) as pagado, p.id_proveedor, p.nro_documento, p.razon_social
+from ingresos as i
+         inner join proveedor p on i.id_proveedor = p.id_proveedor
+where i.total > i.tpagado
+group by i.id_proveedor
+order by p.razon_social asc]]>
 	</queryString>
 	<field name="total" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="total"/>
@@ -20,17 +20,17 @@ order by c.nombre asc]]>
 		<property name="com.jaspersoft.studio.field.label" value="pagado"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="ventas"/>
 	</field>
-	<field name="id_cliente" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="id_cliente"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	<field name="id_proveedor" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_proveedor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
 	</field>
-	<field name="documento" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="documento"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	<field name="nro_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nro_documento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
 	</field>
-	<field name="nombre" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	<field name="razon_social" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="razon_social"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
 	</field>
 	<variable name="total_compra" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{total}]]></variableExpression>
@@ -51,7 +51,7 @@ order by c.nombre asc]]>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[REPORTE DE CUENTAS POR COBRAR]]></text>
+				<text><![CDATA[REPORTE DE CUENTAS POR PAGAR]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="60" y="0" width="160" height="50" forecolor="#AA0000" uuid="339099ed-2623-475d-91bf-05e16335248e"/>
@@ -127,7 +127,7 @@ COMERCIAL JESSICA
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Cliente]]></text>
+				<text><![CDATA[Proveedor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="490" y="3" width="60" height="20" uuid="35f97686-c0d7-4e5c-8484-b671652a3483">
@@ -182,7 +182,7 @@ COMERCIAL JESSICA
 				<textElement verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombre} + "  | " + $F{documento}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{razon_social} + "  | " + $F{nro_documento}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="2" width="40" height="15" uuid="4276fad4-1bfc-41bb-ba17-ee58ed350883">
@@ -193,7 +193,7 @@ COMERCIAL JESSICA
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{id_cliente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{id_proveedor}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="0" width="550" height="1" uuid="5212dcd2-607d-448b-8f75-a80a6d2f6402">
@@ -207,11 +207,11 @@ COMERCIAL JESSICA
 				<reportElement x="0" y="1" width="550" height="20" uuid="36609a24-d785-496b-8afa-3a1138cf7ed5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<subreportParameter name="p_idcliente">
-					<subreportParameterExpression><![CDATA[$F{id_cliente}]]></subreportParameterExpression>
+				<subreportParameter name="p_idproveedor">
+					<subreportParameterExpression><![CDATA[$F{id_proveedor}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_deudas_clientes_documentos.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_deudas_proveedores_documentos.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
