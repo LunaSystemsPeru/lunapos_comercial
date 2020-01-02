@@ -25,12 +25,21 @@
  */
 package clases;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import render_tablas.render_compras;
+
 /**
  *
  * @author luis
  */
 public class cl_banco {
     cl_conectar c_conectar = new cl_conectar();
+    cl_varios c_varios = new cl_varios();
     
     private int id_banco;
     private String nombre;
@@ -90,5 +99,116 @@ public class cl_banco {
         this.id_empresa = id_empresa;
     }
     
+     public void obtener_codigo() {
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select ifnull(max(id_bancos) + 1, 1) as codigo "
+                    + "from bancos";
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                id_banco = rs.getInt("codigo");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+    }
+
+    public boolean obtener_datos() {
+        boolean existe = false;
+
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select * from "
+                    + "bancos "
+                    + "where id_bancos = '" + id_banco + "'";
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                existe = true;
+                nombre = rs.getString("nombre");
+                nro_cuenta = rs.getString("nro_cuenta");
+                monto = rs.getDouble("monto");
+                id_moneda = rs.getInt("id_moneda");
+                id_empresa = rs.getInt("id_empresa");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+
+        return existe;
+    }
+
+    public boolean insertar() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "insert into bancos "
+                + "values ('" + id_banco + "', '" + nombre + "', '" + nro_cuenta + "', '" + monto + "', '1', '" + id_empresa + "')";
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+
+    public boolean eliminar() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete from bancos "
+                + "where id_bancos = '" + id_banco + "'";
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+    
+     public void mostrar(JTable tabla, String query) {
+        DefaultTableModel modelo;
+        try {
+            modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int fila, int columna) {
+                    return false;
+                }
+            };
+            //c_conectar.conectar();
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            //La cantidad de columnas que tiene la consulta
+            //Establecer como cabezeras el nombre de las colimnas
+            modelo.addColumn("Id");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Nro Cuenta");
+            modelo.addColumn("Monto");
+
+            //Creando las filas para el JTable
+            while (rs.next()) {
+                Object[] fila = new Object[4];
+                fila[0] = rs.getInt("id_bancos");
+                fila[1] = rs.getString("nombre");
+                fila[2] = rs.getString("nro_cuenta");
+                fila[3] = c_varios.formato_numero(rs.getDouble("monto"));
+
+                modelo.addRow(fila);
+            }
+            c_conectar.cerrar(st);
+            c_conectar.cerrar(rs);
+            tabla.setModel(modelo);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(250);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(100);
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
+    }
     
 }

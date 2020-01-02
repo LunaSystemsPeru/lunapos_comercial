@@ -42,7 +42,7 @@ public class frm_reg_cliente extends javax.swing.JDialog {
         if (accion.equals("modificar")) {
             this.setTitle("Modificar Cliente");
             btn_reg.setText("Modificar");
-          //  System.out.println(accion);
+            //  System.out.println(accion);
             c_cliente.comprobar_cliente();
             txt_ndoc.setText(c_cliente.getDocumento());
             txt_nom.setText(c_cliente.getNombre());
@@ -337,7 +337,14 @@ public class frm_reg_cliente extends javax.swing.JDialog {
 
     private void btn_regActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regActionPerformed
         btn_reg.setEnabled(false);
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Modificar al Cliente?");
+        String titulo_mensaje = "";
+        if (c_cliente.getCodigo() == 0) {
+            titulo_mensaje = "¿Esta Seguro de Agregar al Cliente?";
+        } else {
+            titulo_mensaje = "¿Esta Seguro de Modificar al Cliente?";
+        }
+
+        int confirmado = JOptionPane.showConfirmDialog(null, titulo_mensaje);
 
         if (JOptionPane.OK_OPTION == confirmado) {
             llenar();
@@ -345,9 +352,13 @@ public class frm_reg_cliente extends javax.swing.JDialog {
             if (accion.equals("registrar")) {
                 c_cliente.setCodigo(c_cliente.obtener_codigo());
                 if (c_cliente.registrar()) {
-                    Notification.show("Clientes", "CLIENTE REGISTRADO CORRECTAMENTE");
+                    //Notification.show("Clientes", "CLIENTE REGISTRADO CORRECTAMENTE");
                     if (origen.equals("reg_venta")) {
-//                        frm_reg_venta.btn_actualizar.doClick();
+                        frm_reg_venta.c_cliente.setCodigo(c_cliente.getCodigo());
+                        frm_reg_venta.txt_nom_cliente.setText(c_cliente.getNombre());
+                        frm_reg_venta.txt_doc_cliente.setText(c_cliente.getDocumento());
+                        frm_reg_venta.txt_nom_cliente.requestFocus();
+                        JOptionPane.showMessageDialog(null, "CLIENTE REGISTRAGO, \nHAGA CLIC EN EL NOMBRE DEL CLIENTE Y PRESIONE ENTER");
                     }
                     btn_cerrar.doClick();
                 }
@@ -377,8 +388,9 @@ public class frm_reg_cliente extends javax.swing.JDialog {
 
     private void txt_telefonoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_telefonoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_telefono.getText().length() > 0) {
+            if (txt_telefono.getText().length() >= 0) {
                 btn_reg.setEnabled(true);
+                btn_reg.setFocusable(true);
                 btn_reg.requestFocus();
             }
         }
@@ -386,7 +398,7 @@ public class frm_reg_cliente extends javax.swing.JDialog {
 
     private void txt_celularKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_celularKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_celular.getText().length() > 0) {
+            if (txt_celular.getText().length() >= 0) {
                 txt_telefono.setEnabled(true);
                 txt_telefono.requestFocus();
             }
@@ -399,7 +411,7 @@ public class frm_reg_cliente extends javax.swing.JDialog {
 
     private void txt_dirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dirKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_dir.getText().length() > 0) {
+            if (txt_dir.getText().length() >= 0) {
                 txt_celular.setEnabled(true);
                 txt_celular.requestFocus();
             }
