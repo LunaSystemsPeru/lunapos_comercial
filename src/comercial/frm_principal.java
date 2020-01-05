@@ -16,12 +16,8 @@ import clases.cl_varios;
 import clases_hilos.cl_notificaciones;
 import clases_varios.Configuracion;
 import clases_varios.cl_grafica_mensual;
-import forms.frm_reg_cierre_caja;
-import forms.frm_reg_movimiento_caja;
-import forms.frm_reg_salida;
-import forms.frm_reg_traslado;
+import forms.frm_reg_movimiento_banco;
 import forms.frm_reg_venta;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -39,14 +35,9 @@ import vistas.frm_ver_almacenes;
 import vistas.frm_ver_bancos;
 import vistas.frm_ver_clasificacion_productos;
 import vistas.frm_ver_clientes;
-import vistas.frm_ver_cobros;
-import vistas.frm_ver_compras;
-import vistas.frm_ver_empresas;
-import vistas.frm_ver_guias_remision;
 import vistas.frm_ver_ingresos;
 import vistas.frm_ver_inventarios;
 import vistas.frm_ver_kardex_diario;
-import vistas.frm_ver_mis_productos;
 import vistas.frm_ver_mis_productos2;
 import vistas.frm_ver_productos_tiendas;
 import vistas.frm_ver_productos_todos;
@@ -63,15 +54,15 @@ import vistas.rpt_ventas;
  * @author luis
  */
 public class frm_principal extends javax.swing.JFrame {
-    
+
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
-    
+
     public static cl_usuario c_usuario = new cl_usuario();
     public static cl_almacen c_almacen = new cl_almacen();
     public static cl_empresa c_empresa = new cl_empresa();
     public static cl_usuario_permisos c_permiso = new cl_usuario_permisos();
-    
+
     cl_caja c_caja = new cl_caja();
     cl_grafica_mensual c_grafica;
     cl_notificaciones c_notificaciones = new cl_notificaciones();
@@ -81,7 +72,7 @@ public class frm_principal extends javax.swing.JFrame {
      */
     public frm_principal() {
         initComponents();
-        
+
         if (c_conectar.verificar_conexion()) {
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
             System.out.println(c_varios.getHoraActual());
@@ -97,14 +88,14 @@ public class frm_principal extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
+
     private void cargar_login() {
         jd_login.setSize(318, 380);
         jd_login.setModal(true);
         jd_login.setLocationRelativeTo(null);
         jd_login.setVisible(true);
     }
-    
+
     private void autoconectar() {
         try {
             Timer timer = new Timer(35000, new ActionListener() {
@@ -118,7 +109,7 @@ public class frm_principal extends javax.swing.JFrame {
             System.out.println("Error grave " + e.getLocalizedMessage());
         }
     }
-    
+
     private void auto_notificar() {
         try {
             Timer timer = new Timer(60000, new ActionListener() {
@@ -134,29 +125,29 @@ public class frm_principal extends javax.swing.JFrame {
             System.out.println("Error grave " + e.getLocalizedMessage());
         }
     }
-    
+
     private void cargar_permisos() {
         c_permiso.setId_permiso(23);
         boolean permitido23 = c_permiso.validar();
-        
+
         if (!permitido23) {
             jButton12.setEnabled(false);
         }
-        
+
         c_permiso.setId_permiso(18);
         boolean permitido18 = c_permiso.validar();
-        
+
         if (!permitido18) {
             jButton4.setEnabled(false);
         }
-        
+
         c_permiso.setId_permiso(17);
         boolean permitido17 = c_permiso.validar();
-        
+
         if (!permitido17) {
             jButton16.setEnabled(false);
         }
-        
+
         c_permiso.setId_permiso(16);
         boolean permitido16 = c_permiso.validar();
 
@@ -166,25 +157,25 @@ public class frm_principal extends javax.swing.JFrame {
          */
         c_permiso.setId_permiso(15);
         boolean permitido15 = c_permiso.validar();
-        
+
         if (!permitido15) {
             jButton23.setEnabled(false);
         }
-        
+
         c_permiso.setId_permiso(9);
         boolean permitido9 = c_permiso.validar();
-        
+
         if (!permitido9) {
             jButton13.setEnabled(false);
         }
-        
+
         c_permiso.setId_permiso(4);
         boolean permitido4 = c_permiso.validar();
-        
+
         if (!permitido4) {
             jButton19.setEnabled(false);
         }
-        
+
     }
 
     /**
@@ -849,6 +840,7 @@ public class frm_principal extends javax.swing.JFrame {
 
         jButton22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Sales-by-payment-method-icon.png"))); // NOI18N
         jButton22.setText("ver Caja - Banco");
+        jButton22.setEnabled(false);
         jButton22.setFocusable(false);
         jButton22.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton22.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -986,37 +978,44 @@ public class frm_principal extends javax.swing.JFrame {
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
         c_almacen.setId(c_usuario.getId_almacen());
         c_almacen.validar_almacen();
-        
+
         c_empresa.setId(c_almacen.getEmpresa());
         c_empresa.validar_empresa();
-        
+
         c_permiso.setId_usuario(c_usuario.getId_usuario());
         cargar_permisos();
-        
+
         lbl_nom_tienda.setText(c_almacen.getNombre());
         lbl_empresa.setText(c_empresa.getRuc() + " | " + c_empresa.getRazon());
         lbl_usuario.setText(c_usuario.getUsername());
-        
+
         jd_login.setVisible(false);
-        
+
         c_caja.setId_almacen(c_almacen.getId());
         c_caja.setFecha(c_varios.getFechaActual());
         boolean existe_caja = c_caja.validar_caja();
-        
+
         if (!existe_caja) {
-            txt_tienda.setText(c_almacen.getNombre());
-            txt_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-            jd_apertura.setModal(true);
-            jd_apertura.setSize(398, 224);
-            jd_apertura.setLocationRelativeTo(null);
-            jd_apertura.setVisible(true);
+            //abrir caja automaticamente
+            c_caja.setFecha(c_varios.getFechaActual());
+            c_caja.setId_almacen(c_almacen.getId());
+            c_caja.setM_apertura(0);
+            c_caja.insertar();
+
+            //codigo para abrir modal apertura caja
+//            txt_tienda.setText(c_almacen.getNombre());
+//            txt_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+//            jd_apertura.setModal(true);
+//            jd_apertura.setSize(398, 224);
+//            jd_apertura.setLocationRelativeTo(null);
+//            jd_apertura.setVisible(true);
         }
-        
+
         this.setTitle("Software de Gestion para Comerciales - Mayoristas - Desarrollado por Luna Systems Peru");
 
         //mostrar notificaciones
         auto_notificar();
-        
+
         c_grafica = new cl_grafica_mensual();
         c_grafica.llenar_series_diarias(jp_dias);
         c_grafica.llenar_series_mensuales(jp_meses);
@@ -1124,7 +1123,7 @@ public class frm_principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_abrir_cajaActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
-        frm_reg_movimiento_caja formulario = new frm_reg_movimiento_caja();
+        frm_reg_movimiento_banco formulario = new frm_reg_movimiento_banco();
         c_varios.llamar_ventana(formulario);
     }//GEN-LAST:event_jButton21ActionPerformed
 

@@ -38,15 +38,13 @@ import render_tablas.render_compras;
  * @author luis
  */
 public class cl_banco {
+
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
-    
+
     private int id_banco;
     private String nombre;
-    private String nro_cuenta;
-    private int id_moneda;
     private double monto;
-    private int id_empresa;
 
     public cl_banco() {
     }
@@ -67,22 +65,6 @@ public class cl_banco {
         this.nombre = nombre;
     }
 
-    public String getNro_cuenta() {
-        return nro_cuenta;
-    }
-
-    public void setNro_cuenta(String nro_cuenta) {
-        this.nro_cuenta = nro_cuenta;
-    }
-
-    public int getId_moneda() {
-        return id_moneda;
-    }
-
-    public void setId_moneda(int id_moneda) {
-        this.id_moneda = id_moneda;
-    }
-
     public double getMonto() {
         return monto;
     }
@@ -91,15 +73,7 @@ public class cl_banco {
         this.monto = monto;
     }
 
-    public int getId_empresa() {
-        return id_empresa;
-    }
-
-    public void setId_empresa(int id_empresa) {
-        this.id_empresa = id_empresa;
-    }
-    
-     public void obtener_codigo() {
+    public void obtener_codigo() {
         try {
             Statement st = c_conectar.conexion();
             String query = "select ifnull(max(id_bancos) + 1, 1) as codigo "
@@ -129,10 +103,7 @@ public class cl_banco {
             while (rs.next()) {
                 existe = true;
                 nombre = rs.getString("nombre");
-                nro_cuenta = rs.getString("nro_cuenta");
                 monto = rs.getDouble("monto");
-                id_moneda = rs.getInt("id_moneda");
-                id_empresa = rs.getInt("id_empresa");
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
@@ -147,7 +118,7 @@ public class cl_banco {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
         String query = "insert into bancos "
-                + "values ('" + id_banco + "', '" + nombre + "', '" + nro_cuenta + "', '" + monto + "', '1', '" + id_empresa + "')";
+                + "values ('" + id_banco + "', '" + nombre + "', '" + monto + "')";
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             registrado = true;
@@ -168,8 +139,8 @@ public class cl_banco {
         c_conectar.cerrar(st);
         return registrado;
     }
-    
-     public void mostrar(JTable tabla, String query) {
+
+    public void mostrar(JTable tabla, String query) {
         DefaultTableModel modelo;
         try {
             modelo = new DefaultTableModel() {
@@ -186,16 +157,14 @@ public class cl_banco {
             //Establecer como cabezeras el nombre de las colimnas
             modelo.addColumn("Id");
             modelo.addColumn("Nombre");
-            modelo.addColumn("Nro Cuenta");
             modelo.addColumn("Monto");
 
             //Creando las filas para el JTable
             while (rs.next()) {
-                Object[] fila = new Object[4];
+                Object[] fila = new Object[3];
                 fila[0] = rs.getInt("id_bancos");
                 fila[1] = rs.getString("nombre");
-                fila[2] = rs.getString("nro_cuenta");
-                fila[3] = c_varios.formato_numero(rs.getDouble("monto"));
+                fila[2] = c_varios.formato_numero(rs.getDouble("monto"));
 
                 modelo.addRow(fila);
             }
@@ -205,10 +174,10 @@ public class cl_banco {
             tabla.getColumnModel().getColumn(0).setPreferredWidth(80);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(250);
             tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(100);
+            c_varios.derecha_celda(tabla, 2);
         } catch (SQLException e) {
             System.out.print(e);
         }
     }
-    
+
 }

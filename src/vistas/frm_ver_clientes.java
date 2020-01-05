@@ -26,7 +26,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
 
     cl_cliente c_cliente = new cl_cliente();
     cl_varios c_varios = new cl_varios();
-    
+
     int fila_seleccionada;
     String query;
 
@@ -60,6 +60,9 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         jToolBar1 = new javax.swing.JToolBar();
         jButton3 = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        btn_pago = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         btn_cerrar = new javax.swing.JButton();
@@ -137,6 +140,21 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_modificar);
+        jToolBar1.add(jSeparator1);
+
+        btn_pago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/coins.png"))); // NOI18N
+        btn_pago.setText("Agregar Pago");
+        btn_pago.setEnabled(false);
+        btn_pago.setFocusable(false);
+        btn_pago.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_pago.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_pago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pagoActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_pago);
+        jToolBar1.add(jSeparator2);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
         jButton1.setText("por Cobrar Cliente");
@@ -163,7 +181,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(jButton2);
 
-        btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cross.png"))); // NOI18N
         btn_cerrar.setText("Cerrar");
         btn_cerrar.setFocusable(false);
         btn_cerrar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -230,7 +248,9 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     private void t_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_clientesMouseClicked
         if (evt.getClickCount() == 2) {
             fila_seleccionada = t_clientes.getSelectedRow();
+            c_cliente.setCodigo(Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString()));
             btn_modificar.setEnabled(true);
+            btn_pago.setEnabled(true);
             jButton1.setEnabled(true);
         }
     }//GEN-LAST:event_t_clientesMouseClicked
@@ -238,6 +258,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
         int id_cliente = Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString());
         btn_modificar.setEnabled(false);
+        btn_pago.setEnabled(false);
         Frame f = JOptionPane.getRootFrame();
         frm_reg_cliente.accion = "modificar";
         frm_reg_cliente.origen = "ver_clientes";
@@ -248,32 +269,32 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void cbx_botonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cbx_botonKeyPressed
-        
+
     }//GEN-LAST:event_cbx_botonKeyPressed
 
     private void cbx_botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_botonActionPerformed
-      int tipo_cliente = cbx_boton.getSelectedIndex();
+        int tipo_cliente = cbx_boton.getSelectedIndex();
         if (tipo_cliente == 0) {
             query = "select * "
                     + "from clientes "
                     + "order by nombre asc";
         }
-        if (tipo_cliente==1) {
+        if (tipo_cliente == 1) {
             query = "select * "
                     + "from clientes "
                     + "where pago<venta "
                     + "order by nombre asc";
-            
+
         }
-        if (tipo_cliente==2) {
+        if (tipo_cliente == 2) {
             query = "select * "
                     + "from clientes "
                     + "where ultima_venta='1000-01-01' "
                     + "order by nombre asc";
-            
+
         }
 
-c_cliente.mostrar(t_clientes, query);
+        c_cliente.mostrar(t_clientes, query);
     }//GEN-LAST:event_cbx_botonActionPerformed
 
     private void txt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_buscarActionPerformed
@@ -282,21 +303,21 @@ c_cliente.mostrar(t_clientes, query);
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         jButton1.setEnabled(false);
-        
-          int id_cliente = Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString());
-          
+
+        int id_cliente = Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString());
+
         File miDir = new File(".");
         try {
             Map<String, Object> parametros = new HashMap<>();
             String path = miDir.getCanonicalPath();
-            String direccion = path + File.separator + "reports" + File.separator ;//+ "subreports" + File.separator;
-            
+            String direccion = path + File.separator + "reports" + File.separator;//+ "subreports" + File.separator;
+
             System.out.println(direccion);
             parametros.put("SUBREPORT_DIR", direccion);
             parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("p_id_cliente", id_cliente);
-                c_varios.ver_reporte("rpt_deudas_cliente", parametros);
+            c_varios.ver_reporte("rpt_deudas_cliente", parametros);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }
@@ -307,13 +328,13 @@ c_cliente.mostrar(t_clientes, query);
         try {
             Map<String, Object> parametros = new HashMap<>();
             String path = miDir.getCanonicalPath();
-            String direccion = path + File.separator + "reports" + File.separator ;//+ "subreports" + File.separator;
-            
+            String direccion = path + File.separator + "reports" + File.separator;//+ "subreports" + File.separator;
+
             System.out.println(direccion);
             parametros.put("SUBREPORT_DIR", direccion);
             parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
             parametros.put("REPORT_LOCALE", Locale.ENGLISH);
-                c_varios.ver_reporte("rpt_deudas_clientes_todos", parametros);
+            c_varios.ver_reporte("rpt_deudas_clientes_todos", parametros);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }
@@ -326,19 +347,32 @@ c_cliente.mostrar(t_clientes, query);
         frm_reg_cliente.c_cliente.setCodigo(0);
         frm_reg_cliente dialog = new frm_reg_cliente(f, true);
         dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);        
+        dialog.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btn_pagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pagoActionPerformed
+        btn_modificar.setEnabled(false);
+        btn_pago.setEnabled(false);
+        Frame f = JOptionPane.getRootFrame();
+        frm_ver_clientes_pagos.c_cliente.setCodigo(c_cliente.getCodigo());
+        frm_ver_clientes_pagos dialog = new frm_ver_clientes_pagos(f, true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_btn_pagoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_modificar;
+    private javax.swing.JButton btn_pago;
     private javax.swing.JComboBox cbx_boton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable t_clientes;
     private javax.swing.JTextField txt_buscar;
