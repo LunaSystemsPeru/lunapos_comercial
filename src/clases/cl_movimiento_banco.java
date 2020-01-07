@@ -199,12 +199,12 @@ public class cl_movimiento_banco {
             c_conectar.cerrar(st);
             c_conectar.cerrar(rs);
             tabla.setModel(tmodelo);
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(320);
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(122);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(120);
-            tabla.getColumnModel().getColumn(5).setPreferredWidth(120);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(420);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(80);
             c_varios.centrar_celda(tabla, 1);
             c_varios.derecha_celda(tabla, 3);
             c_varios.derecha_celda(tabla, 4);

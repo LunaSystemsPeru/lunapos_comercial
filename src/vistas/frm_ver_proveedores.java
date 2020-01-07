@@ -92,7 +92,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         jToolBar1.add(jSeparator2);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
-        jButton1.setText("ver Pagos Proveedor");
+        jButton1.setText("ver Pagos");
         jButton1.setEnabled(false);
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -230,25 +230,12 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jButton1.setEnabled(false);
-
+        Frame f = JOptionPane.getRootFrame();
         int id_proveedor = Integer.parseInt(t_proveedores.getValueAt(fila_seleccionada, 0).toString());
-
-        File miDir = new File(".");
-        try {
-            Map<String, Object> parametros = new HashMap<>();
-            String path = miDir.getCanonicalPath();
-            String direccion = path + File.separator + "reports" + File.separator;//+ "subreports" + File.separator;
-
-            System.out.println(direccion);
-            parametros.put("SUBREPORT_DIR", direccion);
-            parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
-            parametros.put("REPORT_LOCALE", Locale.ENGLISH);
-            parametros.put("p_id_proveedor", id_proveedor);
-            c_varios.ver_reporte("rpt_deudas_proveedor", parametros);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
-        }
+        frm_ver_proveedores_pagos.c_proveedor.setId_proveedor(id_proveedor);
+        frm_ver_proveedores_pagos dialog = new frm_ver_proveedores_pagos(f, true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -269,10 +256,10 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        frm_reg_proveedor modal=new frm_reg_proveedor(null, true);
-        frm_reg_proveedor.accion="registrar";
+        frm_reg_proveedor modal = new frm_reg_proveedor(null, true);
+        frm_reg_proveedor.accion = "registrar";
         modal.setLocationRelativeTo(this);
-        modal.setVisible(true); 
+        modal.setVisible(true);
     }//GEN-LAST:event_btn_agregarActionPerformed
 
 

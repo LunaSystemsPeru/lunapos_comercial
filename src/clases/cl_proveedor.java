@@ -52,7 +52,7 @@ public class cl_proveedor {
     }
 
     public void setRazon_social(String razon_social) {
-        this.razon_social = razon_social.replace("'","");
+        this.razon_social = razon_social.replace("'", "");
     }
 
     public String getDireccion() {
@@ -126,13 +126,13 @@ public class cl_proveedor {
         c_conectar.cerrar(st);
         return registrado;
     }
-    
-     public boolean modificar() {
+
+    public boolean modificar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
         String query = "update proveedor "
                 + "set razon_social = '" + razon_social + "', direccion ='" + direccion + "',condicion= '" + condicion + "',estado= '" + estado + "' "
-                + "where id_proveedor= '"+id_proveedor+"'";
+                + "where id_proveedor= '" + id_proveedor + "'";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
@@ -141,8 +141,8 @@ public class cl_proveedor {
         c_conectar.cerrar(st);
         return registrado;
     }
-     
-     public void obtener_codigo() {
+
+    public void obtener_codigo() {
         try {
             Statement st = c_conectar.conexion();
             String query = "select ifnull(max(id_proveedor) + 1, 1) as codigo "
@@ -201,14 +201,18 @@ public class cl_proveedor {
             tmodelo.addColumn("Nro Doc.");
             tmodelo.addColumn("Nombre Proveedor");
             tmodelo.addColumn("T. Compra");
+            tmodelo.addColumn("T. Pagado");
+            tmodelo.addColumn("T. Deuda");
 
             //Creando las filas para el JTable
             while (rs.next()) {
-                Object[] fila = new Object[4];
+                Object[] fila = new Object[6];
                 fila[0] = rs.getString("id_proveedor");
                 fila[1] = rs.getString("nro_documento");
                 fila[2] = rs.getString("razon_social");
-                fila[3] = rs.getString("tcompra");
+                fila[3] = rs.getDouble("tcompra");
+                fila[4] = rs.getDouble("tpagado");
+                fila[5] = rs.getDouble("tcompra") - rs.getDouble("tpagado");
 
                 tmodelo.addRow(fila);
             }
@@ -218,8 +222,12 @@ public class cl_proveedor {
             tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
             tabla.getColumnModel().getColumn(2).setPreferredWidth(550);
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(80);
             c_varios.derecha_celda(tabla, 3);
+            c_varios.derecha_celda(tabla, 4);
+            c_varios.derecha_celda(tabla, 5);
             tabla.setRowSorter(sorter);
 
         } catch (SQLException e) {

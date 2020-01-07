@@ -17,23 +17,22 @@ import javax.swing.table.TableRowSorter;
  *
  * @author luis
  */
-public class cl_cliente_pago {
-
+public class cl_proveedor_pago {
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
-
-    private int id_cliente;
+    
+    private int id_proveedor;
     private int id_movimiento;
 
-    public cl_cliente_pago() {
+    public cl_proveedor_pago() {
     }
 
-    public int getId_cliente() {
-        return id_cliente;
+    public int getId_proveedor() {
+        return id_proveedor;
     }
 
-    public void setId_cliente(int id_cliente) {
-        this.id_cliente = id_cliente;
+    public void setId_proveedor(int id_proveedor) {
+        this.id_proveedor = id_proveedor;
     }
 
     public int getId_movimiento() {
@@ -43,12 +42,12 @@ public class cl_cliente_pago {
     public void setId_movimiento(int id_movimiento) {
         this.id_movimiento = id_movimiento;
     }
-
+    
     public boolean registrar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
-        String query = "insert into clientes_pagos "
-                + "values ('" + id_cliente + "', '" + id_movimiento + "')";
+        String query = "insert into proveedor_pago "
+                + "values ('" + id_proveedor + "', '" + id_movimiento + "')";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
@@ -60,8 +59,8 @@ public class cl_cliente_pago {
     public boolean eliminar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
-        String query = "delete from clientes_pagos "
-                + "where id_cliente = '" + id_cliente + "' and id_movimiento = '" + id_movimiento + "'";
+        String query = "delete from proveedor_pago "
+                + "where id_proveedor = '" + id_proveedor + "' and id_movimiento = '" + id_movimiento + "'";
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             registrado = true;
@@ -87,7 +86,7 @@ public class cl_cliente_pago {
             tmodelo.addColumn("ID.");
             tmodelo.addColumn("Fecha");
             tmodelo.addColumn("Descripcion");
-            tmodelo.addColumn("Ingresa");
+            tmodelo.addColumn("Sale");
             tmodelo.addColumn("Saldo");
 
             int contar = 0;
@@ -95,12 +94,12 @@ public class cl_cliente_pago {
             //Creando las filas para el JTable
             while (rs.next()) {
                 contar++;
-                saldo += rs.getDouble("ingresa");
+                saldo += rs.getDouble("sale");
                 Object[] fila = new Object[5];
                 fila[0] = rs.getString("id_movimiento");
                 fila[1] = rs.getString("fecha");
-                fila[2] = "SALDO A CUENTA";
-                fila[3] = c_varios.formato_totales(rs.getDouble("ingresa"));
+                fila[2] = rs.getString("descripcion");
+                fila[3] = c_varios.formato_totales(rs.getDouble("sale"));
                 fila[4] = c_varios.formato_totales(saldo);
                 tmodelo.addRow(fila);
             }
@@ -124,4 +123,5 @@ public class cl_cliente_pago {
             System.out.print(e);
         }
     }
+    
 }
