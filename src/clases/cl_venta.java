@@ -266,7 +266,7 @@ public class cl_venta {
 
     public ResultSet ventas_periodo(String inicio, String fin) {
         String query = "select monthname(fecha) as nombremes, month(fecha) as mes, year(fecha) as anio "
-                + "from ventas where id_cliente = 311 and fecha between '" + inicio + "' and '" + fin + "' "
+                + "from ventas where id_cliente = '" + id_cliente + "' and fecha between '" + inicio + "' and '" + fin + "' "
                 + "group by year(fecha), month(fecha) "
                 + "order by fecha asc";
         System.out.println(query);
@@ -275,7 +275,7 @@ public class cl_venta {
         return rs;
     }
 
-    public ResultSet ventas_periodo_cuenta(int anio, int mes) {
+    public ResultSet ventas_periodo_cuenta(int mes, int anio) {
         String query = "select v.fecha, v.serie, v.numero, ds.abreviado, concat(pc.nombre, ' ', p.descripcion) as descripcion, pv.cantidad, pv.precio "
                 + "from productos_ventas as pv "
                 + "inner join ventas v on pv.id_ventas = v.id_ventas "
@@ -284,6 +284,7 @@ public class cl_venta {
                 + "inner join productos_clasificacion pc on p.id_clasificacion = pc.id_clasificacion "
                 + "where v.id_cliente = '" + id_cliente + "' and v.estado != 3 and month(v.fecha) = '" + mes + "' and year(v.fecha) = '" + anio + "' "
                 + "order by v.fecha asc, pc.nombre asc, p.descripcion asc";
+        System.out.println(query);
         Statement st = c_conectar.conexion();
         ResultSet rs = c_conectar.consulta(st, query);
         return rs;
