@@ -35,7 +35,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         query = "select * "
                 + "from clientes "
-                + "where (venta - pago) > 0 "
+                + "where venta != pago "
                 + "order by nombre asc";
 
         c_cliente.mostrar(t_clientes, query);
@@ -63,7 +63,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btn_pago = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         btn_cerrar = new javax.swing.JButton();
 
@@ -143,7 +142,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         jToolBar1.add(jSeparator1);
 
         btn_pago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/coins.png"))); // NOI18N
-        btn_pago.setText("Agregar Pago");
+        btn_pago.setText("Ver Cobros");
         btn_pago.setEnabled(false);
         btn_pago.setFocusable(false);
         btn_pago.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -155,19 +154,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btn_pago);
         jToolBar1.add(jSeparator2);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
-        jButton1.setText("por Cobrar Cliente");
-        jButton1.setEnabled(false);
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton1);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
         jButton2.setText("por Cobrar Todos");
@@ -251,7 +237,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             c_cliente.setCodigo(Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString()));
             btn_modificar.setEnabled(true);
             btn_pago.setEnabled(true);
-            jButton1.setEnabled(true);
         }
     }//GEN-LAST:event_t_clientesMouseClicked
 
@@ -301,28 +286,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_buscarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jButton1.setEnabled(false);
-
-        int id_cliente = Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString());
-
-        File miDir = new File(".");
-        try {
-            Map<String, Object> parametros = new HashMap<>();
-            String path = miDir.getCanonicalPath();
-            String direccion = path + File.separator + "reports" + File.separator;//+ "subreports" + File.separator;
-
-            System.out.println(direccion);
-            parametros.put("SUBREPORT_DIR", direccion);
-            parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
-            parametros.put("REPORT_LOCALE", Locale.ENGLISH);
-            parametros.put("p_id_cliente", id_cliente);
-            c_varios.ver_reporte("rpt_deudas_cliente", parametros);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         File miDir = new File(".");
         try {
@@ -366,7 +329,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_modificar;
     private javax.swing.JButton btn_pago;
     private javax.swing.JComboBox cbx_boton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;

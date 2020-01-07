@@ -29,6 +29,9 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
 
     cl_varios c_varios = new cl_varios();
 
+    String query = "";
+    int fila_seleccionada;
+
     /**
      * Creates new form frm_ver_clientes_pagos
      */
@@ -41,7 +44,7 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
 
         txt_cliente.setText(c_cliente.getNombre());
 
-        String query = "select bm.id_movimiento, b.nombre, bm.fecha, bm.ingresa "
+        query = "select bm.id_movimiento, b.nombre, bm.fecha, bm.ingresa "
                 + "from clientes_pagos as cp "
                 + "inner join bancos_movimientos bm on cp.id_movimiento = bm.id_movimiento "
                 + "inner join bancos b on bm.id_bancos = b.id_bancos "
@@ -249,6 +252,11 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
         btn_eliminar.setFocusable(false);
         btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btn_eliminar);
         jToolBar1.add(jSeparator2);
 
@@ -288,6 +296,11 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        t_pagos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                t_pagosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(t_pagos);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -455,12 +468,33 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
         c_pagos.setId_movimiento(c_movimiento.getId_movimiento());
         c_pagos.registrar();
 
+        c_pagos.mostrar(t_pagos, query);
         jd_pagar.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         jd_pagar.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void t_pagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_pagosMouseClicked
+        if (evt.getClickCount() == 2) {
+            fila_seleccionada = t_pagos.getSelectedRow();
+            btn_eliminar.setEnabled(true);
+            c_pagos.setId_movimiento(Integer.parseInt(t_pagos.getValueAt(fila_seleccionada, 0).toString()));
+        }
+    }//GEN-LAST:event_t_pagosMouseClicked
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Pago Seleccionado?");
+        btn_eliminar.setEnabled(false);
+
+        if (JOptionPane.OK_OPTION == confirmado) {
+            c_pagos.eliminar();
+            c_movimiento.setId_movimiento(c_pagos.getId_movimiento());
+            c_movimiento.eliminar();
+            c_pagos.mostrar(t_pagos, query);
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
 
     /**
      * @param args the command line arguments

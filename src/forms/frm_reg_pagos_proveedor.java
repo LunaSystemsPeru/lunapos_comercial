@@ -24,7 +24,7 @@ import javax.swing.JTextField;
  *
  * @author Usuario
  */
-public class frm_reg_pagos_cliente extends javax.swing.JDialog {
+public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
 
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
@@ -38,13 +38,13 @@ public class frm_reg_pagos_cliente extends javax.swing.JDialog {
     /**
      * Creates new form frm_reg_pagos_cliente
      */
-    public frm_reg_pagos_cliente(java.awt.Frame parent, boolean modal) {
+    public frm_reg_pagos_proveedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         cargar_clientes();
     }
 
-    public frm_reg_pagos_cliente() {
+    public frm_reg_pagos_proveedor() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -353,20 +353,21 @@ public class frm_reg_pagos_cliente extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frm_reg_pagos_cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frm_reg_pagos_proveedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frm_reg_pagos_cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frm_reg_pagos_proveedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frm_reg_pagos_cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frm_reg_pagos_proveedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frm_reg_pagos_cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frm_reg_pagos_proveedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                frm_reg_pagos_cliente dialog = new frm_reg_pagos_cliente(new javax.swing.JFrame(), true);
+                frm_reg_pagos_proveedor dialog = new frm_reg_pagos_proveedor(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
