@@ -317,32 +317,19 @@ public class cl_venta {
             while (rs.next()) {
                 int iestado = rs.getInt("estado");
                 int itipo_venta = rs.getInt("tipo_venta");
-                String sestado = "";
+                String sestado = "ACTIVO";
 
                 if (itipo_venta == 1) {
-                    if (iestado == 1) {
-                        sestado = "PAGADO";
-                    }
-                    if (iestado == 2) {
-                        sestado = "POR COBRAR";
-                    }
+                    
                     if (iestado == 3) {
                         sestado = "ANULADO";
                     }
                 }
 
                 if (itipo_venta == 2) {
-                    if (iestado == 1) {
-                        sestado = "POR ENTREGAR";
-                    }
-                    if (iestado == 2) {
-                        sestado = "SEPARADO";
-                    }
+                    
                     if (iestado == 3) {
                         sestado = "ANULADO";
-                    }
-                    if (iestado == 4) {
-                        sestado = "ENTREGADO";
                     }
                 }
                 Object[] fila = new Object[9];
@@ -367,7 +354,7 @@ public class cl_venta {
             tabla.getColumnModel().getColumn(4).setPreferredWidth(110);
             tabla.getColumnModel().getColumn(5).setPreferredWidth(110);
             tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(7).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(7).setPreferredWidth(0);
             
             //tabla.setDefaultRenderer(Object.class, new render_ventas());
             //   t_productos.setRowSorter(sorter);

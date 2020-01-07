@@ -96,8 +96,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
 
         m_t_documentos.cbx_documentos_venta(cbx_tipo_doc);
         getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
-        jd_fin_venta.setBackground(Configuracion.COLOR_FORMULARIO_1);
         jd_modificar_item.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        jd_fin_venta.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         jPanel7.setBackground(Configuracion.COLOR_FORMULARIO_1);
     }
 
@@ -139,6 +139,9 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
 
     private void calcular_vuelto() {
         double efectivo = Double.parseDouble(txt_j_efectivo.getText());
+        double deuda = Double.parseDouble(text_deudatotal.getText());
+        txt_j_por_pagar.setText(deuda-efectivo+"");
+        /*
         double total = calcular_total();
         double suma_pago = efectivo;
 
@@ -153,16 +156,16 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 final_efectivo = total;
             }
             vuelto = suma_pago - total;
-            lbl_alerta.setText("Alerta: --");
+           // lbl_alerta.setText("Alerta: --");
         }
         if (total > suma_pago) {
             final_estado = 2;
             faltante = total - suma_pago;
-            lbl_alerta.setText("Alerta: El monto es menor al total. Vta. al credito");
+            //lbl_alerta.setText("Alerta: El monto es menor al total. Vta. al credito");
         }
 
-        txt_j_vuelto.setText(c_varios.formato_numero(vuelto));
-        txt_j_faltante.setText(c_varios.formato_numero(faltante));
+        txt_j_por_pagar.setText(c_varios.formato_numero(vuelto));
+        txt_j_faltante.setText(c_varios.formato_numero(faltante));*/
 
     }
 
@@ -289,6 +292,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                         String cnombre = ((cla_cliente) itemSelected).getNombre();
                         System.out.println("cliente seleccionado " + cnombre);
                         c_cliente.setCodigo(ccodigo);
+                        c_cliente.comprobar_cliente();
+                        lab_tatal_deuda.setText((c_cliente.getVenta()-c_cliente.getPago())+""); 
                     } else {
                         System.out.println("El item es de un tipo desconocido");
                     }
@@ -304,7 +309,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 int id_cliente = rs.getInt("id_cliente");
                 String descripcion = "";
                 if (tipo == 3) {
-                    descripcion = rs.getString("nombre") + " | " + rs.getString("documento");
+                    descripcion = rs.getString("nombre") ;
                 }
                 if (tipo == 2) {
                     descripcion = rs.getString("documento");
@@ -382,41 +387,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     }
 
     private void llenar_cobros() {
-        double total = final_total;
-        double efectivo = final_efectivo;
-        double tarjeta = final_tarjeta;
-        double vale = final_vale;
-
-        c_cobro.setId_venta(c_venta.getId_venta());
-        c_cobro.setFecha(c_venta.getFecha());
-
-        if (efectivo > 0) {
-            c_cobro.setId_cobro(c_cobro.obtener_codigo());
-            if (efectivo > total) {
-                c_cobro.setMonto(total);
-            } else {
-                c_cobro.setMonto(efectivo);
-            }
-            c_cobro.setTipo_pago(1);
-            c_cobro.registrar();
-        }
-
-        if (tarjeta > 0) {
-            c_cobro.setId_cobro(c_cobro.obtener_codigo());
-            c_cobro.setMonto(tarjeta);
-            c_cobro.setTipo_pago(2);
-            c_cobro.registrar();
-        }
-
-        if (vale > 0) {
-            c_cobro.setId_cobro(c_cobro.obtener_codigo());
-            c_cobro.setMonto(vale);
-            c_cobro.setTipo_pago(3);
-            c_cobro.registrar();
-
-            c_cupon.setUsado(vale);
-            c_cupon.actualizar_cupon();
-        }
+        
 
     }
 
@@ -439,9 +410,10 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         txt_j_faltante = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        txt_j_vuelto = new javax.swing.JTextField();
+        txt_j_por_pagar = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        text_deudatotal = new javax.swing.JTextField();
         btn_pago = new javax.swing.JButton();
-        lbl_alerta = new javax.swing.JLabel();
         jd_modificar_item = new javax.swing.JDialog();
         jPanel7 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -484,6 +456,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lab_tatal_deuda = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_detalle = new javax.swing.JTable();
@@ -508,7 +482,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_pago_venta, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                    .addComponent(lbl_pago_venta, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -518,11 +492,13 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_pago_venta, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                .addComponent(lbl_pago_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 44, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jLabel12.setText("Efectivo:");
+        jPanel6.setBackground(Configuracion.COLOR_FORMULARIO_1);
+
+        jLabel12.setText("A Cuenta:");
 
         txt_j_efectivo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_j_efectivo.setText("0.00");
@@ -532,56 +508,66 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel15.setText("Faltante:");
+        jLabel15.setText("Deuda Total:");
 
         txt_j_faltante.setEditable(false);
         txt_j_faltante.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_j_faltante.setText("0.00");
         txt_j_faltante.setFocusable(false);
 
-        jLabel18.setText("Vuelto");
+        jLabel18.setText("Por Pagar");
 
-        txt_j_vuelto.setEditable(false);
-        txt_j_vuelto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txt_j_vuelto.setText("0.00");
-        txt_j_vuelto.setFocusable(false);
+        txt_j_por_pagar.setEditable(false);
+        txt_j_por_pagar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txt_j_por_pagar.setText("0.00");
+        txt_j_por_pagar.setFocusable(false);
+
+        jLabel16.setText("Deuda:");
+
+        text_deudatotal.setEditable(false);
+        text_deudatotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        text_deudatotal.setText("0.00");
+        text_deudatotal.setFocusable(false);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(176, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_j_efectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_j_vuelto)
-                            .addComponent(txt_j_faltante, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(txt_j_efectivo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txt_j_por_pagar)
+                        .addComponent(txt_j_faltante, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(text_deudatotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_j_efectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_j_efectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_j_faltante, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_j_faltante, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(text_deudatotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_j_vuelto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_j_por_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -593,9 +579,6 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             }
         });
 
-        lbl_alerta.setForeground(java.awt.Color.red);
-        lbl_alerta.setText("Alerta: ---");
-
         javax.swing.GroupLayout jd_fin_ventaLayout = new javax.swing.GroupLayout(jd_fin_venta.getContentPane());
         jd_fin_venta.getContentPane().setLayout(jd_fin_ventaLayout);
         jd_fin_ventaLayout.setHorizontalGroup(
@@ -606,9 +589,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                     .addGroup(jd_fin_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lbl_alerta, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
                     .addComponent(btn_pago))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jd_fin_ventaLayout.setVerticalGroup(
             jd_fin_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -619,8 +601,6 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_pago, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_alerta)
                 .addContainerGap())
         );
 
@@ -776,11 +756,11 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             }
         });
         txt_cantidad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_cantidadKeyTyped(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_cantidadKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_cantidadKeyTyped(evt);
             }
         });
 
@@ -788,7 +768,6 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
 
         jLabel34.setText("Precio Total:");
 
-        txt_cant_actual.setForeground(new java.awt.Color(0, 0, 0));
         txt_cant_actual.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_cant_actual.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txt_cant_actual.setEnabled(false);
@@ -810,7 +789,6 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
 
         jLabel3.setText("P. Unitario");
 
-        txt_precioUnitario.setForeground(new java.awt.Color(0, 0, 0));
         txt_precioUnitario.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_precioUnitario.setToolTipText("");
         txt_precioUnitario.setDisabledTextColor(new java.awt.Color(0, 0, 0));
@@ -821,11 +799,11 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             }
         });
         txt_precioUnitario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_precioUnitarioKeyTyped(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_precioUnitarioKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_precioUnitarioKeyTyped(evt);
             }
         });
 
@@ -852,21 +830,23 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_precioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(33, 33, 33)
+                                .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txt_precioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel34)
                             .addComponent(jLabel10))
                         .addGap(27, 27, 27)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_cant_actual, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_precio_total, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txt_precio_total, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_cant_actual, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(boton_agregar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -883,22 +863,18 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_buscar_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(txt_precioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_cant_actual, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_cant_actual, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_precio_total, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(boton_agregar)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_precio_total, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boton_agregar)
+                    .addComponent(jLabel3)
+                    .addComponent(txt_precioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -924,8 +900,6 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             }
         });
 
-        cbx_tipo_venta.setBackground(new java.awt.Color(255, 255, 255));
-        cbx_tipo_venta.setForeground(new java.awt.Color(0, 0, 0));
         cbx_tipo_venta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VENTA", "SEPARACION" }));
         cbx_tipo_venta.setEnabled(false);
         cbx_tipo_venta.addActionListener(new java.awt.event.ActionListener() {
@@ -939,8 +913,6 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             }
         });
 
-        cbx_tipo_doc.setBackground(new java.awt.Color(255, 255, 255));
-        cbx_tipo_doc.setForeground(new java.awt.Color(0, 0, 0));
         cbx_tipo_doc.setEnabled(false);
         cbx_tipo_doc.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -958,17 +930,14 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             }
         });
 
-        txt_serie.setForeground(new java.awt.Color(0, 0, 0));
         txt_serie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_serie.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txt_serie.setEnabled(false);
 
-        txt_numero.setForeground(new java.awt.Color(0, 0, 0));
         txt_numero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_numero.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txt_numero.setEnabled(false);
 
-        txt_doc_cliente.setForeground(new java.awt.Color(0, 0, 0));
         txt_doc_cliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_doc_cliente.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txt_doc_cliente.setEnabled(false);
@@ -986,7 +955,6 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             }
         });
 
-        txt_nom_cliente.setForeground(new java.awt.Color(0, 0, 0));
         txt_nom_cliente.setEnabled(false);
         txt_nom_cliente.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -1042,6 +1010,11 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 btn_grabarActionPerformed(evt);
             }
         });
+        btn_grabar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btn_grabarKeyPressed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cross.png"))); // NOI18N
         jButton3.setText("Cancelar");
@@ -1060,6 +1033,10 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         });
 
         jLabel7.setText("Buscar cliente");
+
+        jLabel11.setText("Deuda de Cliente:");
+
+        lab_tatal_deuda.setText("0");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1092,7 +1069,11 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txt_numero, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txt_fecha)))
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lab_tatal_deuda, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -1123,9 +1104,13 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_nom_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(lab_tatal_deuda))
+                .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
+                .addGap(43, 43, 43)
                 .addComponent(btn_grabar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1167,7 +1152,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel23)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1230,7 +1215,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                         txt_cantidad.setText("1");
                         txt_precioUnitario.setText(c_producto.getPrecio() + "");
                         txt_precioUnitario.setEnabled(true);
-                        txt_precioUnitario.requestFocus();
+                        txt_cantidad.setEnabled(true);
+                        txt_cantidad.requestFocus();
                         txt_precioUnitario.selectAll();
                         txt_cant_actual.setText(c_varios.formato_numero(c_producto_almacen.getCtotal()));
                     } else {
@@ -1287,8 +1273,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                         limpiar_buscar();
                     } else {
                         calcular_subtotal();
-                        txt_precio_total.setEnabled(true);
-                        txt_precio_total.requestFocus();
+                        txt_precioUnitario.setEnabled(true);
+                        txt_precioUnitario.requestFocus();
                     }
                 } else {
                     //provisionalmente se quita el bloqueo de vender sin cantidad
@@ -1297,8 +1283,9 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                     //     limpiar_buscar();
                     // } else {
                     calcular_subtotal();
-                    boton_agregar.setEnabled(true);
-                    boton_agregar.requestFocus();
+                    txt_precioUnitario.setEnabled(true);
+                        txt_precioUnitario.requestFocus();
+                    
                     // }
                 }
             }
@@ -1401,6 +1388,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 //validar cliente
                 if (c_cliente.comprobar_cliente()) {
                     txt_doc_cliente.setText(c_cliente.getDocumento());
+                    
                     cargar_productos(1);
                     txt_buscar_producto.setEnabled(true);
                     txt_buscar_producto.requestFocus();
@@ -1423,6 +1411,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         final_total = calcular_total();
         txt_j_efectivo.selectAll();
         txt_j_efectivo.requestFocus();
+        txt_j_faltante.setText(lab_tatal_deuda.getText()); 
+        text_deudatotal.setText((c_cliente.getVenta()-c_cliente.getPago() + final_total)+"");
 
         jd_fin_venta.setVisible(true);
     }//GEN-LAST:event_btn_grabarActionPerformed
@@ -1433,6 +1423,9 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             if (texto.length() > 0 && c_varios.esDecimal(texto)) {
                 calcular_vuelto();
                 double monto = Double.parseDouble(texto);
+                
+                txt_j_por_pagar.setText((Double.parseDouble(text_deudatotal.getText()))-monto+"");
+                final_total=(Double.parseDouble(text_deudatotal.getText()));
                 if (monto >= final_total) {
                     btn_pago.setEnabled(true);
                     btn_pago.requestFocus();
@@ -1707,8 +1700,10 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     private void txt_precioUnitarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_precioUnitarioKeyPressed
         if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
             if (txt_precioUnitario.getText().length() > 0) {
-                txt_cantidad.setEnabled(true);
-                txt_cantidad.requestFocus();
+                //txt_cantidad.setEnabled(true);
+                //txt_cantidad.requestFocus();
+                boton_agregar.setEnabled(true);
+                    boton_agregar.requestFocus();
                 txt_cantidad.selectAll();
             }
         }
@@ -1779,6 +1774,12 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_boton_agregarKeyPressed
 
+    private void btn_grabarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_grabarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btn_grabar.doClick();
+        }
+    }//GEN-LAST:event_btn_grabarKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton boton_agregar;
@@ -1792,8 +1793,10 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
@@ -1819,11 +1822,12 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JDialog jd_fin_venta;
     private javax.swing.JDialog jd_modificar_item;
-    private javax.swing.JLabel lbl_alerta;
+    private javax.swing.JLabel lab_tatal_deuda;
     private javax.swing.JLabel lbl_ayuda;
     private javax.swing.JLabel lbl_pago_venta;
     private javax.swing.JLabel lbl_total_venta;
     private javax.swing.JTable t_detalle;
+    private javax.swing.JTextField text_deudatotal;
     private javax.swing.JTextField txt_buscar_producto;
     private javax.swing.JTextField txt_cant_actual;
     private javax.swing.JTextField txt_cantidad;
@@ -1831,7 +1835,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txt_fecha;
     private javax.swing.JTextField txt_j_efectivo;
     private javax.swing.JTextField txt_j_faltante;
-    private javax.swing.JTextField txt_j_vuelto;
+    private javax.swing.JTextField txt_j_por_pagar;
     private javax.swing.JTextField txt_jd_cantidad;
     private javax.swing.JTextField txt_jd_descripcion;
     private javax.swing.JTextField txt_jd_idproducto;
