@@ -75,6 +75,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     public frm_ver_ventas() {
         initComponents();
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        
         query = "select v.id_ventas, v.fecha, c.documento, c.nombre, ds.abreviado, v.serie, v.numero, v.total, v.pagado, u.username, v.estado, v.tipo_venta "
                 + "from ventas as v "
                 + "inner join clientes as c on c.id_cliente = v.id_cliente "
@@ -95,7 +96,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         
         for (int i = 0; i < contar_filar; i++) {
             total_ventas = total_ventas + Double.parseDouble(t_ventas.getValueAt(i, 4).toString());
-            total_pagados = total_pagados + Double.parseDouble(t_ventas.getValueAt(i, 5).toString());
+            //total_pagados = total_pagados + Double.parseDouble(t_ventas.getValueAt(i, 5).toString());
         }
         
         txt_total_ventas.setText(c_varios.formato_totales(total_ventas));
@@ -139,8 +140,6 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         btn_jd_salir = new javax.swing.JButton();
         txt_jd_total = new javax.swing.JTextField();
         txt_jd_fecha = new javax.swing.JTextField();
-        lbl_pagado = new javax.swing.JLabel();
-        txt_jd_pagado = new javax.swing.JTextField();
         jd_ver_productos = new javax.swing.JDialog();
         jLabel8 = new javax.swing.JLabel();
         txt_detalle = new javax.swing.JTextField();
@@ -249,12 +248,6 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         txt_jd_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_jd_fecha.setText("26/10/2018");
 
-        lbl_pagado.setText("Pagado:");
-
-        txt_jd_pagado.setEditable(false);
-        txt_jd_pagado.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txt_jd_pagado.setText("200.00");
-
         javax.swing.GroupLayout jd_anular_documentoLayout = new javax.swing.GroupLayout(jd_anular_documento.getContentPane());
         jd_anular_documento.getContentPane().setLayout(jd_anular_documentoLayout);
         jd_anular_documentoLayout.setHorizontalGroup(
@@ -273,11 +266,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txt_jd_fecha)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbl_pagado)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_jd_pagado, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 252, Short.MAX_VALUE))
+                        .addGap(0, 420, Short.MAX_VALUE))
                     .addGroup(jd_anular_documentoLayout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -299,9 +288,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jd_anular_documentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_jd_total, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_pagado, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_jd_pagado, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_jd_total, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -561,10 +548,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
         txt_doc_venta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_doc_venta.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txt_doc_ventaInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         txt_doc_venta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -867,12 +854,12 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 desactivar_botones();
                 
                 double total = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
-                double pagado = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 5).toString());
+                //double pagado = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 5).toString());
                 jd_anular_documento.setModal(true);
                 jd_anular_documento.setSize(691, 249);
                 jd_anular_documento.setLocationRelativeTo(null);
                 txt_jd_total.setText(c_varios.formato_numero(total));
-                txt_jd_pagado.setText(c_varios.formato_numero(pagado));
+                //txt_jd_pagado.setText(c_varios.formato_numero(pagado));
                 txt_jd_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
                 
                 txt_jd_motivo.requestFocus();
@@ -942,7 +929,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         if (fila_seleccionada > -1) {
             desactivar_botones();
             //cargar datos
-            int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 8).toString());
+            int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 7).toString());
             
             String venta = t_ventas.getValueAt(fila_seleccionada, 2).toString() + " | " + t_ventas.getValueAt(fila_seleccionada, 3).toString();
             
@@ -1269,7 +1256,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
     private void btn_imprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirActionPerformed
         //cargar datos venta
-        int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 8).toString());
+        int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 7).toString());
         c_venta.setId_venta(id_venta);
         c_venta.setId_almacen(id_almacen);
         c_venta.validar_venta();
@@ -1424,7 +1411,6 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private javax.swing.JDialog jd_reg_cobro;
     private javax.swing.JDialog jd_ver_cobros;
     private javax.swing.JDialog jd_ver_productos;
-    private javax.swing.JLabel lbl_pagado;
     private javax.swing.JTable t_cobros;
     private javax.swing.JTable t_detalle;
     private javax.swing.JTable t_ventas;
@@ -1439,7 +1425,6 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txt_jd_cobro_documento;
     private javax.swing.JTextField txt_jd_fecha;
     private javax.swing.JTextField txt_jd_motivo;
-    private javax.swing.JTextField txt_jd_pagado;
     private javax.swing.JTextField txt_jd_total;
     private javax.swing.JFormattedTextField txt_pago_fecha;
     private javax.swing.JTextField txt_pago_monto;

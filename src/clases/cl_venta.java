@@ -309,7 +309,6 @@ public class cl_venta {
             tmodelo.addColumn("Documento");
             tmodelo.addColumn("Cliente");
             tmodelo.addColumn("Total");
-            tmodelo.addColumn("Pagado");
             tmodelo.addColumn("Vendedor");
             tmodelo.addColumn("Estado");
             tmodelo.addColumn("_idventa");
@@ -318,32 +317,19 @@ public class cl_venta {
             while (rs.next()) {
                 int iestado = rs.getInt("estado");
                 int itipo_venta = rs.getInt("tipo_venta");
-                String sestado = "";
+                String sestado = "ACTIVO";
 
                 if (itipo_venta == 1) {
-                    if (iestado == 1) {
-                        sestado = "PAGADO";
-                    }
-                    if (iestado == 2) {
-                        sestado = "POR COBRAR";
-                    }
+                    
                     if (iestado == 3) {
                         sestado = "ANULADO";
                     }
                 }
 
                 if (itipo_venta == 2) {
-                    if (iestado == 1) {
-                        sestado = "POR ENTREGAR";
-                    }
-                    if (iestado == 2) {
-                        sestado = "SEPARADO";
-                    }
+                    
                     if (iestado == 3) {
                         sestado = "ANULADO";
-                    }
-                    if (iestado == 4) {
-                        sestado = "ENTREGADO";
                     }
                 }
                 Object[] fila = new Object[9];
@@ -352,10 +338,9 @@ public class cl_venta {
                 fila[2] = rs.getString("abreviado") + " | " + c_varios.ceros_izquieda_letras(4, rs.getString("serie")) + " - " + c_varios.ceros_izquieda_numero(7, rs.getInt("numero"));
                 fila[3] = rs.getString("documento") + " | " + rs.getString("nombre");
                 fila[4] = c_varios.formato_numero(rs.getDouble("total"));
-                fila[5] = c_varios.formato_numero(rs.getDouble("pagado"));
-                fila[6] = rs.getString("username");
-                fila[7] = sestado;
-                fila[8] = rs.getInt("id_ventas");
+                fila[5] = rs.getString("username");
+                fila[6] = sestado;
+                fila[7] = rs.getInt("id_ventas");
 
                 tmodelo.addRow(fila);
             }
@@ -369,8 +354,9 @@ public class cl_venta {
             tabla.getColumnModel().getColumn(4).setPreferredWidth(110);
             tabla.getColumnModel().getColumn(5).setPreferredWidth(110);
             tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(7).setPreferredWidth(150);
-            tabla.setDefaultRenderer(Object.class, new render_ventas());
+            tabla.getColumnModel().getColumn(7).setPreferredWidth(0);
+            
+            //tabla.setDefaultRenderer(Object.class, new render_ventas());
             //   t_productos.setRowSorter(sorter);
 
         } catch (SQLException e) {

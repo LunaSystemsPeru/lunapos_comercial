@@ -226,7 +226,6 @@ public class cl_ingresos {
             
             tmodelo.addColumn("Usuario");
             tmodelo.addColumn("Total");
-            tmodelo.addColumn("Pagado");
             
             int contar = 0;
             //Creando las filas para el JTable
@@ -240,7 +239,6 @@ public class cl_ingresos {
                 
                 fila[4] = rs.getString("username");
                 fila[5] = c_varios.formato_numero(rs.getDouble("total"));
-                fila[6] = c_varios.formato_numero(rs.getDouble("tpagado"));
                 tmodelo.addRow(fila);
             }
             
@@ -256,7 +254,6 @@ public class cl_ingresos {
             tabla.getColumnModel().getColumn(3).setPreferredWidth(500);
             tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
             tabla.getColumnModel().getColumn(5).setPreferredWidth(120);
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(120);
             tabla.setRowSorter(sorter);
             //c_varios.derecha_celda(tabla, 4);
 

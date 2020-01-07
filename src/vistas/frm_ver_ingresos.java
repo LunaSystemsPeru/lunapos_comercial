@@ -39,6 +39,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         initComponents();
 
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        jd_detalle.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         String periodo = c_varios.obtener_periodo();
         query = "select i.id_ingreso, i.fecha, p.nro_documento, p.razon_social, ds.abreviado, i.serie, i.numero, i.total, u.username, i.tpagado   "
                 + "from ingresos as i "
@@ -51,7 +52,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         //c_ingreso.mostrar(t_ingresos, query);
         cargar_tabla();
         sumar_totales();
-        t_ingresos.setDefaultRenderer(Object.class, new CeldaColor());
+        //t_ingresos.setDefaultRenderer(Object.class, new CeldaColor());
         jd_ver_pagos.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
 
     }
@@ -79,23 +80,20 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         int total_compras = t_ingresos.getRowCount();
         double suma_deuda = 0;
         for (int i = 0; i < total_compras; i++) {
-            suma_deuda += Double.parseDouble(t_ingresos.getValueAt(i, 6).toString());
+            suma_deuda += Double.parseDouble(t_ingresos.getValueAt(i, 5).toString());
         }
         lbl_total_deuda.setText(c_varios.formato_totales(suma_deuda));
     }
 
     private void activar_botones() {
         btn_detalle.setEnabled(true);
-        btn_pdf.setEnabled(true);
+        
         btn_eliminar.setEnabled(true);
-        btn_pagos.setEnabled(true);
     }
 
     private void desactivar_botones() {
         btn_detalle.setEnabled(false);
-        btn_pdf.setEnabled(false);
         btn_eliminar.setEnabled(false);
-        btn_pagos.setEnabled(false);
     }
 
     private void sumar_totales() {
@@ -158,8 +156,6 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         jToolBar1 = new javax.swing.JToolBar();
         btn_agregar = new javax.swing.JButton();
         btn_detalle = new javax.swing.JButton();
-        btn_pdf = new javax.swing.JButton();
-        btn_pagos = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btn_cerrar = new javax.swing.JButton();
@@ -530,32 +526,6 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btn_detalle);
 
-        btn_pdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/exportar.png"))); // NOI18N
-        btn_pdf.setText("Ver PDF");
-        btn_pdf.setEnabled(false);
-        btn_pdf.setFocusable(false);
-        btn_pdf.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btn_pdf.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btn_pdf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_pdfActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btn_pdf);
-
-        btn_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/coins.png"))); // NOI18N
-        btn_pagos.setText("Ver Pagos");
-        btn_pagos.setEnabled(false);
-        btn_pagos.setFocusable(false);
-        btn_pagos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btn_pagos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btn_pagos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_pagosActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btn_pagos);
-
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
         btn_eliminar.setEnabled(false);
@@ -656,8 +626,8 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txt_tot_ingresos, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_fec_inicio, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                        .addComponent(txt_fec_fin, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)))
+                        .addComponent(txt_fec_inicio)
+                        .addComponent(txt_fec_fin)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -821,10 +791,6 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cbx_buscarKeyPressed
 
-    private void btn_pdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pdfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_pdfActionPerformed
-
     private void txt_fec_inicioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fec_inicioKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txt_fec_inicio.getText().length() == 10) {
@@ -856,24 +822,6 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
             sumar_totales();
         }
     }//GEN-LAST:event_txt_fec_finKeyPressed
-
-    private void btn_pagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pagosActionPerformed
-        desactivar_botones();
-        txt_pago_documento.setText(t_ingresos.getValueAt(fila_seleccionada, 2).toString());
-        txt_pago_fecha.setText(t_ingresos.getValueAt(fila_seleccionada, 1).toString());
-        txt_pago_proveedor.setText(t_ingresos.getValueAt(fila_seleccionada, 3).toString());
-        txt_pago_total.setText(t_ingresos.getValueAt(fila_seleccionada, 5).toString());
-        int idIngreso = Integer.parseInt(t_ingresos.getValueAt(fila_seleccionada, 0).toString());
-        c_ingreso_pagos.setId_ingreso(idIngreso);
-        c_ingreso_pagos.mostrar(t_pagos);
-
-        verificar_deuda();
-
-        jd_ver_pagos.setModal(true);
-        jd_ver_pagos.setSize(400, 494);
-        jd_ver_pagos.setLocationRelativeTo(null);
-        jd_ver_pagos.setVisible(true);
-    }//GEN-LAST:event_btn_pagosActionPerformed
 
     private void btn_pago_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pago_agregarActionPerformed
         txt_registrar_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
@@ -951,8 +899,6 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_pago_agregar;
     private javax.swing.JButton btn_pago_eliminar;
     private javax.swing.JButton btn_pago_salir;
-    private javax.swing.JButton btn_pagos;
-    private javax.swing.JButton btn_pdf;
     private javax.swing.JButton btn_reg_agregar;
     private javax.swing.JButton btn_reg_salir;
     private javax.swing.JComboBox<String> cbx_buscar;
