@@ -5,10 +5,10 @@
  */
 package forms;
 
-import clases.cl_cliente;
-import clases.cl_cliente_pago;
 import clases.cl_conectar;
 import clases.cl_movimiento_banco;
+import clases.cl_proveedor;
+import clases.cl_proveedor_pago;
 import clases.cl_varios;
 import clases_autocomplete.cla_cliente;
 import com.mxrck.autocompleter.AutoCompleterCallback;
@@ -28,12 +28,13 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
 
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
-    
-    cl_cliente c_cliente = new cl_cliente();
-    cl_cliente_pago c_pago = new cl_cliente_pago();
+
+    cl_proveedor c_proveedor = new cl_proveedor();
+
+    cl_proveedor_pago c_pago = new cl_proveedor_pago();
     cl_movimiento_banco c_movimiento = new cl_movimiento_banco();
 
-    TextAutoCompleter tac_clientes = null;
+    TextAutoCompleter tac_proveedor = null;
 
     /**
      * Creates new form frm_reg_pagos_cliente
@@ -50,42 +51,42 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
 
     private void cargar_clientes() {
         try {
-            if (tac_clientes != null) {
-                tac_clientes.removeAllItems();
+            if (tac_proveedor != null) {
+                tac_proveedor.removeAllItems();
             }
             //TIPO:
             //1 para separacion
             // 2 para facturas
             // 3 para boleta
             JTextField text_box = txt_buca_clie;
-            String sql = "select id_cliente, documento, nombre "
-                    + "from clientes ";
+            String sql = "select id_proveedor, razon_social "
+                    + "from proveedor ";
 
-            tac_clientes = new TextAutoCompleter(text_box, new AutoCompleterCallback() {
+            tac_proveedor = new TextAutoCompleter(text_box, new AutoCompleterCallback() {
                 @Override
                 public void callback(Object selectedItem) {
                     Object itemSelected = selectedItem;
-                    c_cliente.setCodigo(0);
+                    c_proveedor.setId_proveedor(0);
                     if (itemSelected instanceof cla_cliente) {
                         int ccodigo = ((cla_cliente) itemSelected).getId_cliente();
                         String cnombre = ((cla_cliente) itemSelected).getNombre();
-                        System.out.println("cliente seleccionado " + cnombre);
-                        c_cliente.setCodigo(ccodigo);
+                        System.out.println("proveeor seleccionado " + cnombre);
+                        c_proveedor.setId_proveedor(ccodigo);
                     } else {
                         System.out.println("El item es de un tipo desconocido");
                     }
                 }
             });
 
-            tac_clientes.setMode(0);
-            tac_clientes.setCaseSensitive(false);
+            tac_proveedor.setMode(0);
+            tac_proveedor.setCaseSensitive(false);
             Statement st = c_conectar.conexion();
             ResultSet rs = c_conectar.consulta(st, sql);
             while (rs.next()) {
-                int id_cliente = rs.getInt("id_cliente");
+                int id_cliente = rs.getInt("id_proveedor");
                 String descripcion = "";
-                descripcion = rs.getString("nombre");
-                tac_clientes.addItem(new cla_cliente(id_cliente, descripcion));
+                descripcion = rs.getString("razon_social");
+                tac_proveedor.addItem(new cla_cliente(id_cliente, descripcion));
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
@@ -121,7 +122,7 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
         jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Pagar Cliente");
+        setTitle("Pagar Proveedor");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Agregar Pago"));
 
@@ -171,7 +172,7 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Buscar Cliente:");
+        jLabel1.setText("Buscar Proveedor:");
 
         txt_buca_clie.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -185,12 +186,11 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -198,7 +198,7 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
                             .addComponent(txt_fecha_pago, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                             .addComponent(txt_apagar, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_total_deud, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 299, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 289, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -280,11 +280,11 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
 
     private void txt_buca_clieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buca_clieKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (c_cliente.getCodigo() != 0) {
+            if (c_proveedor.getId_proveedor() != 0) {
                 jButton3.setEnabled(true);
                 jButton4.setEnabled(true);
-                c_cliente.comprobar_cliente();
-                txt_total_deud.setText(c_varios.formato_totales(c_cliente.getVenta() - c_cliente.getPago()));
+                c_proveedor.cargar_datos();
+                txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
                 txt_fecha_pago.setEnabled(true);
                 txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
                 txt_fecha_pago.requestFocus();
@@ -307,10 +307,10 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
                 btn_grabar.setEnabled(true);
                 btn_grabar.setFocusable(true);
                 btn_grabar.requestFocus();
-                
+
             } else {
-               JOptionPane.showMessageDialog(null, "INGRESE UN NUMERO CORRECTO");
-               txt_apagar.requestFocus();
+                JOptionPane.showMessageDialog(null, "INGRESE UN NUMERO CORRECTO");
+                txt_apagar.requestFocus();
             }
         }
     }//GEN-LAST:event_txt_apagarKeyPressed
@@ -321,17 +321,17 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
 
     private void btn_grabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_grabarActionPerformed
         c_movimiento.setId_banco(1);
-        c_movimiento.setDescripcion("SALDO A CUENTA DE " + c_cliente.getNombre());
+        c_movimiento.setDescripcion("PAGO A CUENTA PARA " + c_proveedor.getRazon_social());
         c_movimiento.setFecha(c_varios.fecha_myql(txt_fecha_pago.getText()));
-        c_movimiento.setIngresa(Double.parseDouble(txt_apagar.getText()));
-        c_movimiento.setSale(0);
+        c_movimiento.setIngresa(0);
+        c_movimiento.setSale(Double.parseDouble(txt_apagar.getText()));
         c_movimiento.obtener_codigo();
         c_movimiento.registrar();
-        
-        c_pago.setId_cliente(c_cliente.getCodigo());
+
+        c_pago.setId_proveedor(c_proveedor.getId_proveedor());
         c_pago.setId_movimiento(c_movimiento.getId_movimiento());
         c_pago.registrar();
-        
+
         JOptionPane.showMessageDialog(null, "PAGO AGREGADO CORRECTAMENTE");
         this.dispose();
     }//GEN-LAST:event_btn_grabarActionPerformed

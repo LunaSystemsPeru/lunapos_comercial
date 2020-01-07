@@ -19,6 +19,7 @@ import clases_varios.cl_grafica_mensual;
 import forms.frm_reg_movimiento_banco;
 import forms.frm_reg_venta;
 import forms.frm_reg_pagos_cliente;
+import forms.frm_reg_pagos_proveedor;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -241,6 +242,7 @@ public class frm_principal extends javax.swing.JFrame {
         jToolBar5 = new javax.swing.JToolBar();
         jButton18 = new javax.swing.JButton();
         jSeparator8 = new javax.swing.JToolBar.Separator();
+        jButton3 = new javax.swing.JButton();
         jSeparator11 = new javax.swing.JToolBar.Separator();
         jButton19 = new javax.swing.JButton();
         jToolBar2 = new javax.swing.JToolBar();
@@ -669,6 +671,18 @@ public class frm_principal extends javax.swing.JFrame {
         });
         jToolBar5.add(jButton18);
         jToolBar5.add(jSeparator8);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Sales-by-payment-method-icon.png"))); // NOI18N
+        jButton3.setText("Pagar");
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jToolBar5.add(jButton3);
         jToolBar5.add(jSeparator11);
 
         jButton19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/basket-01-512.png"))); // NOI18N
@@ -1183,6 +1197,13 @@ public class frm_principal extends javax.swing.JFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Frame f = JOptionPane.getRootFrame();
+        frm_reg_pagos_proveedor dialog = new frm_reg_pagos_proveedor(f, true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1238,6 +1259,7 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton23;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
