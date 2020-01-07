@@ -5,6 +5,7 @@
  */
 package clases;
 
+import forms.frm_reg_pagos_cliente;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -531,5 +532,9 @@ public class cl_varios {
                 throw new java.lang.IllegalArgumentException(
                         "El mes debe estar entre 0 y 11");
         }
+    }
+
+    public void llamar_ventana_normal(frm_reg_pagos_cliente formulario) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

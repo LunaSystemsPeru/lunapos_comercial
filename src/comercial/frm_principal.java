@@ -18,6 +18,7 @@ import clases_varios.Configuracion;
 import clases_varios.cl_grafica_mensual;
 import forms.frm_reg_movimiento_banco;
 import forms.frm_reg_venta;
+import forms.frm_reg_pagos_cliente;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -229,6 +230,7 @@ public class frm_principal extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jToolBar4 = new javax.swing.JToolBar();
         jButton5 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton6 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -584,6 +586,18 @@ public class frm_principal extends javax.swing.JFrame {
             }
         });
         jToolBar4.add(jButton5);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Sales-by-payment-method-icon.png"))); // NOI18N
+        jButton1.setText("Cobrar");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(jButton1);
         jToolBar4.add(jSeparator2);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/shopping-add-512.png"))); // NOI18N
@@ -1162,6 +1176,11 @@ public class frm_principal extends javax.swing.JFrame {
         c_varios.llamar_ventana_normal(formulario);
     }//GEN-LAST:event_jButton22ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        frm_reg_pagos_cliente formulario = new frm_reg_pagos_cliente();
+        c_varios.llamar_ventana_normal(formulario);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1202,6 +1221,7 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JButton btn_abrir_caja;
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_ingresar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
