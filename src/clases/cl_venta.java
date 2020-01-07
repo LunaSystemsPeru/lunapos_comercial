@@ -308,7 +308,6 @@ public class cl_venta {
             tmodelo.addColumn("Documento");
             tmodelo.addColumn("Cliente");
             tmodelo.addColumn("Total");
-            tmodelo.addColumn("Pagado");
             tmodelo.addColumn("Vendedor");
             tmodelo.addColumn("Estado");
             tmodelo.addColumn("_idventa");
@@ -351,10 +350,9 @@ public class cl_venta {
                 fila[2] = rs.getString("abreviado") + " | " + c_varios.ceros_izquieda_letras(4, rs.getString("serie")) + " - " + c_varios.ceros_izquieda_numero(7, rs.getInt("numero"));
                 fila[3] = rs.getString("documento") + " | " + rs.getString("nombre");
                 fila[4] = c_varios.formato_numero(rs.getDouble("total"));
-                fila[5] = c_varios.formato_numero(rs.getDouble("pagado"));
-                fila[6] = rs.getString("username");
-                fila[7] = sestado;
-                fila[8] = rs.getInt("id_ventas");
+                fila[5] = rs.getString("username");
+                fila[6] = sestado;
+                fila[7] = rs.getInt("id_ventas");
 
                 tmodelo.addRow(fila);
             }
@@ -369,7 +367,8 @@ public class cl_venta {
             tabla.getColumnModel().getColumn(5).setPreferredWidth(110);
             tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
             tabla.getColumnModel().getColumn(7).setPreferredWidth(150);
-            tabla.setDefaultRenderer(Object.class, new render_ventas());
+            
+            //tabla.setDefaultRenderer(Object.class, new render_ventas());
             //   t_productos.setRowSorter(sorter);
 
         } catch (SQLException e) {
