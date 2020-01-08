@@ -877,8 +877,8 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
     private void btn_jd_grabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_jd_grabarActionPerformed
         //cargar datos
-        int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 8).toString());
-        double monto_cupon = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 5).toString());
+        int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 7).toString());
+        double monto_cupon = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
 
         //eliminar productos
         c_detalle.setId_venta(id_venta);

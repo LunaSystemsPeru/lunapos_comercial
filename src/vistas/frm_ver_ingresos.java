@@ -47,9 +47,10 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                 + "inner join documentos_sunat as ds on ds.id_tido = i.id_tido "
                 + "inner join usuarios as u on u.id_usuarios = i.id_usuarios "
                 //+ "where concat(year(i.fecha), lpad(month(i.fecha), 2, 0)) = '" + periodo + "' "
-                + "where i.tpagado < i.total  "
+                + "where MONTH(i.fecha)= MONTH(now()) && year(i.fecha)= year(now())  "
                 + "order by i.fecha desc, i.numero asc ";
         //c_ingreso.mostrar(t_ingresos, query);
+        System.out.println(query);
         cargar_tabla();
         sumar_totales();
         //t_ingresos.setDefaultRenderer(Object.class, new CeldaColor());

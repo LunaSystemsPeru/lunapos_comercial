@@ -8,11 +8,13 @@ package forms;
 import clases.cl_conectar;
 import clases.cl_documento_almacen;
 import clases.cl_ingresos;
+import clases.cl_movimiento_banco;
 import clases.cl_producto;
 import clases.cl_productos_almacen;
 import clases.cl_productos_ingresos;
 import clases.cl_productos_ingresos_bono;
 import clases.cl_proveedor;
+import clases.cl_proveedor_pago;
 import clases.cl_unidad_medida;
 import clases.cl_varios;
 import clases_autocomplete.cla_empresa;
@@ -54,6 +56,8 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 
     m_documentos_sunat m_documentos = new m_documentos_sunat();
     m_almacen m_almacen = new m_almacen();
+    cl_proveedor_pago c_pago = new cl_proveedor_pago();
+    cl_movimiento_banco c_movimiento = new cl_movimiento_banco();
 
     DefaultTableModel detalle;
     DefaultTableModel detalle_bono;
@@ -607,36 +611,32 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(lab_deuda, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txt_serie, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txt_serie, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_numero))
-                                    .addComponent(cbx_tido, 0, 123, Short.MAX_VALUE)
-                                    .addComponent(txt_fecha)))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(txt_razon_social)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_ruc_proveedor)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_add_proveedor))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                .addComponent(txt_numero))
+                            .addComponent(cbx_tido, 0, 123, Short.MAX_VALUE)
+                            .addComponent(txt_fecha)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(txt_razon_social)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_ruc_proveedor)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_add_proveedor))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lab_deuda, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -667,7 +667,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                     .addComponent(jLabel17)
                     .addComponent(lab_deuda))
                 .addGap(89, 89, 89)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -894,7 +894,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1361,7 +1361,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 
             if (c_proveedor.getId_proveedor() == -1 || c_proveedor.getId_proveedor() == 0) {
                 c_proveedor.obtener_codigo();
-                c_proveedor.setRazon_social(txt_razon_social.getText());
+                c_proveedor.setRazon_social(txt_razon_social.getText()); 
                 c_proveedor.setRuc("SR" + c_proveedor.getId_proveedor());
                 if (!c_proveedor.registrar()) {
                     JOptionPane.showMessageDialog(null, "Problemas al Registrar al proveedor");
@@ -1406,6 +1406,20 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 Notification.show("Ingreso de Mercaderia", "se guardo correctamente");
                 frm_ver_ingresos formulario = new frm_ver_ingresos();
                 c_varios.llamar_ventana(formulario);
+                
+                
+                c_movimiento.setId_banco(1);
+                c_movimiento.setDescripcion("PAGO A CUENTA PARA " + c_proveedor.getRazon_social());
+                c_movimiento.setFecha(c_varios.fecha_myql(txt_fecha.getText()));
+                c_movimiento.setIngresa(0);
+                c_movimiento.setSale(Double.parseDouble(txt_j_efectivo.getText()));
+                c_movimiento.obtener_codigo();
+                c_movimiento.registrar();
+
+                c_pago.setId_proveedor(c_proveedor.getId_proveedor());
+                c_pago.setId_movimiento(c_movimiento.getId_movimiento());
+                c_pago.registrar();
+                jd_fin_ingreso.setVisible(false); 
                 this.dispose();
             }
         }
