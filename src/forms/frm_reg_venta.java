@@ -6,9 +6,11 @@
 package forms;
 
 import clases.cl_cliente;
+import clases.cl_cliente_pago;
 import clases.cl_cobros_ventas;
 import clases.cl_conectar;
 import clases.cl_documento_almacen;
+import clases.cl_movimiento_banco;
 import clases.cl_producto;
 import clases.cl_productos_almacen;
 import clases.cl_productos_presentacion;
@@ -64,6 +66,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     cl_productos_ventas c_detalle = new cl_productos_ventas();
     cl_cobros_ventas c_cobro = new cl_cobros_ventas();
     cl_venta_eliminada c_cupon = new cl_venta_eliminada();
+    cl_cliente_pago c_pago = new cl_cliente_pago();
+    cl_movimiento_banco c_movimiento = new cl_movimiento_banco();
 
     //variables publicas
     static DefaultTableModel detalle;
@@ -387,7 +391,17 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     }
 
     private void llenar_cobros() {
+        c_movimiento.setId_banco(1);
+        c_movimiento.setDescripcion("SALDO A CUENTA DE " + c_cliente.getNombre());
+        c_movimiento.setFecha(c_varios.fecha_myql(txt_fecha.getText()));
+        c_movimiento.setIngresa(Double.parseDouble(txt_j_efectivo.getText()));
+        c_movimiento.setSale(0);
+        c_movimiento.obtener_codigo();
+        c_movimiento.registrar();
         
+        c_pago.setId_cliente(c_cliente.getCodigo());
+        c_pago.setId_movimiento(c_movimiento.getId_movimiento());
+        c_pago.registrar();
 
     }
 
@@ -1426,7 +1440,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 
                 txt_j_por_pagar.setText((Double.parseDouble(text_deudatotal.getText()))-monto+"");
                 final_total=(Double.parseDouble(text_deudatotal.getText()));
-                if (monto >= final_total) {
+                if (monto >= Double.parseDouble(text_deudatotal.getText())) {
                     btn_pago.setEnabled(true);
                     btn_pago.requestFocus();
                 } else {
