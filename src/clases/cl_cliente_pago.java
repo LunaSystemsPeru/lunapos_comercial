@@ -124,4 +124,17 @@ public class cl_cliente_pago {
             System.out.print(e);
         }
     }
+
+    public ResultSet pagos_periodo(String inicio, String fin) {
+        String query = "select bm.descripcion, bm.id_movimiento, b.nombre, bm.fecha, bm.ingresa "
+                + "from clientes_pagos as cp "
+                + "inner join bancos_movimientos bm on cp.id_movimiento = bm.id_movimiento "
+                + "inner join bancos b on bm.id_bancos = b.id_bancos "
+                + "where cp.id_cliente = '" + id_cliente + "' and bm.fecha between '" + inicio + "' and '" + fin + "' "
+                + "order by bm.fecha asc";
+        System.out.println(query);
+        Statement st = c_conectar.conexion();
+        ResultSet rs = c_conectar.consulta(st, query);
+        return rs;
+    }
 }
