@@ -356,7 +356,7 @@ public class cl_venta {
             tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
             tabla.getColumnModel().getColumn(7).setPreferredWidth(0);
             
-            //tabla.setDefaultRenderer(Object.class, new render_ventas());
+            tabla.setDefaultRenderer(Object.class, new render_ventas());
             //   t_productos.setRowSorter(sorter);
 
         } catch (SQLException e) {

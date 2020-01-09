@@ -42,23 +42,23 @@ import java.awt.Graphics;
  * @author luis
  */
 public class frm_ver_ventas extends javax.swing.JInternalFrame {
-    
+
     cl_varios c_varios = new cl_varios();
     cl_venta c_venta = new cl_venta();
     cl_venta c_separacion = new cl_venta();
     cl_documento_firmado c_hash = new cl_documento_firmado();
-    
+
     cl_venta_eliminada c_cupon = new cl_venta_eliminada();
     cl_productos_ventas c_detalle = new cl_productos_ventas();
     cl_cobros_ventas c_cobros = new cl_cobros_ventas();
     cl_cliente c_cliente = new cl_cliente();
-    
+
     int id_almacen = frm_principal.c_almacen.getId();
     int id_usuario = frm_principal.c_usuario.getId_usuario();
-    
+
     int fila_seleccionada = -1;
     int fila_cobro = -1;
-    
+
     String query = "";
 
     /**
@@ -71,11 +71,11 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         grphcs.setColor(Color.decode("#00b0f0"));
         grphcs.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
-    
+
     public frm_ver_ventas() {
         initComponents();
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
-        
+
         query = "select v.id_ventas, v.fecha, c.documento, c.nombre, ds.abreviado, v.serie, v.numero, v.total, v.pagado, u.username, v.estado, v.tipo_venta "
                 + "from ventas as v "
                 + "inner join clientes as c on c.id_cliente = v.id_cliente "
@@ -84,24 +84,24 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 + "where v.fecha = current_date() and v.id_almacen = '" + id_almacen + "' "
                 + "order by v.id_ventas asc";
         c_venta.mostrar(t_ventas, query);
-        
+
         sumar_totales();
     }
-    
+
     private void sumar_totales() {
         double total_ventas = 0;
         double total_pagados = 0;
-        
+
         int contar_filar = t_ventas.getRowCount();
-        
+
         for (int i = 0; i < contar_filar; i++) {
             total_ventas = total_ventas + Double.parseDouble(t_ventas.getValueAt(i, 4).toString());
             //total_pagados = total_pagados + Double.parseDouble(t_ventas.getValueAt(i, 5).toString());
         }
-        
+
         txt_total_ventas.setText(c_varios.formato_totales(total_ventas));
     }
-    
+
     private void activar_botones() {
         String estado = t_ventas.getValueAt(fila_seleccionada, 7).toString();
         if (estado.equals("ANULADO")) {
@@ -114,7 +114,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             btn_imprimir.setEnabled(true);
         }
     }
-    
+
     private void desactivar_botones() {
         btn_ver_detalle.setEnabled(false);
         btn_anular_venta.setEnabled(false);
@@ -848,11 +848,11 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private void btn_anular_ventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_anular_ventaActionPerformed
         frm_principal.c_permiso.setId_permiso(2);
         boolean permitido = frm_principal.c_permiso.validar();
-        
+
         if (permitido) {
             if (fila_seleccionada > -1) {
                 desactivar_botones();
-                
+
                 double total = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
                 //double pagado = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 5).toString());
                 jd_anular_documento.setModal(true);
@@ -861,10 +861,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 txt_jd_total.setText(c_varios.formato_numero(total));
                 //txt_jd_pagado.setText(c_varios.formato_numero(pagado));
                 txt_jd_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-                
+
                 txt_jd_motivo.requestFocus();
                 jd_anular_documento.setVisible(true);
-                
+
             }
         } else {
             JOptionPane.showMessageDialog(null, "Usted no tiene permiso para realizar esta operacion!!");
@@ -877,8 +877,8 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
     private void btn_jd_grabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_jd_grabarActionPerformed
         //cargar datos
-        int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 8).toString());
-        double monto_cupon = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 5).toString());
+        int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 7).toString());
+        double monto_cupon = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
 
         //eliminar productos
         c_detalle.setId_venta(id_venta);
@@ -902,13 +902,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             c_cupon.setMotivo(txt_jd_motivo.getText().toUpperCase().trim());
             c_cupon.setMonto(monto_cupon);
             c_cupon.setUsado(0);
-            
+
             c_cupon.registrar();
-            
+
         }
-        
+
         c_venta.anular();
-        
+
         jd_anular_documento.dispose();
         c_venta.mostrar(t_ventas, query);
         //si es venta dar de baja
@@ -930,12 +930,12 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             desactivar_botones();
             //cargar datos
             int id_venta = Integer.parseInt(t_ventas.getValueAt(fila_seleccionada, 7).toString());
-            
+
             String venta = t_ventas.getValueAt(fila_seleccionada, 2).toString() + " | " + t_ventas.getValueAt(fila_seleccionada, 3).toString();
-            
+
             c_detalle.setId_venta(id_venta);
             c_detalle.mostrar(t_detalle);
-            
+
             jd_ver_productos.setModal(true);
             jd_ver_productos.setSize(685, 387);
             jd_ver_productos.setLocationRelativeTo(null);
@@ -962,14 +962,14 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             jd_reg_cobro.dispose();
             double total = Double.parseDouble(t_ventas.getValueAt(fila_seleccionada, 4).toString());
             c_cobros.mostrar(t_cobros);
-            
+
             double pagos = 0;
             int contar_filas_cobro = t_cobros.getRowCount();
             System.out.println(contar_filas_cobro);
             for (int i = 0; i < contar_filas_cobro; i++) {
                 pagos = pagos + Double.parseDouble(t_cobros.getValueAt(i, 2).toString());
             }
-            
+
             if (pagos == total) {
                 btn_jd_cobro_graba.setEnabled(false);
             }
@@ -1047,7 +1047,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_txt_buscarKeyPressed
-    
+
     private void limpiar_entrega() {
         txt_fecha_separacion.setText("");
         txt_doc_separacion.setText("");
@@ -1056,27 +1056,27 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         txt_doc_venta.setText("");
         txt_datos_venta.setText("");
     }
-    
+
 
     private void btn_grabar_ventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_grabar_ventaActionPerformed
         btn_grabar_venta.setEnabled(false);
-        
+
         c_venta.setId_almacen(c_separacion.getId_almacen());
         c_venta.obtener_codigo();
         c_venta.setFecha(c_varios.getFechaActual());
-        
+
         c_venta.setId_usuario(c_separacion.getId_usuario());
         c_venta.setId_cliente(c_cliente.getCodigo());
 
         //obtener documento seleccionado por cliente y sus valores de serie y numero
         cla_mis_documentos c_dcumento = (cla_mis_documentos) cbx_doc_venta.getSelectedItem();
         c_venta.setId_tido(c_dcumento.getId_tido());
-        
+
         cl_documento_almacen c_doc_almacen = new cl_documento_almacen();
         c_doc_almacen.setId_almacen(id_almacen);
         c_doc_almacen.setId_tido(c_dcumento.getId_tido());
         c_doc_almacen.comprobar_documento();
-        
+
         c_venta.setSerie(c_doc_almacen.getSerie());
         c_venta.setNumero(c_doc_almacen.getNumero());
         c_venta.setTotal(c_separacion.getTotal());
@@ -1084,9 +1084,9 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         c_venta.setPagado(c_separacion.getTotal());
         c_venta.setEstado(1);
         c_venta.setEnviado_sunat(0);
-        
+
         cl_productos_ventas c_nuevo_detalle = new cl_productos_ventas();
-        
+
         if (c_venta.registrar()) {
             c_separacion.entregar_separacion();
 
@@ -1118,10 +1118,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             } catch (InterruptedException e) {
                 System.out.println(e);
             }
-            
+
             String[] envio_sunat;
             envio_sunat = cl_envio_server.enviar_documento(c_venta.getId_venta(), c_venta.getId_tido(), c_venta.getId_almacen());
-            
+
             String nombre_archivo = envio_sunat[0];
             String url_codigo_qr = envio_sunat[2];
             String hash = envio_sunat[3];
@@ -1134,13 +1134,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                 String letras_numeros = c_letras.Convertir(c_venta.getTotal() + "", true) + " SOLES";
                 System.out.println(letras_numeros);
                 System.out.println(url_codigo_qr);
-                
+
                 File miDir = new File(".");
                 try {
                     Map<String, Object> parametros = new HashMap<>();
                     String path = miDir.getCanonicalPath();
                     String direccion = path + "//reports//subreports//";
-                    
+
                     System.out.println(direccion);
                     parametros.put("SUBREPORT_DIR", direccion);
                     parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
@@ -1156,7 +1156,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
                 }
             }
-            
+
             jd_entrega_separacion.setVisible(false);
             limpiar_entrega();
             c_venta.mostrar(t_ventas, query);
@@ -1166,10 +1166,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private void txt_doc_ventaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_doc_ventaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String documento = txt_doc_venta.getText();
-            
+
             cla_mis_documentos c_dcumento = (cla_mis_documentos) cbx_doc_venta.getSelectedItem();
             c_venta.setId_tido(c_dcumento.getId_tido());
-            
+
             if (documento.length() > 0) {
                 c_cliente.setDocumento(documento);
                 if (c_dcumento.getId_tido() == 1) {
@@ -1194,10 +1194,10 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                             c_cliente.comprobar_cliente();
                             txt_datos_venta.setText(c_cliente.getNombre());
                         }
-                        
+
                     }
                 }
-                
+
                 if (c_dcumento.getId_tido() == 2) {
                     if (documento.length() == 11) {
                         if (!c_cliente.comprobar_cliente_doc()) {
@@ -1221,9 +1221,9 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
                             txt_datos_venta.setText(c_cliente.getNombre());
                         }
                     }
-                    
+
                 }
-                
+
                 c_venta.setId_cliente(c_cliente.getCodigo());
             }
         }
@@ -1260,7 +1260,7 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
         c_venta.setId_venta(id_venta);
         c_venta.setId_almacen(id_almacen);
         c_venta.validar_venta();
-        
+
         leer_numeros c_letras = new leer_numeros();
         String letras_numeros = c_letras.Convertir(c_venta.getTotal() + "", true) + " SOLES";
         System.out.println(letras_numeros);
@@ -1272,13 +1272,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
             c_hash.validar_firma();
             String url_codigo_qr = "http://www.lunasystemsperu.com/clientes/comercial_penia/greenter/generate_qr/temp/" + c_hash.getNombre() + ".png";
             System.out.println(url_codigo_qr);
-            
+
             File miDir = new File(".");
             try {
                 Map<String, Object> parametros = new HashMap<>();
                 String path = miDir.getCanonicalPath();
                 String direccion = path + "//reports//subreports//";
-                
+
                 System.out.println(direccion);
                 parametros.put("SUBREPORT_DIR", direccion);
                 parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
@@ -1297,13 +1297,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
 
         //imprimir si es nota de ventaonota de separacion
         if (c_venta.getId_tido() == 6 || c_venta.getId_tido() == 7) {
-            
+
             File miDir = new File(".");
             try {
                 Map<String, Object> parametros = new HashMap<>();
                 String path = miDir.getCanonicalPath();
                 String direccion = path + "//reports//subreports//";
-                
+
                 System.out.println(direccion);
                 parametros.put("SUBREPORT_DIR", direccion);
                 parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
@@ -1337,13 +1337,13 @@ public class frm_ver_ventas extends javax.swing.JInternalFrame {
     private void btn_eliminar_cobroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_cobroActionPerformed
         frm_principal.c_permiso.setId_permiso(2);
         boolean permitido = frm_principal.c_permiso.validar();
-        
+
         if (permitido) {
             int id_cobro = Integer.parseInt(t_cobros.getValueAt(fila_cobro, 0).toString());
             c_cobros.setId_cobro(id_cobro);
             c_cobros.eliminar_cobro();
             c_cobros.mostrar(t_cobros);
-            
+
             btn_jd_cobro_graba.setEnabled(true);
         } else {
             JOptionPane.showMessageDialog(null, "Usted no tiene permiso para realizar esta operacion!!");

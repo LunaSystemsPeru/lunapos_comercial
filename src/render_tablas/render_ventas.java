@@ -19,7 +19,7 @@ public class render_ventas extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
-        switch (String.valueOf(table.getValueAt(row, 7))) {
+        switch (String.valueOf(table.getValueAt(row, 6))) {
             case "SEPARADO":
                 setBackground(Color.green);
                 setForeground(Color.black);
@@ -45,7 +45,7 @@ public class render_ventas extends DefaultTableCellRenderer {
                 setForeground(Color.black);
                 break;
         }
-            
+
         if (column == 0) {
             setHorizontalAlignment(SwingConstants.CENTER);
         }
