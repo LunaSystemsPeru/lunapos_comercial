@@ -35,6 +35,6 @@ public class cla_empresa {
 
     @Override
     public String toString() {
-        return ruc + " | " + razon_social;
+        return  razon_social;
     }
 }

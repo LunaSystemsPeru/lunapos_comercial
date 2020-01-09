@@ -275,14 +275,14 @@ public class cl_venta {
         return rs;
     }
 
-    public ResultSet ventas_periodo_cuenta(int mes, int anio) {
+    public ResultSet ventas_periodo_cuenta(String inicio, String fin) {
         String query = "select v.fecha, v.serie, v.numero, ds.abreviado, concat(pc.nombre, ' ', p.descripcion) as descripcion, pv.cantidad, pv.precio "
                 + "from productos_ventas as pv "
                 + "inner join ventas v on pv.id_ventas = v.id_ventas "
                 + "inner join documentos_sunat ds on v.id_tido = ds.id_tido "
                 + "inner join productos p on pv.id_producto = p.id_producto "
                 + "inner join productos_clasificacion pc on p.id_clasificacion = pc.id_clasificacion "
-                + "where v.id_cliente = '" + id_cliente + "' and v.estado != 3 and month(v.fecha) = '" + mes + "' and year(v.fecha) = '" + anio + "' "
+                + "where v.id_cliente = '" + id_cliente + "' and v.estado != 3 and v.fecha between '"+inicio+"' and '"+fin+"' "
                 + "order by v.fecha asc, pc.nombre asc, p.descripcion asc";
         System.out.println(query);
         Statement st = c_conectar.conexion();
