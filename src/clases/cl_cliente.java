@@ -172,6 +172,9 @@ public class cl_cliente {
             tabla.getColumnModel().getColumn(4).setPreferredWidth(70);
             tabla.getColumnModel().getColumn(5).setPreferredWidth(70);
             tabla.getColumnModel().getColumn(6).setPreferredWidth(70);
+            c_varios.derecha_celda(tabla, 4);
+            c_varios.derecha_celda(tabla, 5);
+            c_varios.centrar_celda(tabla, 6);
         } catch (SQLException e) {
             System.out.print(e);
         }
