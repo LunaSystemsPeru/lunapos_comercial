@@ -208,8 +208,10 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             ResultSet rs = c_conectar.consulta(st, sql);
             while (rs.next()) {
                 int id_producto = rs.getInt("id_producto");
-                String descripcion = rs.getString("clasificacion") + " | " + rs.getString("descripcion") + " | " + rs.getString("und_medida")
-                        + "    |    Cant: " + rs.getInt("cactual") + "    |    Precio: S/ " + c_varios.formato_numero(rs.getDouble("precio"));
+                /*String descripcion = rs.getString("descripcion") + " | " + rs.getString("und_medida")
+                        + "    |    Cant: " + rs.getInt("cactual") + "    |    Precio: S/ " + c_varios.formato_numero(rs.getDouble("precio"));*/
+                String descripcion = rs.getString("descripcion") + " | " + rs.getString("und_medida")
+                        + "    |    Precio: S/ " + c_varios.formato_numero(rs.getDouble("precio"));
                 tac_productos.addItem(new cla_producto(id_producto, descripcion));
             }
             c_conectar.cerrar(rs);
@@ -1288,6 +1290,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 // } else {
                 calcular_subtotal();
                 txt_precioUnitario.setEnabled(true);
+                txt_precioUnitario.selectAll();
                 txt_precioUnitario.requestFocus();
 
                 // }
@@ -1428,7 +1431,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 double monto = Double.parseDouble(texto);
 
                 txt_j_por_pagar.setText((Double.parseDouble(text_deudatotal.getText())) - monto + "");
-                final_total = (Double.parseDouble(text_deudatotal.getText()));
+                // final_total = (Double.parseDouble(text_deudatotal.getText()));
                 if (monto >= Double.parseDouble(text_deudatotal.getText())) {
                     btn_pago.setEnabled(true);
                     btn_pago.requestFocus();

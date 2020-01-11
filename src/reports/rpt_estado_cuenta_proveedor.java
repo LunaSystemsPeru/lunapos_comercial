@@ -5,11 +5,11 @@
  */
 package reports;
 
-import clases.cl_cliente;
-import clases.cl_cliente_pago;
 import clases.cl_conectar;
+import clases.cl_ingresos;
+import clases.cl_proveedor;
+import clases.cl_proveedor_pago;
 import clases.cl_varios;
-import clases.cl_venta;
 import clases_autocomplete.cla_estado_cliente;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -38,16 +38,16 @@ import javax.swing.JOptionPane;
  *
  * @author luis
  */
-public class rpt_estado_cuenta {
+public class rpt_estado_cuenta_proveedor {
 
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
 
-    cl_venta c_venta = new cl_venta();
-    cl_cliente c_cliente = new cl_cliente();
-    cl_cliente_pago c_pago = new cl_cliente_pago();
+    cl_ingresos c_ingreso = new cl_ingresos();
+    cl_proveedor c_proveedor = new cl_proveedor();
+    cl_proveedor_pago c_pago = new cl_proveedor_pago();
 
-    private int id_cliente;
+    private int id_proveedor;
     private String inicio;
 
     public String getInicio() {
@@ -58,11 +58,12 @@ public class rpt_estado_cuenta {
         this.inicio = inicio;
     }
 
-    public void setId_cliente(int id_cliente) {
-        this.id_cliente = id_cliente;
+    public void setId_proveedor(int id_proveedor) {
+        this.id_proveedor = id_proveedor;
     }
 
-    public rpt_estado_cuenta() {
+
+    public rpt_estado_cuenta_proveedor() {
     }
 
     private void llenar_comparator(ArrayList myList) {
@@ -76,14 +77,14 @@ public class rpt_estado_cuenta {
         /*
         rs_ventas.getString("descripcion") + " | CANT: " + rs_ventas.getString("cantidad") + " x P.U. " + rs_ventas.getString("precio")
          */
-        c_venta.setId_cliente(id_cliente);
-        c_pago.setId_cliente(id_cliente);
+        c_ingreso.setId_proveedor(id_proveedor);
+        c_pago.setId_proveedor(id_proveedor);
 
         ArrayList mylista = new ArrayList();
 
-        double saldo_venta = c_venta.ventas_cuenta_anterior(inicio);
+        double saldo_compra = c_ingreso.ingresos_cuenta_anterior(inicio);
         double saldo_pago = c_pago.pagos_cuenta_anterior(inicio);
-        double saldo_actual = saldo_venta - saldo_pago;
+        double saldo_actual = saldo_compra - saldo_pago;
         double ingresa = 0;
         double sale = 0;
         
@@ -102,14 +103,14 @@ public class rpt_estado_cuenta {
                 sale
         ));
 
-        ResultSet rs_ventas = c_venta.ventas_periodo_cuenta(inicio);
-        while (rs_ventas.next()) {
+        ResultSet rs_ingresos = c_ingreso.ingresos_periodo_cuenta(inicio);
+        while (rs_ingresos.next()) {
             mylista.add(new cla_estado_cliente(
-                    rs_ventas.getDate("fecha"),
-                    rs_ventas.getString("abreviado") + "-" + rs_ventas.getString("serie") + "-" + c_varios.ceros_izquieda_letras(5, rs_ventas.getString("numero")),
-                    rs_ventas.getString("descripcion") + " | " + rs_ventas.getString("cantidad") + " x " + c_varios.formato_numero(rs_ventas.getDouble("precio")),
+                    rs_ingresos.getDate("fecha"),
+                    rs_ingresos.getString("abreviado") + "-" + rs_ingresos.getString("serie") + "-" + c_varios.ceros_izquieda_letras(5, rs_ingresos.getString("numero")),
+                    rs_ingresos.getString("descripcion") + " | " + rs_ingresos.getString("cantidad") + " x " + c_varios.formato_numero(rs_ingresos.getDouble("costo")),
                     0,
-                    rs_ventas.getDouble("cantidad") * rs_ventas.getDouble("precio")
+                    rs_ingresos.getDouble("cantidad") * rs_ingresos.getDouble("costo")
             )
             );
         }
@@ -119,7 +120,7 @@ public class rpt_estado_cuenta {
             mylista.add(new cla_estado_cliente(
                     rs_pagos.getDate("fecha"),
                     "-",
-                    rs_pagos.getString("descripcion"),
+                    "PAGO A CUENTA",
                     rs_pagos.getDouble("ingresa"),
                     0
             )
@@ -133,8 +134,8 @@ public class rpt_estado_cuenta {
 
     public void crear_reporte() throws FileNotFoundException, DocumentException {
         //iniciar datos del cliente
-        c_cliente.setCodigo(id_cliente);
-        c_cliente.comprobar_cliente();
+        c_proveedor.setId_proveedor(id_proveedor);
+        c_proveedor.cargar_datos();
 
         // Se crea el documento
         Document documento = new Document();
@@ -149,8 +150,8 @@ public class rpt_estado_cuenta {
         // Se abre el documento.
         documento.open();
 
-        documento.add(new Paragraph("Reporte de Estado de Cuenta del Cliente", FontFactory.getFont("Arial Narrow", 16)));
-        documento.add(new Paragraph("Cliente: " + c_cliente.getNombre(), FontFactory.getFont("Arial Narrow", 12)));
+        documento.add(new Paragraph("Reporte de Estado de Cuenta del Proveedor", FontFactory.getFont("Arial Narrow", 16)));
+        documento.add(new Paragraph("Proveedor: " + c_proveedor.getRazon_social(), FontFactory.getFont("Arial Narrow", 12)));
         documento.add(new Paragraph("Fecha Inicio : " + c_varios.fecha_usuario(inicio) + " - Fecha Fin: " + c_varios.fecha_usuario(c_varios.getFechaActual()), FontFactory.getFont("Arial Narrow", 12)));
         documento.add(new Paragraph(Chunk.NEWLINE));
 

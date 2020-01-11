@@ -125,16 +125,34 @@ public class cl_cliente_pago {
         }
     }
 
-    public ResultSet pagos_periodo(String inicio, String fin) {
+    public ResultSet pagos_periodo(String inicio) {
         String query = "select bm.descripcion, bm.id_movimiento, b.nombre, bm.fecha, bm.ingresa "
                 + "from clientes_pagos as cp "
                 + "inner join bancos_movimientos bm on cp.id_movimiento = bm.id_movimiento "
                 + "inner join bancos b on bm.id_bancos = b.id_bancos "
-                + "where cp.id_cliente = '" + id_cliente + "' and bm.fecha between '" + inicio + "' and '" + fin + "' "
+                + "where cp.id_cliente = '" + id_cliente + "' and bm.fecha >= '" + inicio + "' "
                 + "order by bm.fecha asc";
-        System.out.println(query);
         Statement st = c_conectar.conexion();
         ResultSet rs = c_conectar.consulta(st, query);
         return rs;
+    }
+
+    public double pagos_cuenta_anterior(String inicio) {
+        double saldo = 0;
+        try {
+            String query = "select ifnull(sum(bm.ingresa),0) as saldo_pagos "
+                    + "from clientes_pagos as cp "
+                    + "inner join bancos_movimientos bm on cp.id_movimiento = bm.id_movimiento "
+                    + "where cp.id_cliente = '" + id_cliente + "' and bm.fecha < '" + inicio + "'";
+            System.out.println(query);
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+            if (rs.next()) {
+                saldo = rs.getDouble("saldo_pagos");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        return saldo;
     }
 }

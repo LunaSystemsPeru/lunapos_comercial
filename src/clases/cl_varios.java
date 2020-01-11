@@ -412,11 +412,18 @@ public class cl_varios {
         periodo = now.get(Calendar.YEAR) + ceros_izquieda_numero(2, now.get(Calendar.MONTH) + 1);
         return periodo;
     }
-
+    
     public int obtener_mes() {
         int periodo;
         Calendar now = Calendar.getInstance();
         periodo = now.get(Calendar.MONTH);
+        return periodo;
+    }
+    
+    public int obtener_mes_02() {
+        int periodo;
+        Calendar now = Calendar.getInstance();
+        periodo = now.get(Calendar.MONTH) + 1;
         return periodo;
     }
 

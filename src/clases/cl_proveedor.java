@@ -235,4 +235,33 @@ public class cl_proveedor {
         }
     }
 
+    public boolean resumar_ingresos() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "update ingresos as i set i.total = (select ifnull(sum(pi.costo * pi.cantidad),0) from productos_ingresos as pi where pi.id_ingreso = i.id_ingreso)";
+        System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+
+    public boolean resumar_proveedores() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "update proveedor "
+                + "set "
+                + "    proveedor.tcompra = (select ifnull(sum(ingresos.total),0) from ingresos where ingresos.id_proveedor = proveedor.id_proveedor), "
+                + "    proveedor.tpagado = (select ifnull(sum(bm.ingresa),0) from proveedor_pago inner join bancos_movimientos bm on proveedor_pago.id_movimiento = bm.id_movimiento where proveedor_pago.id_proveedor = proveedor.id_proveedor) "
+                + "where 1=1";
+        System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
 }

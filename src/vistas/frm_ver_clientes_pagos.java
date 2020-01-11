@@ -43,6 +43,11 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
         c_pagos.setId_cliente(c_cliente.getCodigo());
 
         txt_cliente.setText(c_cliente.getNombre());
+        jTextField2.setText(c_varios.formato_totales(c_cliente.getVenta()));
+        jTextField3.setText(c_varios.formato_totales(c_cliente.getPago()));
+        jTextField4.setText(c_varios.formato_totales(c_cliente.getVenta() - c_cliente.getPago()));
+        
+        jFormattedTextField2.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
 
         query = "select bm.id_movimiento, b.nombre, bm.fecha, bm.ingresa "
                 + "from clientes_pagos as cp "
@@ -434,20 +439,20 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txt_cliente))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4)
-                        .addGap(364, 364, 364)))
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -585,7 +590,6 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
             rpt_estado_cuenta reporte = new rpt_estado_cuenta();
             reporte.setId_cliente(c_cliente.getCodigo());
             reporte.setInicio(inicio);
-            reporte.setFin(fin);
             reporte.crear_reporte();
         } catch (DocumentException | FileNotFoundException e) {
             System.out.println(e.getLocalizedMessage());
