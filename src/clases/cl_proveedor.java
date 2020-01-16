@@ -254,7 +254,7 @@ public class cl_proveedor {
         String query = "update proveedor "
                 + "set "
                 + "    proveedor.tcompra = (select ifnull(sum(ingresos.total),0) from ingresos where ingresos.id_proveedor = proveedor.id_proveedor), "
-                + "    proveedor.tpagado = (select ifnull(sum(bm.ingresa),0) from proveedor_pago inner join bancos_movimientos bm on proveedor_pago.id_movimiento = bm.id_movimiento where proveedor_pago.id_proveedor = proveedor.id_proveedor) "
+                + "    proveedor.tpagado = (select ifnull(sum(bm.sale),0) from proveedor_pago inner join bancos_movimientos bm on proveedor_pago.id_movimiento = bm.id_movimiento where proveedor_pago.id_proveedor = proveedor.id_proveedor) "
                 + "where 1=1";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);

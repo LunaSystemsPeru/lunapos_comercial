@@ -43,8 +43,8 @@ public class frm_reg_movimiento_banco extends javax.swing.JInternalFrame {
         jd_reg_movimiento.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         query = "select * "
                 + "from bancos_movimientos as bm "
-                + "where date_format(bm.fecha, '%Y%m') = date_format(curdate(), '%Y%m') and bm.id_bancos = '1'";
-        c_movimiento.mostrar(t_movimientos, query);
+                + "where bm.fecha = current_date() and bm.id_bancos = '1'";
+        c_movimiento.mostrar(t_movimientos, query, c_varios.getFechaActual());
 
         //mostrar resumen de caja
         actualizar_caja();
@@ -345,11 +345,10 @@ public class frm_reg_movimiento_banco extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -358,13 +357,13 @@ public class frm_reg_movimiento_banco extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -432,7 +431,7 @@ public class frm_reg_movimiento_banco extends javax.swing.JInternalFrame {
         if (registrado) {
             jd_reg_movimiento.dispose();
             limpiar();
-            c_movimiento.mostrar(t_movimientos, query);
+            c_movimiento.mostrar(t_movimientos, query, c_varios.getFechaActual());
             actualizar_caja();
         }
     }//GEN-LAST:event_btn_j_guardarActionPerformed
@@ -469,18 +468,18 @@ public class frm_reg_movimiento_banco extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_fechaKeyPressed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Date fecha=jDateChooser1.getDate();
-        if (fecha!=null) {
+        Date fecha = jDateChooser1.getDate();
+        if (fecha != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             query = "select * "
-                + "from bancos_movimientos as bm "
-                + "where bm.fecha = '"+sdf.format(fecha)+"' and bm.id_bancos = '1'"; 
-        c_movimiento.mostrar(t_movimientos, query);
+                    + "from bancos_movimientos as bm "
+                    + "where bm.fecha = '" + sdf.format(fecha) + "' and bm.id_bancos = '1'";
+            c_movimiento.mostrar(t_movimientos, query, sdf.format(fecha));
 
-        //mostrar resumen de caja
-        actualizar_caja();
+            //mostrar resumen de caja
+            actualizar_caja();
         }
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
 

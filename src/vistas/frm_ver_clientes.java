@@ -35,7 +35,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         query = "select * "
                 + "from clientes "
-                + "where venta != pago "
                 + "order by nombre asc";
 
         c_cliente.mostrar(t_clientes, query);

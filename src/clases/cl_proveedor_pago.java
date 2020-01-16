@@ -99,7 +99,7 @@ public class cl_proveedor_pago {
                 Object[] fila = new Object[5];
                 fila[0] = rs.getString("id_movimiento");
                 fila[1] = rs.getString("fecha");
-                fila[2] = rs.getString("descripcion");
+                fila[2] = "PAGO A CUENTA";
                 fila[3] = c_varios.formato_totales(rs.getDouble("sale"));
                 fila[4] = c_varios.formato_totales(saldo);
                 tmodelo.addRow(fila);

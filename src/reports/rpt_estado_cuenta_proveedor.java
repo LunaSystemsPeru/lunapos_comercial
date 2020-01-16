@@ -121,7 +121,7 @@ public class rpt_estado_cuenta_proveedor {
                     rs_pagos.getDate("fecha"),
                     "-",
                     "PAGO A CUENTA",
-                    rs_pagos.getDouble("ingresa"),
+                    rs_pagos.getDouble("sale"),
                     0
             )
             );

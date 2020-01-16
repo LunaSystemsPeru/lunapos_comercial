@@ -45,8 +45,11 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
 
         txt_cliente.setText(c_proveedor.getRazon_social());
         jTextField1.setText(c_proveedor.getRazon_social());
+        jTextField2.setText(c_varios.formato_numero(c_proveedor.getTcompra()));
+        jTextField3.setText(c_varios.formato_numero(c_proveedor.getTpagado()));
+        jTextField4.setText(c_varios.formato_numero(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
 
-        query = "select bm.id_movimiento, b.nombre, bm.fecha, bm.ingresa "
+        query = "select bm.id_movimiento, b.nombre, bm.fecha, bm.sale, bm.descripcion "
                 + "from proveedor_pago as pp "
                 + "inner join bancos_movimientos bm on pp.id_movimiento = bm.id_movimiento "
                 + "inner join bancos b on bm.id_bancos = b.id_bancos "
@@ -418,7 +421,7 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -436,11 +439,11 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(364, 364, 364)))
                 .addContainerGap())
         );
