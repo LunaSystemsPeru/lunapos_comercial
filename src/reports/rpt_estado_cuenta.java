@@ -88,7 +88,7 @@ public class rpt_estado_cuenta {
         double saldo_actual = saldo_venta - saldo_pago;
         double ingresa = 0;
         double sale = 0;
-        
+
         if (saldo_actual > 0) {
             sale = saldo_actual;
         } else {
@@ -140,14 +140,14 @@ public class rpt_estado_cuenta {
 
         // Se crea el documento
         Document documento = new Document();
-        
+        String direccion = c_varios.obtenerDireccionCarpeta();
 
         java.util.Date date = new java.util.Date();
         DateFormat hourdateFormat = new SimpleDateFormat("_dd_MM_yyyy_HH_mm_ss");
         String fechahora = hourdateFormat.format(date);
 
         // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
-        FileOutputStream ficheroPdf = new FileOutputStream("fichero_cliente_"+fechahora+".pdf");
+        FileOutputStream ficheroPdf = new FileOutputStream(direccion + File.separator + "temp" + File.separator + "fichero_cliente_" + fechahora + ".pdf");
 
         // Se asocia el documento al OutputStream y se indica que el espaciado entre
         // lineas sera de 20. Esta llamada debe hacerse antes de abrir el documento
@@ -226,8 +226,7 @@ public class rpt_estado_cuenta {
         documento.close();
 
         try {
-            String direccion = c_varios.obtenerDireccionCarpeta();
-            File file = new File(direccion + File.separator + "temp" + File.separator + "fichero_cliente_"+fechahora+".pdf");
+            File file = new File(direccion + File.separator + "temp" + File.separator + "fichero_cliente_" + fechahora + ".pdf");
             Desktop.getDesktop().open(file);
         } catch (IOException e) {
             System.out.print(e + " -- error io");

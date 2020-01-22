@@ -286,6 +286,10 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
                 txt_fecha_pago.setEnabled(true);
                 txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
                 txt_fecha_pago.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "ERROR AL SELECCIONAR PROVEEDOR");
+                txt_buca_clie.setText("");
+                txt_buca_clie.requestFocus();
             }
         }
     }//GEN-LAST:event_txt_buca_clieKeyPressed

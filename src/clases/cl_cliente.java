@@ -211,7 +211,8 @@ public class cl_cliente {
     public boolean resumar_ventas() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
-        String query = "update ventas as v set v.total = (select sum(pv.precio * pv.cantidad) from productos_ventas as pv where pv.id_ventas = v.id_ventas)";
+        String query = "update ventas as v "
+                + "set v.total = (select ifnull(sum(pv.precio * pv.cantidad), 0) from productos_ventas as pv where pv.id_ventas = v.id_ventas)";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
@@ -226,12 +227,12 @@ public class cl_cliente {
         Statement st = c_conectar.conexion();
         String query = "update clientes "
                 + "set clientes.venta = (select ifnull(sum(ventas.total), 0) "
-                + "                         from ventas "
-                + "                         where ventas.id_cliente = clientes.id_cliente), "
-                + "    clientes.pago = (select ifnull(sum(bm.sale), 0) "
-                + "                         from clientes_pagos "
-                + "                                  inner join bancos_movimientos bm on clientes_pagos.id_movimiento = bm.id_movimiento "
-                + "                         where clientes_pagos.id_cliente = clientes.id_cliente) "
+                + "from ventas "
+                + "where ventas.id_cliente = clientes.id_cliente), "
+                + "clientes.pago = (select ifnull(sum(bm.ingresa), 0) "
+                + "from clientes_pagos "
+                + "inner join bancos_movimientos bm on clientes_pagos.id_movimiento = bm.id_movimiento "
+                + "where clientes_pagos.id_cliente = clientes.id_cliente) "
                 + "where 1 = 1";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);

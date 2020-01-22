@@ -26,6 +26,8 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     int fila_seleccionada;
     cl_varios c_varios = new cl_varios();
     cl_proveedor c_proveedor = new cl_proveedor();
+    
+    String query = "";
 
     /**
      * Creates new form frm_ver_proveedores
@@ -33,7 +35,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     public frm_ver_proveedores() {
         initComponents();
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
-        String query = "select * "
+        query = "select * "
                 + "from proveedor "
                 + "order by razon_social asc";
         c_proveedor.mostrar(t_proveedores, query);
@@ -221,7 +223,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_buscarKeyPressed
 
     private void t_proveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_proveedoresMouseClicked
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 1) {
             fila_seleccionada = t_proveedores.getSelectedRow();
             btn_modificar.setEnabled(true);
             jButton1.setEnabled(true);
@@ -278,6 +280,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         c_proveedor.resumar_ingresos();
         c_proveedor.resumar_proveedores();
+        c_proveedor.mostrar(t_proveedores, query);
     }//GEN-LAST:event_jButton4ActionPerformed
 
 

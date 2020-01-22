@@ -46,7 +46,7 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
         jTextField2.setText(c_varios.formato_totales(c_cliente.getVenta()));
         jTextField3.setText(c_varios.formato_totales(c_cliente.getPago()));
         jTextField4.setText(c_varios.formato_totales(c_cliente.getVenta() - c_cliente.getPago()));
-        
+
         jFormattedTextField2.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
 
         query = "select bm.id_movimiento, b.nombre, bm.fecha, bm.ingresa "
@@ -591,6 +591,8 @@ public class frm_ver_clientes_pagos extends javax.swing.JDialog {
             reporte.setId_cliente(c_cliente.getCodigo());
             reporte.setInicio(inicio);
             reporte.crear_reporte();
+            JOptionPane.showMessageDialog(null, "REPORTE GENERADO");
+            jd_fecha.dispose();
         } catch (DocumentException | FileNotFoundException e) {
             System.out.println(e.getLocalizedMessage());
         }

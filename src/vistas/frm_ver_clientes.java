@@ -244,7 +244,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_buscarKeyPressed
 
     private void t_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_clientesMouseClicked
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 1) {
             fila_seleccionada = t_clientes.getSelectedRow();
             c_cliente.setCodigo(Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString()));
             btn_modificar.setEnabled(true);
@@ -338,6 +338,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         c_cliente.resumar_ventas();
         c_cliente.resumar_clientes();
+        c_cliente.mostrar(t_clientes, query);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
