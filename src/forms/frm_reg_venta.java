@@ -292,7 +292,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 @Override
                 public void callback(Object selectedItem) {
                     Object itemSelected = selectedItem;
-                    c_cliente.setCodigo(0);
+                    c_cliente.setCodigo(-1);
                     if (itemSelected instanceof cla_cliente) {
                         int ccodigo = ((cla_cliente) itemSelected).getId_cliente();
                         String cnombre = ((cla_cliente) itemSelected).getNombre();
@@ -1348,7 +1348,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
 
         //si es nota de venta salta a grabar
         if (id_tido == 6) {
-            c_cliente.setCodigo(0);
+            c_cliente.setCodigo(-1);
             c_cliente.comprobar_cliente();
             txt_doc_cliente.setEnabled(false);
             txt_nom_cliente.setEnabled(true);
@@ -1392,12 +1392,15 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txt_nom_cliente.getText().trim().length() > 9) {
                 //validar cliente
-                if (c_cliente.comprobar_cliente()) {
-                    txt_doc_cliente.setText(c_cliente.getDocumento());
-
-                    cargar_productos(1);
-                    txt_buscar_producto.setEnabled(true);
-                    txt_buscar_producto.requestFocus();
+                if (c_cliente.getCodigo() != -1) {
+                    if (c_cliente.comprobar_cliente()) {
+                        txt_doc_cliente.setText(c_cliente.getDocumento());
+                        cargar_productos(1);
+                        txt_buscar_producto.setEnabled(true);
+                        txt_buscar_producto.requestFocus();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "EL CLIENTE NO EXISTE, \nSELECCIONE CON ENTER");
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "EL CLIENTE NO EXISTE, \nSELECCIONE CON ENTER");
                 }
