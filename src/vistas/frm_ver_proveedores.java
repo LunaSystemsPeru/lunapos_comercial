@@ -26,6 +26,8 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     int fila_seleccionada;
     cl_varios c_varios = new cl_varios();
     cl_proveedor c_proveedor = new cl_proveedor();
+    
+    String query = "";
 
     /**
      * Creates new form frm_ver_proveedores
@@ -33,7 +35,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     public frm_ver_proveedores() {
         initComponents();
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
-        String query = "select * "
+        query = "select * "
                 + "from proveedor "
                 + "order by razon_social asc";
         c_proveedor.mostrar(t_proveedores, query);
@@ -54,6 +56,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -115,6 +118,18 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(jButton3);
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/currency.png"))); // NOI18N
+        jButton4.setText("Re Calcular");
+        jButton4.setFocusable(false);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton4);
         jToolBar1.add(jSeparator1);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cross.png"))); // NOI18N
@@ -208,7 +223,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_buscarKeyPressed
 
     private void t_proveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_proveedoresMouseClicked
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 1) {
             fila_seleccionada = t_proveedores.getSelectedRow();
             btn_modificar.setEnabled(true);
             jButton1.setEnabled(true);
@@ -262,6 +277,12 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         modal.setVisible(true);
     }//GEN-LAST:event_btn_agregarActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        c_proveedor.resumar_ingresos();
+        c_proveedor.resumar_proveedores();
+        c_proveedor.mostrar(t_proveedores, query);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
@@ -269,6 +290,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;

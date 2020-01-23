@@ -18,9 +18,10 @@ import javax.swing.table.TableRowSorter;
  * @author luis
  */
 public class cl_proveedor_pago {
+
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
-    
+
     private int id_proveedor;
     private int id_movimiento;
 
@@ -42,7 +43,7 @@ public class cl_proveedor_pago {
     public void setId_movimiento(int id_movimiento) {
         this.id_movimiento = id_movimiento;
     }
-    
+
     public boolean registrar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
@@ -98,7 +99,7 @@ public class cl_proveedor_pago {
                 Object[] fila = new Object[5];
                 fila[0] = rs.getString("id_movimiento");
                 fila[1] = rs.getString("fecha");
-                fila[2] = rs.getString("descripcion");
+                fila[2] = "PAGO A CUENTA";
                 fila[3] = c_varios.formato_totales(rs.getDouble("sale"));
                 fila[4] = c_varios.formato_totales(saldo);
                 tmodelo.addRow(fila);
@@ -123,5 +124,36 @@ public class cl_proveedor_pago {
             System.out.print(e);
         }
     }
-    
+
+    public ResultSet pagos_periodo(String inicio) {
+        String query = "select bm.descripcion, bm.id_movimiento, b.nombre, bm.fecha, bm.sale "
+                + "from proveedor_pago as pp "
+                + "         inner join bancos_movimientos bm on pp.id_movimiento = bm.id_movimiento "
+                + "         inner join bancos b on bm.id_bancos = b.id_bancos "
+                + "where pp.id_proveedor = '" + id_proveedor + "' "
+                + "  and bm.fecha >= '" + inicio + "' "
+                + "order by bm.fecha asc;";
+        Statement st = c_conectar.conexion();
+        ResultSet rs = c_conectar.consulta(st, query);
+        return rs;
+    }
+
+    public double pagos_cuenta_anterior(String inicio) {
+        double saldo = 0;
+        try {
+            String query = "select ifnull(sum(bm.sale),0)  as saldo_pagos "
+                    + "from proveedor_pago as pp "
+                    + "inner join bancos_movimientos bm on pp.id_movimiento = bm.id_movimiento "
+                    + "where pp.id_proveedor = '" + id_proveedor + "' and bm.fecha < '" + inicio + "'";
+            System.out.println(query);
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+            if (rs.next()) {
+                saldo = rs.getDouble("saldo_pagos");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        return saldo;
+    }
 }

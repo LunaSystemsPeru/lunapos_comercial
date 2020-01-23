@@ -5,20 +5,17 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select sum(i.total) as total, sum(i.tpagado) as pagado, p.id_proveedor, p.nro_documento, p.razon_social
-from ingresos as i
-         inner join proveedor p on i.id_proveedor = p.id_proveedor
-where i.total > i.tpagado
-group by i.id_proveedor
-order by p.razon_social asc]]>
+		<![CDATA[select p.tcompra as total, p.tpagado as pagado, p.id_proveedor, p.nro_documento, p.razon_social 
+from proveedor as p 
+where p.tcompra != p.tpagado]]>
 	</queryString>
 	<field name="total" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="total"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="ventas"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
 	</field>
 	<field name="pagado" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="pagado"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="ventas"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
 	</field>
 	<field name="id_proveedor" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id_proveedor"/>
@@ -201,18 +198,6 @@ COMERCIAL JESSICA
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
-		</band>
-		<band height="21">
-			<subreport>
-				<reportElement x="0" y="1" width="550" height="20" uuid="36609a24-d785-496b-8afa-3a1138cf7ed5">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<subreportParameter name="p_idproveedor">
-					<subreportParameterExpression><![CDATA[$F{id_proveedor}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_deudas_proveedores_documentos.jasper"]]></subreportExpression>
-			</subreport>
 		</band>
 	</detail>
 	<columnFooter>

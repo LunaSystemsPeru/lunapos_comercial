@@ -172,6 +172,9 @@ public class cl_cliente {
             tabla.getColumnModel().getColumn(4).setPreferredWidth(70);
             tabla.getColumnModel().getColumn(5).setPreferredWidth(70);
             tabla.getColumnModel().getColumn(6).setPreferredWidth(70);
+            c_varios.derecha_celda(tabla, 4);
+            c_varios.derecha_celda(tabla, 5);
+            c_varios.centrar_celda(tabla, 6);
         } catch (SQLException e) {
             System.out.print(e);
         }
@@ -196,6 +199,41 @@ public class cl_cliente {
         String query = "update clientes "
                 + "set nombre = '" + nombre + "', direccion = '" + direccion + "', telefono = '" + telefono + "', celular = '" + celular + "' "
                 + "where id_cliente = '" + codigo + "' ";
+        System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+
+    public boolean resumar_ventas() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "update ventas as v "
+                + "set v.total = (select ifnull(sum(pv.precio * pv.cantidad), 0) from productos_ventas as pv where pv.id_ventas = v.id_ventas)";
+        System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+
+    public boolean resumar_clientes() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "update clientes "
+                + "set clientes.venta = (select ifnull(sum(ventas.total), 0) "
+                + "from ventas "
+                + "where ventas.id_cliente = clientes.id_cliente), "
+                + "clientes.pago = (select ifnull(sum(bm.ingresa), 0) "
+                + "from clientes_pagos "
+                + "inner join bancos_movimientos bm on clientes_pagos.id_movimiento = bm.id_movimiento "
+                + "where clientes_pagos.id_cliente = clientes.id_cliente) "
+                + "where 1 = 1";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
@@ -272,7 +310,7 @@ public class cl_cliente {
             while (rs.next()) {
                 existe = true;
                 codigo = rs.getInt("id_cliente");
-                nombre= rs.getString("nombre");
+                nombre = rs.getString("nombre");
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
@@ -282,6 +320,5 @@ public class cl_cliente {
 
         return existe;
     }
-    
 
 }

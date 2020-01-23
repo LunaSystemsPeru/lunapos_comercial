@@ -32,7 +32,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
         String query = "SELECT pro.*, cla.nombre AS clasificacion "
                 + "FROM productos pro INNER JOIN  productos_clasificacion cla "
                 + "ON pro.id_clasificacion=cla.id_clasificacion "
-                + "ORDER BY cla.nombre asc, pro.descripcion ASC, pro.marca ASC LIMIT 0";
+                + "ORDER BY pro.descripcion ASC, pro.marca ASC LIMIT 0";
         c_producto.mostrar(t_productos, query);
         contar_resultados();
     }
@@ -278,7 +278,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
                         + "  INNER JOIN productos_clasificacion cla "
                         + "    ON pro.id_clasificacion = cla.id_clasificacion "
                         + "WHERE CONCAT (cla.nombre, ' ', pro.descripcion, ' ', pro.marca) LIKE '%" + texto + "%'  "
-                        + "ORDER BY cla.nombre asc, pro.descripcion ASC,  pro.marca ASC ";
+                        + "ORDER BY pro.descripcion ASC,  pro.marca ASC ";
             }
 
             if (tipo_busqueda == 1) {
@@ -290,7 +290,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
                         + "  INNER JOIN productos_clasificacion cla  "
                         + "    ON pro.id_clasificacion = cla.id_clasificacion  "
                         + "WHERE pro.id_producto =  '" + texto + "'  "
-                        + "ORDER BY cla.nombre asc, pro.descripcion ASC,  pro.marca ASC";
+                        + "ORDER BY pro.descripcion ASC,  pro.marca ASC";
             }
 
             if (tipo_busqueda == 2) {
@@ -302,7 +302,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
                         + "  INNER JOIN productos_clasificacion cla  "
                         + "    ON pro.id_clasificacion = cla.id_clasificacion  "
                         + "WHERE pro.marca LIKE  '%" + texto + "%'  "
-                        + "ORDER BY cla.nombre asc, pro.descripcion ASC, pro.marca ASC";
+                        + "ORDER BY pro.descripcion ASC, pro.marca ASC";
             }
             if (tipo_busqueda == 3) {
                 query = "SELECT  "
@@ -313,7 +313,7 @@ public class frm_ver_productos_todos extends javax.swing.JInternalFrame {
                         + "  INNER JOIN productos_clasificacion cla  "
                         + "    ON pro.id_clasificacion = cla.id_clasificacion  "
                         + "WHERE pro.precio = '" + texto + "'  "
-                        + "ORDER BY cla.nombre asc, pro.descripcion ASC, pro.marca ASC";
+                        + "ORDER BY pro.descripcion ASC, pro.marca ASC";
             }
 
             c_producto.mostrar(t_productos, query);

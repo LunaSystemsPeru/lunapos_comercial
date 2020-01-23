@@ -35,7 +35,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
         query = "select * "
                 + "from clientes "
-                + "where venta != pago "
                 + "order by nombre asc";
 
         c_cliente.mostrar(t_clientes, query);
@@ -64,6 +63,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         btn_pago = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         btn_cerrar = new javax.swing.JButton();
 
         setTitle("Ver Clientes");
@@ -167,6 +167,18 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(jButton2);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/currency.png"))); // NOI18N
+        jButton1.setText("Re Calcular");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton1);
+
         btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cross.png"))); // NOI18N
         btn_cerrar.setText("Cerrar");
         btn_cerrar.setFocusable(false);
@@ -232,7 +244,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_buscarKeyPressed
 
     private void t_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_clientesMouseClicked
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 1) {
             fila_seleccionada = t_clientes.getSelectedRow();
             c_cliente.setCodigo(Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString()));
             btn_modificar.setEnabled(true);
@@ -323,12 +335,19 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_btn_pagoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        c_cliente.resumar_ventas();
+        c_cliente.resumar_clientes();
+        c_cliente.mostrar(t_clientes, query);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JButton btn_pago;
     private javax.swing.JComboBox cbx_boton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;

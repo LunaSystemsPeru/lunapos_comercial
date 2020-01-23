@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import models.m_bancos;
 import reports.rpt_estado_cuenta;
+import reports.rpt_estado_cuenta_proveedor;
 
 /**
  *
@@ -44,8 +45,11 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
 
         txt_cliente.setText(c_proveedor.getRazon_social());
         jTextField1.setText(c_proveedor.getRazon_social());
+        jTextField2.setText(c_varios.formato_numero(c_proveedor.getTcompra()));
+        jTextField3.setText(c_varios.formato_numero(c_proveedor.getTpagado()));
+        jTextField4.setText(c_varios.formato_numero(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
 
-        query = "select bm.id_movimiento, b.nombre, bm.fecha, bm.ingresa "
+        query = "select bm.id_movimiento, b.nombre, bm.fecha, bm.sale, bm.descripcion "
                 + "from proveedor_pago as pp "
                 + "inner join bancos_movimientos bm on pp.id_movimiento = bm.id_movimiento "
                 + "inner join bancos b on bm.id_bancos = b.id_bancos "
@@ -78,6 +82,13 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
         txt_monto = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         cbx_banco = new javax.swing.JComboBox<>();
+        jd_fecha = new javax.swing.JDialog();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        jButton5 = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         jButton3 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
@@ -219,6 +230,84 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Generar Estado de Cuenta"));
+
+        jLabel9.setText("Fecha de Inicio:");
+
+        jLabel10.setText("Fecha de Fin:");
+
+        try {
+            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jFormattedTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        try {
+            jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jFormattedTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jButton5.setText("Generar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jd_fechaLayout = new javax.swing.GroupLayout(jd_fecha.getContentPane());
+        jd_fecha.getContentPane().setLayout(jd_fechaLayout);
+        jd_fechaLayout.setHorizontalGroup(
+            jd_fechaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_fechaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jd_fechaLayout.setVerticalGroup(
+            jd_fechaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_fechaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jToolBar1.setFloatable(false);
@@ -332,7 +421,7 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,11 +439,11 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(364, 364, 364)))
                 .addContainerGap())
         );
@@ -395,12 +484,12 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            rpt_estado_cuenta reporte = new rpt_estado_cuenta();
-            reporte.crear_reporte();
-        } catch (DocumentException | FileNotFoundException e) {
-            System.out.println(e.getLocalizedMessage());
-        }
+        jd_fecha.setModal(true);
+        jFormattedTextField1.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+        jFormattedTextField2.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+        jd_fecha.setSize(459, 217);
+        jd_fecha.setLocationRelativeTo(null);
+        jd_fecha.setVisible(true);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -483,6 +572,21 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        String inicio = c_varios.fecha_myql(jFormattedTextField1.getText());
+        String fin = c_varios.fecha_myql(jFormattedTextField2.getText());
+        try {
+            rpt_estado_cuenta_proveedor reporte = new rpt_estado_cuenta_proveedor();
+            reporte.setId_proveedor(c_proveedor.getId_proveedor());
+            reporte.setInicio(inicio);
+            reporte.crear_reporte();
+            JOptionPane.showMessageDialog(null, "REPORTE GENERADO");
+            jd_fecha.dispose();
+        } catch (DocumentException | FileNotFoundException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -534,7 +638,11 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -542,6 +650,8 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
@@ -551,6 +661,7 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JDialog jd_fecha;
     private javax.swing.JDialog jd_pagar;
     private javax.swing.JTable t_pagos;
     private javax.swing.JTextField txt_cliente;

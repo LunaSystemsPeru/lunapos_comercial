@@ -275,14 +275,33 @@ public class cl_venta {
         return rs;
     }
 
-    public ResultSet ventas_periodo_cuenta(String inicio, String fin) {
-        String query = "select v.fecha, v.serie, v.numero, ds.abreviado, concat(pc.nombre, ' ', p.descripcion) as descripcion, pv.cantidad, pv.precio "
+    public double ventas_cuenta_anterior(String inicio) {
+        double saldo = 0;
+        try {
+            String query = "select sum(pv.cantidad * pv.precio) as total_venta "
+                    + "from productos_ventas as pv "
+                    + "inner join ventas v on pv.id_ventas = v.id_ventas and v.id_cliente = '" + id_cliente + "' "
+                    + "where v.fecha < '" + inicio + "' ";
+            System.out.println(query);
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+            if (rs.next()) {
+                saldo = rs.getDouble("total_venta");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        return saldo;
+    }
+
+    public ResultSet ventas_periodo_cuenta(String inicio) {
+        String query = "select v.fecha, v.serie, v.numero, ds.abreviado, p.descripcion, pv.cantidad, pv.precio "
                 + "from productos_ventas as pv "
                 + "inner join ventas v on pv.id_ventas = v.id_ventas "
                 + "inner join documentos_sunat ds on v.id_tido = ds.id_tido "
                 + "inner join productos p on pv.id_producto = p.id_producto "
                 + "inner join productos_clasificacion pc on p.id_clasificacion = pc.id_clasificacion "
-                + "where v.id_cliente = '" + id_cliente + "' and v.estado != 3 and v.fecha between '"+inicio+"' and '"+fin+"' "
+                + "where v.id_cliente = '" + id_cliente + "' and v.estado != 3 and v.fecha >= '" + inicio + "'  "
                 + "order by v.fecha asc, pc.nombre asc, p.descripcion asc";
         System.out.println(query);
         Statement st = c_conectar.conexion();
@@ -320,14 +339,14 @@ public class cl_venta {
                 String sestado = "ACTIVO";
 
                 if (itipo_venta == 1) {
-                    
+
                     if (iestado == 3) {
                         sestado = "ANULADO";
                     }
                 }
 
                 if (itipo_venta == 2) {
-                    
+
                     if (iestado == 3) {
                         sestado = "ANULADO";
                     }
@@ -355,8 +374,8 @@ public class cl_venta {
             tabla.getColumnModel().getColumn(5).setPreferredWidth(110);
             tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
             tabla.getColumnModel().getColumn(7).setPreferredWidth(0);
-            
-            //tabla.setDefaultRenderer(Object.class, new render_ventas());
+
+            tabla.setDefaultRenderer(Object.class, new render_ventas());
             //   t_productos.setRowSorter(sorter);
 
         } catch (SQLException e) {

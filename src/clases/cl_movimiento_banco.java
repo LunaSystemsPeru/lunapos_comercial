@@ -94,13 +94,13 @@ public class cl_movimiento_banco {
         }
     }
 
-    public double obtener_saldo() {
+    public double obtener_saldo(String fecha_saldo) {
         double saldo = 0;
         try {
             Statement st = c_conectar.conexion();
             String query = "select ifnull(sum(ingresa-sale), 0) as saldo "
                     + "from bancos_movimientos "
-                    + "where date_format(fecha, '%Y%m') < date_format(curdate(), '%Y%m') and id_bancos = '" + id_banco + "'";
+                    + "where fecha < '"+fecha_saldo+"' and id_bancos = '1'";
             ResultSet rs = c_conectar.consulta(st, query);
             if (rs.next()) {
                 saldo = rs.getDouble("saldo");
@@ -137,7 +137,7 @@ public class cl_movimiento_banco {
         return registrado;
     }
 
-    public void mostrar(JTable tabla, String query) {
+    public void mostrar(JTable tabla, String query, String fecha_saldo) {
         try {
             DefaultTableModel tmodelo;
             tmodelo = new DefaultTableModel() {
@@ -159,7 +159,7 @@ public class cl_movimiento_banco {
             tmodelo.addColumn("Saldo");
 
             int contar = 0;
-            double saldo = obtener_saldo();
+            double saldo = obtener_saldo(fecha_saldo);
 
             double dingresa = 0;
             double dsale = 0;
@@ -172,11 +172,11 @@ public class cl_movimiento_banco {
 
             Object[] fila = new Object[6];
             fila[0] = 0;
-            fila[1] = c_varios.getFechaActual();
+            fila[1] = c_varios.fecha_usuario(fecha_saldo);
             fila[2] = "SALDO ANTERIOR";
-            fila[3] = c_varios.formato_totales(dingresa);
-            fila[4] = c_varios.formato_totales(dsale);
-            fila[5] = c_varios.formato_totales(saldo);
+            fila[3] = c_varios.formato_numero(dingresa);
+            fila[4] = c_varios.formato_numero(dsale);
+            fila[5] = c_varios.formato_numero(saldo);
             tmodelo.addRow(fila);
 
             //Creando las filas para el JTable
@@ -185,7 +185,7 @@ public class cl_movimiento_banco {
                 contar++;
                 fila = new Object[6];
                 fila[0] = rs.getString("id_movimiento");
-                fila[1] = rs.getString("fecha");
+                fila[1] = c_varios.fecha_usuario(rs.getString("fecha"));
                 fila[2] = rs.getString("descripcion").toUpperCase();
                 fila[3] = c_varios.formato_numero(rs.getDouble("ingresa"));
                 fila[4] = c_varios.formato_numero(rs.getDouble("sale"));

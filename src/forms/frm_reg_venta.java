@@ -144,7 +144,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     private void calcular_vuelto() {
         double efectivo = Double.parseDouble(txt_j_efectivo.getText());
         double deuda = Double.parseDouble(text_deudatotal.getText());
-        txt_j_por_pagar.setText(deuda-efectivo+"");
+        txt_j_por_pagar.setText(deuda - efectivo + "");
         /*
         double total = calcular_total();
         double suma_pago = efectivo;
@@ -208,8 +208,10 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             ResultSet rs = c_conectar.consulta(st, sql);
             while (rs.next()) {
                 int id_producto = rs.getInt("id_producto");
-                String descripcion = rs.getString("clasificacion") + " | " + rs.getString("descripcion") + " | " + rs.getString("und_medida")
-                        + "    |    Cant: " + rs.getInt("cactual") + "    |    Precio: S/ " + c_varios.formato_numero(rs.getDouble("precio"));
+                /*String descripcion = rs.getString("descripcion") + " | " + rs.getString("und_medida")
+                        + "    |    Cant: " + rs.getInt("cactual") + "    |    Precio: S/ " + c_varios.formato_numero(rs.getDouble("precio"));*/
+                String descripcion = rs.getString("descripcion") + " | " + rs.getString("und_medida")
+                        + "    |    Precio: S/ " + c_varios.formato_numero(rs.getDouble("precio"));
                 tac_productos.addItem(new cla_producto(id_producto, descripcion));
             }
             c_conectar.cerrar(rs);
@@ -290,14 +292,14 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 @Override
                 public void callback(Object selectedItem) {
                     Object itemSelected = selectedItem;
-                    c_cliente.setCodigo(0);
+                    c_cliente.setCodigo(-1);
                     if (itemSelected instanceof cla_cliente) {
                         int ccodigo = ((cla_cliente) itemSelected).getId_cliente();
                         String cnombre = ((cla_cliente) itemSelected).getNombre();
                         System.out.println("cliente seleccionado " + cnombre);
                         c_cliente.setCodigo(ccodigo);
                         c_cliente.comprobar_cliente();
-                        lab_tatal_deuda.setText((c_cliente.getVenta()-c_cliente.getPago())+""); 
+                        lab_tatal_deuda.setText((c_cliente.getVenta() - c_cliente.getPago()) + "");
                     } else {
                         System.out.println("El item es de un tipo desconocido");
                     }
@@ -313,7 +315,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 int id_cliente = rs.getInt("id_cliente");
                 String descripcion = "";
                 if (tipo == 3) {
-                    descripcion = rs.getString("nombre") ;
+                    descripcion = rs.getString("nombre");
                 }
                 if (tipo == 2) {
                     descripcion = rs.getString("documento");
@@ -398,7 +400,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         c_movimiento.setSale(0);
         c_movimiento.obtener_codigo();
         c_movimiento.registrar();
-        
+
         c_pago.setId_cliente(c_cliente.getCodigo());
         c_pago.setId_movimiento(c_movimiento.getId_movimiento());
         c_pago.registrar();
@@ -506,7 +508,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_pago_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 44, Short.MAX_VALUE)
+                .addComponent(lbl_pago_venta, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -590,6 +592,11 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         btn_pago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_pagoActionPerformed(evt);
+            }
+        });
+        btn_pago.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btn_pagoKeyPressed(evt);
             }
         });
 
@@ -1229,10 +1236,10 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                         txt_cantidad.setText("1");
                         txt_precioUnitario.setText(c_producto.getPrecio() + "");
                         txt_precioUnitario.setEnabled(true);
+                        txt_cant_actual.setText(c_varios.formato_numero(c_producto_almacen.getCtotal()));
                         txt_cantidad.setEnabled(true);
                         txt_cantidad.requestFocus();
-                        txt_precioUnitario.selectAll();
-                        txt_cant_actual.setText(c_varios.formato_numero(c_producto_almacen.getCtotal()));
+                        txt_cantidad.selectAll();
                     } else {
                         c_producto.setId(0);
                         c_producto_almacen.setProducto(0);
@@ -1274,34 +1281,19 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
     private void txt_cantidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cantidadKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String tcantidad = txt_cantidad.getText();
-            String precioUnitario = txt_precioUnitario.getText();
             if (c_varios.esDecimal(tcantidad)) {
                 double cantidad_vender = Double.parseDouble(tcantidad);
-                double cantidat = Double.parseDouble(precioUnitario);
-                //comparar documento 
-                cla_mis_documentos cla_tido = (cla_mis_documentos) cbx_tipo_doc.getSelectedItem();
-                int id_tido = cla_tido.getId_tido();
-                if (id_tido == 1 || id_tido == 2) {
-                    if (cantidad_vender > c_producto.getCsunat()) {
-                        JOptionPane.showMessageDialog(null, "NO TIENE LA CANTIDAD PARA BOLETEAR o FACTURAR ");
-                        limpiar_buscar();
-                    } else {
-                        calcular_subtotal();
-                        txt_precioUnitario.setEnabled(true);
-                        txt_precioUnitario.requestFocus();
-                    }
-                } else {
-                    //provisionalmente se quita el bloqueo de vender sin cantidad
-                    // if (cantidad_vender > c_producto_almacen.getCtotal()) {
-                    //     JOptionPane.showMessageDialog(null, "NO TIENE LA CANTIDAD PARA VENDER ");
-                    //     limpiar_buscar();
-                    // } else {
-                    calcular_subtotal();
-                    txt_precioUnitario.setEnabled(true);
-                        txt_precioUnitario.requestFocus();
-                    
-                    // }
-                }
+                //provisionalmente se quita el bloqueo de vender sin cantidad
+                // if (cantidad_vender > c_producto_almacen.getCtotal()) {
+                //     JOptionPane.showMessageDialog(null, "NO TIENE LA CANTIDAD PARA VENDER ");
+                //     limpiar_buscar();
+                // } else {
+                calcular_subtotal();
+                txt_precioUnitario.setEnabled(true);
+                txt_precioUnitario.selectAll();
+                txt_precioUnitario.requestFocus();
+
+                // }
             }
         }
 
@@ -1356,7 +1348,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
 
         //si es nota de venta salta a grabar
         if (id_tido == 6) {
-            c_cliente.setCodigo(0);
+            c_cliente.setCodigo(-1);
             c_cliente.comprobar_cliente();
             txt_doc_cliente.setEnabled(false);
             txt_nom_cliente.setEnabled(true);
@@ -1400,12 +1392,15 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txt_nom_cliente.getText().trim().length() > 9) {
                 //validar cliente
-                if (c_cliente.comprobar_cliente()) {
-                    txt_doc_cliente.setText(c_cliente.getDocumento());
-                    
-                    cargar_productos(1);
-                    txt_buscar_producto.setEnabled(true);
-                    txt_buscar_producto.requestFocus();
+                if (c_cliente.getCodigo() != -1) {
+                    if (c_cliente.comprobar_cliente()) {
+                        txt_doc_cliente.setText(c_cliente.getDocumento());
+                        cargar_productos(1);
+                        txt_buscar_producto.setEnabled(true);
+                        txt_buscar_producto.requestFocus();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "EL CLIENTE NO EXISTE, \nSELECCIONE CON ENTER");
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "EL CLIENTE NO EXISTE, \nSELECCIONE CON ENTER");
                 }
@@ -1425,8 +1420,8 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         final_total = calcular_total();
         txt_j_efectivo.selectAll();
         txt_j_efectivo.requestFocus();
-        txt_j_faltante.setText(lab_tatal_deuda.getText()); 
-        text_deudatotal.setText((c_cliente.getVenta()-c_cliente.getPago() + final_total)+"");
+        txt_j_faltante.setText(lab_tatal_deuda.getText());
+        text_deudatotal.setText((c_cliente.getVenta() - c_cliente.getPago() + final_total) + "");
 
         jd_fin_venta.setVisible(true);
     }//GEN-LAST:event_btn_grabarActionPerformed
@@ -1437,9 +1432,9 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             if (texto.length() > 0 && c_varios.esDecimal(texto)) {
                 calcular_vuelto();
                 double monto = Double.parseDouble(texto);
-                
-                txt_j_por_pagar.setText((Double.parseDouble(text_deudatotal.getText()))-monto+"");
-                final_total=(Double.parseDouble(text_deudatotal.getText()));
+
+                txt_j_por_pagar.setText((Double.parseDouble(text_deudatotal.getText())) - monto + "");
+                // final_total = (Double.parseDouble(text_deudatotal.getText()));
                 if (monto >= Double.parseDouble(text_deudatotal.getText())) {
                     btn_pago.setEnabled(true);
                     btn_pago.requestFocus();
@@ -1704,7 +1699,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
         frm_reg_cliente.c_cliente.setCodigo(0);
         frm_reg_cliente dialog = new frm_reg_cliente(f, true);
         dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);  
+        dialog.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txt_doc_clienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_doc_clienteKeyTyped
@@ -1717,65 +1712,60 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
                 //txt_cantidad.setEnabled(true);
                 //txt_cantidad.requestFocus();
                 boton_agregar.setEnabled(true);
-                    boton_agregar.requestFocus();
+                boton_agregar.requestFocus();
                 txt_cantidad.selectAll();
             }
         }
     }//GEN-LAST:event_txt_precioUnitarioKeyPressed
 
     private void txt_precioUnitarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_precioUnitarioKeyTyped
-        c_varios.solo_numeros(evt);
+        c_varios.solo_precio(evt);
     }//GEN-LAST:event_txt_precioUnitarioKeyTyped
 
     private void boton_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_agregarActionPerformed
-        if (true) {
-            boolean error = false;
-            double dcantidad = Double.parseDouble(txt_cantidad.getText());
-            double precio = Double.parseDouble(txt_precioUnitario.getText());
+        boolean error = false;
+        double dcantidad = Double.parseDouble(txt_cantidad.getText());
+        double precio = Double.parseDouble(txt_precioUnitario.getText());
 
-            double dsubtotal = precio * dcantidad;
+        double dsubtotal = precio * dcantidad;
 
-            //validar cantidad
-            String tcantidad = txt_cantidad.getText();
-            if (!c_varios.esDecimal(tcantidad)) {
+        //validar cantidad
+        String tcantidad = txt_cantidad.getText();
+        if (!c_varios.esDecimal(tcantidad)) {
+            error = true;
+        } else {
+            if (dcantidad <= 0) {
+                JOptionPane.showMessageDialog(null, "NO PUEDE SER CERO (0)");
                 error = true;
             } else {
-                if (dcantidad <= 0) {
-                    JOptionPane.showMessageDialog(null, "NO PUEDE SER CERO (0)");
-                    error = true;
-                } else {
-                    //dcantidad = dcantidad * precio;
-                }
+                //dcantidad = dcantidad * precio;
             }
+        }
 
-            double cactual = Double.parseDouble(txt_cant_actual.getText());
-            /*
+        double cactual = Double.parseDouble(txt_cant_actual.getText());
+        /*
                 if (cactual <= 0) {
                 JOptionPane.showMessageDialog(null, "ERROR NO HAY STOCK PARA ESTE PRODUCTO");
                 error = true;
                 }
-             */
+         */
 
-            //formar objeto y agregar para tabla
-            if (!error) {
-                Object fila[] = new Object[5];
-                fila[0] = c_producto.getId();
-                fila[1] = c_producto.getDescripcion() + " | " + c_producto.getMarca();
-                fila[2] = dcantidad;
-                fila[3] = c_varios.formato_numero(precio);
-                fila[4] = c_varios.formato_numero(dsubtotal);
+        //formar objeto y agregar para tabla
+        if (!error) {
+            Object fila[] = new Object[5];
+            fila[0] = c_producto.getId();
+            fila[1] = c_producto.getDescripcion() + " | " + c_producto.getMarca();
+            fila[2] = dcantidad;
+            fila[3] = c_varios.formato_numero(precio);
+            fila[4] = c_varios.formato_numero(dsubtotal);
 
-                detalle.addRow(fila);
-                calcular_total();
-                limpiar_buscar();
-            } else {
-                JOptionPane.showMessageDialog(null, "ERROR CON EL PRECIO O LA CANTIDAD");
-            }
+            detalle.addRow(fila);
+            calcular_total();
+            limpiar_buscar();
+        } else {
+            JOptionPane.showMessageDialog(null, "ERROR CON EL PRECIO O LA CANTIDAD");
         }
-
-        // if (evt. == KeyEvent.VK_ESCAPE) {
         limpiar_buscar();
-        //}
     }//GEN-LAST:event_boton_agregarActionPerformed
 
     private void txt_precioUnitarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_precioUnitarioFocusGained
@@ -1793,6 +1783,12 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
             btn_grabar.doClick();
         }
     }//GEN-LAST:event_btn_grabarKeyPressed
+
+    private void btn_pagoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_pagoKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btn_pago.doClick();
+        }
+    }//GEN-LAST:event_btn_pagoKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -125,7 +125,7 @@ public class cl_ingresos {
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
     }
-    
+
     public boolean validar_ingreso() {
         boolean existe = false;
         try {
@@ -171,14 +171,14 @@ public class cl_ingresos {
         }
         return existe;
     }
-    
+
     public boolean validar_documento_kardex() {
         boolean existe = false;
         try {
             Statement st = c_conectar.conexion();
             String query = "select id_ingreso, periodo "
                     + "from ingresos "
-                    + "where id_almacen = '" + id_almacen + "' and id_tido = '" + id_tido + "' and serie = '" + serie + "' and numero = '" + numero + "' and fecha = '"+fecha+"'";
+                    + "where id_almacen = '" + id_almacen + "' and id_tido = '" + id_tido + "' and serie = '" + serie + "' and numero = '" + numero + "' and fecha = '" + fecha + "'";
             System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
             if (rs.next()) {
@@ -205,6 +205,39 @@ public class cl_ingresos {
         }
     }
 
+    public double ingresos_cuenta_anterior(String inicio) {
+        double saldo = 0;
+        try {
+            String query = "select ifnull(sum(pi.costo * pi.cantidad),0) as total_ingresos "
+                    + "from productos_ingresos as pi "
+                    + "inner join ingresos i on pi.id_ingreso = i.id_ingreso "
+                    + "where i.fecha < '" + inicio + "' and i.id_proveedor = '" + id_proveedor + "' ";
+            System.out.println(query);
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+            if (rs.next()) {
+                saldo = rs.getDouble("total_ingresos");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        return saldo;
+    }
+
+    public ResultSet ingresos_periodo_cuenta(String inicio) {
+        String query = "select i.fecha, i.serie, i.numero, ds.abreviado, p.descripcion, pi.cantidad, pi.costo "
+                + "from productos_ingresos as pi "
+                + "inner join ingresos i on pi.id_ingreso = i.id_ingreso "
+                + "inner join documentos_sunat ds on i.id_tido = ds.id_tido "
+                + "inner join productos p on pi.id_producto = p.id_producto "
+                + "where i.id_proveedor = '" + id_proveedor + "' and i.fecha >= '" + inicio + "' "
+                + "order by i.fecha asc, i.numero asc,p.descripcion asc";
+        System.out.println(query);
+        Statement st = c_conectar.conexion();
+        ResultSet rs = c_conectar.consulta(st, query);
+        return rs;
+    }
+
     public void mostrar(JTable tabla, String query) {
         try {
             DefaultTableModel tmodelo;
@@ -223,10 +256,10 @@ public class cl_ingresos {
             tmodelo.addColumn("Fecha");
             tmodelo.addColumn("Documento");
             tmodelo.addColumn("Proveedor");
-            
+
             tmodelo.addColumn("Usuario");
             tmodelo.addColumn("Total");
-            
+
             int contar = 0;
             //Creando las filas para el JTable
             while (rs.next()) {
@@ -236,12 +269,12 @@ public class cl_ingresos {
                 fila[1] = rs.getString("fecha");
                 fila[2] = rs.getString("abreviado") + " | " + c_varios.ceros_izquieda_letras(4, rs.getString("serie")) + " - " + c_varios.ceros_izquieda_numero(7, rs.getInt("numero"));
                 fila[3] = rs.getString("nro_documento") + " | " + rs.getString("razon_social");
-                
+
                 fila[4] = rs.getString("username");
                 fila[5] = c_varios.formato_numero(rs.getDouble("total"));
                 tmodelo.addRow(fila);
             }
-            
+
             if (contar == 0) {
                 JOptionPane.showMessageDialog(null, "NO SE HA ENCONTRADO RESULTADOS");
             }

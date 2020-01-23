@@ -5,20 +5,19 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select sum(v.total) as total, sum(v.pagado) as pagado, c.id_cliente, c.documento, c.nombre
-from ventas as v
-         inner join clientes c on v.id_cliente = c.id_cliente
-where v.total > v.pagado and v.estado != 3
-group by v.id_cliente
+		<![CDATA[select  c.venta as total, c.pago as pagado, c.id_cliente, c.documento, c.nombre
+from clientes c
+where c.venta > c.pago 
+group by c.id_cliente
 order by c.nombre asc]]>
 	</queryString>
 	<field name="total" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="total"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="ventas"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
 	</field>
 	<field name="pagado" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="pagado"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="ventas"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
 	</field>
 	<field name="id_cliente" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id_cliente"/>
@@ -201,18 +200,6 @@ COMERCIAL JESSICA
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
-		</band>
-		<band height="21">
-			<subreport>
-				<reportElement x="0" y="1" width="550" height="20" uuid="36609a24-d785-496b-8afa-3a1138cf7ed5">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<subreportParameter name="p_idcliente">
-					<subreportParameterExpression><![CDATA[$F{id_cliente}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_deudas_clientes_documentos.jasper"]]></subreportExpression>
-			</subreport>
 		</band>
 	</detail>
 	<columnFooter>

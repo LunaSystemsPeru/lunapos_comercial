@@ -185,7 +185,8 @@ public class cl_producto {
             while (rs.next()) {
                 Object[] fila = new Object[7];
                 fila[0] = rs.getObject("id_producto");
-                fila[1] = rs.getString("clasificacion") + " " + rs.getString("descripcion").trim() + " x " + rs.getString("id_unidad");
+                //fila[1] = rs.getString("clasificacion") + " " + rs.getString("descripcion").trim() + " x " + rs.getString("id_unidad");
+                fila[1] = rs.getString("descripcion").trim() + " x " + rs.getString("id_unidad");
                 fila[2] = c_varios.formato_numero(rs.getDouble("costo"));
                 fila[3] = c_varios.formato_numero(rs.getDouble("precio"));
                 fila[4] = rs.getInt("ctotal");
