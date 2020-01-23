@@ -279,6 +279,11 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
 
     private void txt_buca_clieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buca_clieKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            c_proveedor.setRazon_social(txt_buca_clie.getText());
+            if (!c_proveedor.comprobar_nombre_proveedor()) {
+                c_proveedor.setId_proveedor(0);
+            }
+
             if (c_proveedor.getId_proveedor() != 0) {
                 jButton3.setEnabled(true);
                 c_proveedor.cargar_datos();

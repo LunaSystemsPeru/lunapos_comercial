@@ -109,6 +109,7 @@ public class frm_principal extends javax.swing.JFrame {
             timer.setRepeats(true);
         } catch (Exception e) {
             System.out.println("Error grave " + e.getLocalizedMessage());
+            c_conectar.conectar();
         }
     }
 

@@ -31,7 +31,7 @@ public class frm_reg_pagos_cliente extends javax.swing.JDialog {
 
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
-    
+
     cl_cliente c_cliente = new cl_cliente();
     cl_cliente_pago c_pago = new cl_cliente_pago();
     cl_movimiento_banco c_movimiento = new cl_movimiento_banco();
@@ -279,6 +279,12 @@ public class frm_reg_pagos_cliente extends javax.swing.JDialog {
 
     private void txt_buca_clieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buca_clieKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            //validar nombre cliente
+            c_cliente.setNombre(txt_buca_clie.getText());
+            if (!c_cliente.comprobar_nombre_cliente()) {
+                c_cliente.setCodigo(0);
+            }
+
             if (c_cliente.getCodigo() != 0) {
                 jButton3.setEnabled(true);
                 c_cliente.comprobar_cliente();
@@ -309,10 +315,10 @@ public class frm_reg_pagos_cliente extends javax.swing.JDialog {
                 btn_grabar.setEnabled(true);
                 btn_grabar.setFocusable(true);
                 btn_grabar.requestFocus();
-                
+
             } else {
-               JOptionPane.showMessageDialog(null, "INGRESE UN NUMERO CORRECTO");
-               txt_apagar.requestFocus();
+                JOptionPane.showMessageDialog(null, "INGRESE UN NUMERO CORRECTO");
+                txt_apagar.requestFocus();
             }
         }
     }//GEN-LAST:event_txt_apagarKeyPressed
@@ -329,17 +335,17 @@ public class frm_reg_pagos_cliente extends javax.swing.JDialog {
         c_movimiento.setSale(0);
         c_movimiento.obtener_codigo();
         c_movimiento.registrar();
-        
+
         c_pago.setId_cliente(c_cliente.getCodigo());
         c_pago.setId_movimiento(c_movimiento.getId_movimiento());
         c_pago.registrar();
-        
+
         JOptionPane.showMessageDialog(null, "PAGO AGREGADO CORRECTAMENTE");
         this.dispose();
     }//GEN-LAST:event_btn_grabarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String inicio = c_varios.obtener_anio() + "-" + c_varios.ceros_izquieda_numero(2,c_varios.obtener_mes_02()) + "-01";
+        String inicio = c_varios.obtener_anio() + "-" + c_varios.ceros_izquieda_numero(2, c_varios.obtener_mes_02()) + "-01";
         try {
             rpt_estado_cuenta reporte = new rpt_estado_cuenta();
             reporte.setId_cliente(c_cliente.getCodigo());
