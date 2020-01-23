@@ -390,7 +390,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         Date fecha = jDateChooser1.getDate();
         if (fecha != null) {
 
-            String nombre_reporte = "rep_detalle_venta_cliente";
+            String nombre_reporte = "rpt_detalle_compra_proveedor";
             String fechaS = new SimpleDateFormat("yyyy-MM-dd").format(fecha);
 
             //ver reporte en excel;
@@ -404,7 +404,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
                 parametros.put("SUBREPORT_DIR", direccion);
                 parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
                 parametros.put("REPORT_LOCALE", Locale.ENGLISH);
-                parametros.put("fecha", fechaS);
+                parametros.put("feha", fechaS);
 
                 c_varios.ver_reporte(nombre_reporte, parametros);
             } catch (IOException e) {
