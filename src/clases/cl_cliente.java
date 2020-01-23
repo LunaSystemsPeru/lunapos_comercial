@@ -295,6 +295,30 @@ public class cl_cliente {
 
         return existe;
     }
+    
+    public boolean comprobar_nombre_cliente() {
+        boolean existe = false;
+
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select id_cliente "
+                    + "from clientes "
+                    + "where nombre = '" + nombre + "'";
+            //System.out.println(query);
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                existe = true;
+                this.codigo = rs.getInt("id_cliente");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+
+        return existe;
+    }
 
     public boolean comprobar_cliente_doc() {
         boolean existe = false;

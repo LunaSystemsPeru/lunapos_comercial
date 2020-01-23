@@ -182,6 +182,24 @@ public class cl_proveedor {
         }
         return existe;
     }
+    
+    public boolean comprobar_nombre_proveedor() {
+        boolean existe = false;
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select id_proveedor "
+                    + "from proveedor "
+                    + "where razon_social = '" + razon_social + "'";
+            ResultSet rs = c_conectar.consulta(st, query);
+            if (rs.next()) {
+                existe = true;
+                id_proveedor = rs.getInt("id_proveedor");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        return existe;
+    }
 
     public void mostrar(JTable tabla, String query) {
         try {

@@ -79,6 +79,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         modelo_ingreso();
         modelo_bono();
     }
+
     private double calcular_total() {
         double total = 0;
         int contar_filas = t_detalle.getRowCount();
@@ -177,7 +178,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                         System.out.println("producto seleccionado " + pnombre);
                         c_proveedor.setId_proveedor(pcodigo);
                         c_proveedor.cargar_datos();
-                        lab_deuda.setText(c_proveedor.getTcompra()-c_proveedor.getTpagado()+"");
+                        lab_deuda.setText(c_proveedor.getTcompra() - c_proveedor.getTpagado() + "");
                         txt_ruc_proveedor.setText(ruc + "");
                     } else {
                         System.out.println("El item es de un tipo desconocido");
@@ -272,7 +273,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         }
         return ingresar;
     }
-    
+
     private void limpiar_buscar() {
         txt_buscar_productos.setText("");
         txt_cingreso.setText("");
@@ -287,8 +288,6 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         btn_agregar_producto.setEnabled(true);
         txt_buscar_productos.requestFocus();
     }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1007,6 +1006,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txt_fecha.getText().length() == 10) {
                 m_documentos.cbx_documentos_ingreso(cbx_tido);
+                cbx_tido.setSelectedIndex(2);
                 cbx_tido.setEnabled(true);
                 cbx_tido.requestFocus();
             }
@@ -1229,16 +1229,16 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_agregar_productoActionPerformed
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
-            txt_j_faltante.setText(lab_deuda.getText());
-            text_deudatotal.setText(Double.parseDouble(lab_deuda.getText())+calcular_total()+""); 
-            jd_fin_ingreso.setModal(true);
-            jd_fin_ingreso.setSize(422, 331);
-            
-            jd_fin_ingreso.setLocationRelativeTo(null);
-            txt_j_efectivo.requestFocus();
-            jd_fin_ingreso.setLocationRelativeTo(null);
-            jd_fin_ingreso.setVisible(true); 
-            
+        txt_j_faltante.setText(lab_deuda.getText());
+        text_deudatotal.setText(Double.parseDouble(lab_deuda.getText()) + calcular_total() + "");
+        jd_fin_ingreso.setModal(true);
+        jd_fin_ingreso.setSize(422, 331);
+
+        jd_fin_ingreso.setLocationRelativeTo(null);
+        txt_j_efectivo.requestFocus();
+        jd_fin_ingreso.setLocationRelativeTo(null);
+        jd_fin_ingreso.setVisible(true);
+
     }//GEN-LAST:event_btn_guardarActionPerformed
 
     private void btn_add_proveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_add_proveedorActionPerformed
@@ -1304,7 +1304,14 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 //            }
 
             if (txt_razon_social.getText().length() > 8) {
+                c_proveedor.setRazon_social(txt_razon_social.getText());
+                if (!c_proveedor.comprobar_nombre_proveedor()) {
+                    c_proveedor.setId_proveedor(0);
+                }
+
                 if (c_proveedor.getId_proveedor() != 0) {
+                    c_proveedor.cargar_datos();
+                    lab_deuda.setText(c_proveedor.getTcompra() - c_proveedor.getTpagado() + "");
                     cargar_productos();
                     txt_buscar_productos.setEnabled(true);
                     txt_buscar_productos.requestFocus();
@@ -1334,12 +1341,12 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
             if (texto.length() > 0 && c_varios.esDecimal(texto)) {
                 double efectivo = Double.parseDouble(txt_j_efectivo.getText());
                 double deuda = Double.parseDouble(text_deudatotal.getText());
-                txt_j_por_pagar.setText(deuda-efectivo+"");
-                
+                txt_j_por_pagar.setText(deuda - efectivo + "");
+
                 double monto = Double.parseDouble(texto);
 
-                txt_j_por_pagar.setText((Double.parseDouble(text_deudatotal.getText()))-monto+"");
-                
+                txt_j_por_pagar.setText((Double.parseDouble(text_deudatotal.getText())) - monto + "");
+
                 if (monto >= Double.parseDouble(text_deudatotal.getText())) {
                     btn_pago.setEnabled(true);
                     btn_pago.requestFocus();
@@ -1359,6 +1366,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 
         if (JOptionPane.OK_OPTION == confirmado) {
 
+            /*
             if (c_proveedor.getId_proveedor() == -1 || c_proveedor.getId_proveedor() == 0) {
                 c_proveedor.obtener_codigo();
                 c_proveedor.setRazon_social(txt_razon_social.getText()); 
@@ -1368,7 +1376,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 }
 
             }
-
+             */
             c_ingreso.setFecha(c_varios.fecha_myql(txt_fecha.getText()));
             c_ingreso.setId_almacen(id_almacen);
             c_ingreso.setId_moneda(1);
@@ -1406,8 +1414,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 Notification.show("Ingreso de Mercaderia", "se guardo correctamente");
                 frm_ver_ingresos formulario = new frm_ver_ingresos();
                 c_varios.llamar_ventana(formulario);
-                
-                
+
                 c_movimiento.setId_banco(1);
                 c_movimiento.setDescripcion("PAGO A CUENTA PARA " + c_proveedor.getRazon_social());
                 c_movimiento.setFecha(c_varios.fecha_myql(txt_fecha.getText()));
@@ -1419,7 +1426,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                 c_pago.setId_proveedor(c_proveedor.getId_proveedor());
                 c_pago.setId_movimiento(c_movimiento.getId_movimiento());
                 c_pago.registrar();
-                jd_fin_ingreso.setVisible(false); 
+                jd_fin_ingreso.setVisible(false);
                 this.dispose();
             }
         }
