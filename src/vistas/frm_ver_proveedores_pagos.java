@@ -580,6 +580,8 @@ public class frm_ver_proveedores_pagos extends javax.swing.JDialog {
             reporte.setId_proveedor(c_proveedor.getId_proveedor());
             reporte.setInicio(inicio);
             reporte.crear_reporte();
+            JOptionPane.showMessageDialog(null, "REPORTE GENERADO");
+            jd_fecha.dispose();
         } catch (DocumentException | FileNotFoundException e) {
             System.out.println(e.getLocalizedMessage());
         }
