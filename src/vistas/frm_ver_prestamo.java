@@ -8,6 +8,7 @@ package vistas;
 import clases.cl_varios;
 import clases.cl_prestamo;
 import clases_varios.Configuracion;
+import forms.frm_reg_pagos_prestamos;
 
 /**
  *
@@ -138,7 +139,9 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        
+        frm_reg_pagos_prestamos modal=new frm_reg_pagos_prestamos(null, true);
+        modal.setLocationRelativeTo(this);
+        modal.setVisible(true);
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
