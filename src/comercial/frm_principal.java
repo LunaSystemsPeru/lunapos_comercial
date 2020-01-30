@@ -41,6 +41,7 @@ import vistas.frm_ver_ingresos;
 import vistas.frm_ver_inventarios;
 import vistas.frm_ver_kardex_diario;
 import vistas.frm_ver_mis_productos2;
+import vistas.frm_ver_prestamo;
 import vistas.frm_ver_productos_tiendas;
 import vistas.frm_ver_productos_todos;
 import vistas.frm_ver_proveedores;
@@ -239,6 +240,8 @@ public class frm_principal extends javax.swing.JFrame {
         jSeparator9 = new javax.swing.JToolBar.Separator();
         jButton8 = new javax.swing.JButton();
         jSeparator14 = new javax.swing.JToolBar.Separator();
+        jButton10 = new javax.swing.JButton();
+        jSeparator17 = new javax.swing.JToolBar.Separator();
         jButton9 = new javax.swing.JButton();
         jToolBar5 = new javax.swing.JToolBar();
         jButton18 = new javax.swing.JButton();
@@ -640,6 +643,19 @@ public class frm_principal extends javax.swing.JFrame {
         });
         jToolBar4.add(jButton8);
         jToolBar4.add(jSeparator14);
+
+        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/inventory_management-512.png"))); // NOI18N
+        jButton10.setText("Ver Prestamo");
+        jButton10.setFocusable(false);
+        jButton10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton10.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(jButton10);
+        jToolBar4.add(jSeparator17);
 
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/iconfinder_computer_connection_1421640.png"))); // NOI18N
         jButton9.setText("Reconectar");
@@ -1205,6 +1221,12 @@ public class frm_principal extends javax.swing.JFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        frm_ver_prestamo formulario = new frm_ver_prestamo();
+        c_varios.llamar_ventana_normal(formulario);
+    }//GEN-LAST:event_jButton10ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1246,6 +1268,7 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
@@ -1291,6 +1314,7 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator14;
     private javax.swing.JToolBar.Separator jSeparator15;
     private javax.swing.JSeparator jSeparator16;
+    private javax.swing.JToolBar.Separator jSeparator17;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;

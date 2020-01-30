@@ -20,6 +20,7 @@ import javax.swing.table.TableRowSorter;
 public class cl_prestamo {
     
     cl_conectar c_conectar = new cl_conectar();
+    cl_varios c_varios = new cl_varios();
     
     private int idPrestamo;
     private String fecha;
@@ -176,20 +177,21 @@ public class cl_prestamo {
             tmodelo.addColumn("Monto");
             tmodelo.addColumn("Cuotas");
             tmodelo.addColumn("F. Pago");
-            tmodelo.addColumn("Pagafo");
+            tmodelo.addColumn("PagaDo");
 
             int contar = 0;
             //Creando las filas para el JTable
             while (rs.next()) {
                 contar++;
                 Object[] fila = new Object[8];
-                fila[0] = rs.getString("id_ingreso");
+                fila[0] = rs.getInt("id_prestamo");
                 fila[1] = rs.getString("fecha");
-               // fila[2] = rs.getString("abreviado") + " | " + c_varios.ceros_izquieda_letras(4, rs.getString("serie")) + " - " + c_varios.ceros_izquieda_numero(7, rs.getInt("numero"));
-                fila[3] = rs.getString("nro_documento") + " | " + rs.getString("razon_social");
-
-                fila[4] = rs.getString("username");
-               // fila[5] = c_varios.formato_numero(rs.getDouble("total"));
+                fila[2] = rs.getString("razon_social");
+                fila[3] = rs.getString("monto");
+                fila[4] = rs.getString("cuotas");
+                fila[5] = rs.getString("fecha_pago");
+                fila[6] = rs.getString("total_pagado");
+                
                 tmodelo.addRow(fila);
             }
 
@@ -199,14 +201,15 @@ public class cl_prestamo {
             c_conectar.cerrar(st);
             c_conectar.cerrar(rs);
             tabla.setModel(tmodelo);
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(120);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(220);
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(500);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(5).setPreferredWidth(120);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(750);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
             tabla.setRowSorter(sorter);
-            //c_varios.derecha_celda(tabla, 4);
+//            c_varios.derecha_celda(tabla, 4);
 
         } catch (SQLException e) {
             System.out.print(e);
