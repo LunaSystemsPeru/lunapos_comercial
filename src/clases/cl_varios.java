@@ -219,6 +219,15 @@ public class cl_varios {
         return m_fecha;
     }
 
+    public String fecha_myql(Date fecha) {
+        String m_fecha = null;
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        m_fecha = df.format(fecha);
+
+        return m_fecha;
+    }
+
     public String fecha_myql(String fecha) {
         String m_fecha = null;
         try {
@@ -412,14 +421,14 @@ public class cl_varios {
         periodo = now.get(Calendar.YEAR) + ceros_izquieda_numero(2, now.get(Calendar.MONTH) + 1);
         return periodo;
     }
-    
+
     public int obtener_mes() {
         int periodo;
         Calendar now = Calendar.getInstance();
         periodo = now.get(Calendar.MONTH);
         return periodo;
     }
-    
+
     public int obtener_mes_02() {
         int periodo;
         Calendar now = Calendar.getInstance();

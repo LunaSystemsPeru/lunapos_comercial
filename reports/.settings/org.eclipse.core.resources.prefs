@@ -4,6 +4,7 @@
 eclipse.preferences.version=1
 encoding/rep_detalle_venta_cliente.jrxml=UTF-8
 encoding/rpt_detalle_compra_proveedor.jrxml=UTF-8
+encoding/rpt_detalle_movimiento.jrxml=UTF-8
 encoding/rpt_deudas_cliente.jrxml=UTF-8
 encoding/rpt_deudas_cliente_detalle.jrxml=UTF-8
 encoding/rpt_deudas_clientes_todos.jrxml=UTF-8
