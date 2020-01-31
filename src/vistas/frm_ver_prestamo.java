@@ -7,6 +7,7 @@ package vistas;
 
 import clases.cl_varios;
 import clases.cl_prestamo;
+import clases_varios.Configuracion;
 
 /**
  *
@@ -23,7 +24,8 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
      */
     public frm_ver_prestamo() {
         initComponents();
-        query = "SELECT `id_pretamo`, `fecha`, `id_proveedor`, `monto`, `cuotas`, `fecha_pago`, `total_pagado`FROM `prestamos` order by fecha asc";
+        this.getContentPane().setBackground(Configuracion.COLOR_FORMULARIO_1);
+        query = "SELECT p.id_prestamo, p.fecha, prv.razon_social, p.monto, p.cuotas, p.fecha_pago, p.total_pagado FROM prestamos AS p INNER JOIN proveedor AS prv ON prv.id_proveedor = p.id_proveedor";
         c_prestamo.mostrar(t_pagos, query);
     }
 
@@ -84,6 +86,8 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btn_cerrar);
 
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
+
         t_pagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -109,7 +113,7 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1110, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addContainerGap())))
@@ -120,7 +124,7 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

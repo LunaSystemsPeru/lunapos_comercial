@@ -184,9 +184,9 @@ public class cl_prestamo {
             while (rs.next()) {
                 contar++;
                 Object[] fila = new Object[8];
-                fila[0] = rs.getString("id_prestamo");
+                fila[0] = rs.getInt("id_prestamo");
                 fila[1] = rs.getString("fecha");
-                fila[2] = rs.getString("id_proveedor");
+                fila[2] = rs.getString("razon_social");
                 fila[3] = rs.getString("monto");
                 fila[4] = rs.getString("cuotas");
                 fila[5] = rs.getString("fecha_pago");
@@ -201,17 +201,15 @@ public class cl_prestamo {
             c_conectar.cerrar(st);
             c_conectar.cerrar(rs);
             tabla.setModel(tmodelo);
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(120);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(220);
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(500);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(5).setPreferredWidth(120);
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(120);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(750);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
             tabla.setRowSorter(sorter);
-            c_varios.derecha_celda(tabla, 4);
-            c_varios.derecha_celda(tabla, 5);
-            c_varios.derecha_celda(tabla, 6);
+//            c_varios.derecha_celda(tabla, 4);
 
         } catch (SQLException e) {
             System.out.print(e);
