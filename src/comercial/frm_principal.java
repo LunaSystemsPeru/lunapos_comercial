@@ -41,7 +41,7 @@ import vistas.frm_ver_ingresos;
 import vistas.frm_ver_inventarios;
 import vistas.frm_ver_kardex_diario;
 import vistas.frm_ver_mis_productos2;
-import vistas.frm_ver_pagos;
+import vistas.frm_ver_prestamo;
 import vistas.frm_ver_productos_tiendas;
 import vistas.frm_ver_productos_todos;
 import vistas.frm_ver_proveedores;
@@ -645,7 +645,7 @@ public class frm_principal extends javax.swing.JFrame {
         jToolBar4.add(jSeparator14);
 
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/inventory_management-512.png"))); // NOI18N
-        jButton10.setText("Ver Pagos");
+        jButton10.setText("Ver Prestamo");
         jButton10.setFocusable(false);
         jButton10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton10.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1223,7 +1223,7 @@ public class frm_principal extends javax.swing.JFrame {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
-        frm_ver_pagos formulario = new frm_ver_pagos();
+        frm_ver_prestamo formulario = new frm_ver_prestamo();
         c_varios.llamar_ventana_normal(formulario);
     }//GEN-LAST:event_jButton10ActionPerformed
 

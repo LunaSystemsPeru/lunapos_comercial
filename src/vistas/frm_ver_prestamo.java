@@ -6,19 +6,25 @@
 package vistas;
 
 import clases.cl_varios;
+import clases.cl_prestamo;
 
 /**
  *
  * @author Programmer
  */
-public class frm_ver_pagos extends javax.swing.JInternalFrame {
+public class frm_ver_prestamo extends javax.swing.JInternalFrame {
 
     cl_varios c_varios = new cl_varios();
+    cl_prestamo c_prestamo = new cl_prestamo();
+    
+    String query;
     /**
      * Creates new form frm_ver_pagos
      */
-    public frm_ver_pagos() {
+    public frm_ver_prestamo() {
         initComponents();
+        query = "SELECT `id_pretamo`, `fecha`, `id_proveedor`, `monto`, `cuotas`, `fecha_pago`, `total_pagado`FROM `prestamos` order by fecha asc";
+        c_prestamo.mostrar(t_pagos, query);
     }
 
     /**
@@ -103,8 +109,10 @@ public class frm_ver_pagos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 725, Short.MAX_VALUE)))
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,6 +123,8 @@ public class frm_ver_pagos extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        getAccessibleContext().setAccessibleName("Ver Prestamo");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
