@@ -280,22 +280,24 @@ public class frm_reg_pagos_cliente extends javax.swing.JDialog {
     private void txt_buca_clieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buca_clieKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             //validar nombre cliente
-            c_cliente.setNombre(txt_buca_clie.getText());
-            if (!c_cliente.comprobar_nombre_cliente()) {
-                c_cliente.setCodigo(0);
-            }
+            if (txt_buca_clie.getText().trim().length() > 8) {
+                c_cliente.setNombre(txt_buca_clie.getText());
+                if (!c_cliente.comprobar_nombre_cliente()) {
+                    c_cliente.setCodigo(0);
+                }
 
-            if (c_cliente.getCodigo() != 0) {
-                jButton3.setEnabled(true);
-                c_cliente.comprobar_cliente();
-                txt_total_deud.setText(c_varios.formato_totales(c_cliente.getVenta() - c_cliente.getPago()));
-                txt_fecha_pago.setEnabled(true);
-                txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-                txt_fecha_pago.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "CLIENTE NO SELECCIONADO \nSELECCIONE CON ENTER");
-                txt_buca_clie.setText("");
-                txt_buca_clie.requestFocus();
+                if (c_cliente.getCodigo() != 0) {
+                    jButton3.setEnabled(true);
+                    c_cliente.comprobar_cliente();
+                    txt_total_deud.setText(c_varios.formato_totales(c_cliente.getVenta() - c_cliente.getPago()));
+                    txt_fecha_pago.setEnabled(true);
+                    txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+                    txt_fecha_pago.requestFocus();
+                } else {
+                    JOptionPane.showMessageDialog(null, "CLIENTE NO SELECCIONADO \nSELECCIONE CON ENTER");
+                    txt_buca_clie.setText("");
+                    txt_buca_clie.requestFocus();
+                }
             }
         }
     }//GEN-LAST:event_txt_buca_clieKeyPressed

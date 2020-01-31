@@ -190,6 +190,7 @@ public class cl_proveedor {
             String query = "select id_proveedor "
                     + "from proveedor "
                     + "where razon_social = '" + razon_social + "'";
+            System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
             if (rs.next()) {
                 existe = true;

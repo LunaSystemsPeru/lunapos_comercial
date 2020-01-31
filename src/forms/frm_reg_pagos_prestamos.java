@@ -5,7 +5,11 @@
  */
 package forms;
 
+import clases.cl_movimiento_banco;
 import clases.cl_prestamo_pago;
+import clases.cl_varios;
+import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,12 +20,26 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
     /**
      * Creates new form frm_reg_pagos_prestamos
      */
-    cl_prestamo_pago c_prestamo_pago=new cl_prestamo_pago();
-    public frm_reg_pagos_prestamos(java.awt.Frame parent, boolean modal) {
+    cl_prestamo_pago c_prestamo_pago = new cl_prestamo_pago();
+    cl_movimiento_banco c_movimiento = new cl_movimiento_banco();
+
+    cl_varios c_varios = new cl_varios();
+
+    String idP;
+    String proveedor;
+
+    public frm_reg_pagos_prestamos(java.awt.Frame parent, boolean modal, String idP, String proveedor) {
         super(parent, modal);
         initComponents();
-        jDialog1.setSize(336, 200);
-        c_prestamo_pago.mostrar(jTable1, "SELECT bm.* FROM prestamo_pago AS pp INNER JOIN bancos_movimientos AS bm ON pp.id_movimiento = bm.id_movimiento WHERE pp.id_prestamo=1");
+        this.idP = idP;
+        this.proveedor = proveedor;
+        jDialog1.setSize(336, 250);
+        caragarPagos();
+        jDateChooser1.setDate(new Date());
+    }
+
+    private void caragarPagos() {
+        c_prestamo_pago.mostrar(jTable1, "SELECT bm.* FROM prestamo_pago AS pp INNER JOIN bancos_movimientos AS bm ON pp.id_movimiento = bm.id_movimiento WHERE pp.id_prestamo=" + idP);
     }
 
     /**
@@ -40,12 +58,15 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         btn_grabar = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -56,6 +77,11 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
         jLabel2.setToolTipText("");
 
         jButton1.setText("Pagar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -64,7 +90,15 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
             }
         });
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Monto:");
+
+        jLabel4.setText("Fecha:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -79,9 +113,13 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
                         .addGap(26, 26, 26)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -89,7 +127,11 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(22, 22, 22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(9, 9, 9)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -97,7 +139,7 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
@@ -130,6 +172,16 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable1KeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
@@ -146,6 +198,19 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
             }
         });
         jToolBar1.add(btn_grabar);
+
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setEnabled(false);
+        btn_eliminar.setFocusable(false);
+        btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_eliminar);
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cross.png"))); // NOI18N
         jButton7.setText("Salir");
@@ -196,10 +261,10 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_grabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_grabarActionPerformed
-         jDialog1.setModal(true);
-         jDialog1.setLocationRelativeTo(this);
-         jTextField1.setText(""); 
-         jDialog1.setVisible(true);
+        jDialog1.setModal(true);
+        jDialog1.setLocationRelativeTo(this);
+        jTextField1.setText("");
+        jDialog1.setVisible(true);
     }//GEN-LAST:event_btn_grabarActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -210,57 +275,79 @@ public class frm_reg_pagos_prestamos extends javax.swing.JDialog {
         jDialog1.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        if (jDateChooser1.getDate() != null && jTextField1.getText().length() > 0) {
+            c_movimiento.setDescripcion("Pago prestamos a " + proveedor);
+            c_movimiento.setFecha(c_varios.fecha_myql(jDateChooser1.getDate()));
+            c_movimiento.setId_banco(1);
+            c_movimiento.setIngresa(0);
+            c_movimiento.setSale(Double.parseDouble(jTextField1.getText()));
+            c_movimiento.obtener_codigo();
+
+            c_prestamo_pago.setId_movimiento(c_movimiento.getId_movimiento());
+            c_prestamo_pago.setId_prestamo(Integer.parseInt(idP));
+
+            if (c_movimiento.registrar()) {
+                if (c_prestamo_pago.registrar()) {
+                    caragarPagos();
+                    jDialog1.setVisible(false);
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frm_reg_pagos_prestamos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frm_reg_pagos_prestamos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frm_reg_pagos_prestamos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frm_reg_pagos_prestamos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } else {
+            JOptionPane.showConfirmDialog(this, "COMPLETE LOS CAMPOS");
         }
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                frm_reg_pagos_prestamos dialog = new frm_reg_pagos_prestamos(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        int index = jTable1.getSelectedRow();
+        if (index != -1) {
+            c_movimiento.setId_movimiento((int) jTable1.getValueAt(index, 0));
+            c_prestamo_pago.setId_movimiento(c_movimiento.getId_movimiento());
+            c_prestamo_pago.setId_prestamo(Integer.parseInt(idP));
+            if (c_prestamo_pago.eliminar()) {
+                if (c_movimiento.eliminar()) {
+                    caragarPagos();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar este prestamo");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar este prestamo");
             }
-        });
-    }
+
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1KeyPressed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int index = jTable1.getSelectedRow();
+        if (index != -1) {
+            btn_eliminar.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        c_varios.solo_numeros(evt); 
+    }//GEN-LAST:event_jTextField1KeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_grabar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton7;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

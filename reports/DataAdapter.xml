@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl"><name>lsp_comercial@localhost</name><driver>com.mysql.jdbc.Driver</driver><username>usr_comercial</username><password>AUc7Xv32HVAA</password><savePassword>true</savePassword><url>jdbc:mysql://192.168.1.248/lsp_comercial</url><database></database><serverAddress></serverAddress><classpath>/home/luis/NetBeansProjects/lunapos_comercial/lunapos_comercial/libs/mysql-connector-java-5.1.23-bin.jar</classpath></jdbcDataAdapter>

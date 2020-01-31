@@ -18,10 +18,10 @@ import javax.swing.table.TableRowSorter;
  * @author Bruno
  */
 public class cl_prestamo {
-    
+
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
-    
+
     private int idPrestamo;
     private String fecha;
     private int idProveedor;
@@ -30,7 +30,7 @@ public class cl_prestamo {
     private String fechaPago;
     private String montoCuota;
     private Double totalPagado;
-    private String estado ;
+    private String estado;
     private int idMovimiento;
 
     public int getIdPrestamo() {
@@ -112,21 +112,13 @@ public class cl_prestamo {
     public void setIdMovimiento(int idMovimiento) {
         this.idMovimiento = idMovimiento;
     }
-    
-    public boolean registrar() {
+
+    public boolean eliminar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
-        String query = "INSERT INTO prestamos \n" +
-                        "VALUES ('"+this.idPrestamo+"',\n" +
-                        "        '"+this.fecha+"',\n" +
-                        "        '"+this.idProveedor+"',\n" +
-                        "        '"+this.monto+"',\n" +
-                        "        '"+this.totCuota+"',\n" +
-                        "        '"+this.fechaPago+"',\n" +
-                        "        '"+this.montoCuota+"',\n" +
-                        "        '"+this.totalPagado+"',\n" +
-                        "        '"+this.estado+"',\n" +
-                        "        '"+this.idMovimiento+"');";
+        String query = "DELETE\n"
+                + "FROM  prestamos\n"
+                + "WHERE id_prestamo = '" + this.idPrestamo + "';";
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             registrado = true;
@@ -134,13 +126,35 @@ public class cl_prestamo {
         c_conectar.cerrar(st);
         return registrado;
     }
-    
+
+    public boolean registrar() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "INSERT INTO prestamos \n"
+                + "VALUES ('" + this.idPrestamo + "',\n"
+                + "        '" + this.fecha + "',\n"
+                + "        '" + this.idProveedor + "',\n"
+                + "        '" + this.monto + "',\n"
+                + "        '" + this.totCuota + "',\n"
+                + "        '" + this.fechaPago + "',\n"
+                + "        '" + this.montoCuota + "',\n"
+                + "        '" + this.totalPagado + "',\n"
+                + "        '" + this.estado + "',\n"
+                + "        '" + this.idMovimiento + "');";
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+
     public int obtener_codigo() {
         int resultado = 0;
 
         try {
             Statement st = c_conectar.conexion();
-            String query = "select ifnull(max(id_pretamo) + 1, 1) as codigo "
+            String query = "select ifnull(max(id_prestamo) + 1, 1) as codigo "
                     + "from prestamos ";
             ResultSet rs = c_conectar.consulta(st, query);
 
@@ -156,8 +170,33 @@ public class cl_prestamo {
 
         return resultado;
     }
-    
-        public void mostrar(JTable tabla, String query) {
+
+    public boolean comprobar() {
+        boolean existe = false;
+
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "SELECT  * FROM  prestamos WHERE id_prestamo="+this.idPrestamo; 
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                this.fecha=rs.getString("fecha");
+                this.idProveedor=rs.getInt("id_proveedor");
+                this.monto=rs.getDouble("monto"); 
+                this.totalPagado=rs.getDouble("total_pagado"); 
+                this.idMovimiento=rs.getInt("id_movimiento");
+                existe = true; 
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+
+        return existe;
+    }
+
+    public void mostrar(JTable tabla, String query) {
         try {
             DefaultTableModel tmodelo;
             tmodelo = new DefaultTableModel() {
@@ -172,12 +211,10 @@ public class cl_prestamo {
             System.out.println(query);
             //Establecer como cabezeras el nombre de las colimnas
             tmodelo.addColumn("ID.");
-            tmodelo.addColumn("Fecha"); 
+            tmodelo.addColumn("Fecha");
             tmodelo.addColumn("Proveedor");
             tmodelo.addColumn("Monto");
-            tmodelo.addColumn("Cuotas");
-            tmodelo.addColumn("F. Pago");
-            tmodelo.addColumn("PagaDo");
+            tmodelo.addColumn("Pagado");
 
             int contar = 0;
             //Creando las filas para el JTable
@@ -188,10 +225,8 @@ public class cl_prestamo {
                 fila[1] = rs.getString("fecha");
                 fila[2] = rs.getString("razon_social");
                 fila[3] = rs.getString("monto");
-                fila[4] = rs.getString("cuotas");
-                fila[5] = rs.getString("fecha_pago");
-                fila[6] = rs.getString("total_pagado");
-                
+                fila[4] = rs.getString("total_pagado");
+
                 tmodelo.addRow(fila);
             }
 
@@ -205,9 +240,8 @@ public class cl_prestamo {
             tabla.getColumnModel().getColumn(1).setPreferredWidth(150);
             tabla.getColumnModel().getColumn(2).setPreferredWidth(750);
             tabla.getColumnModel().getColumn(3).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(5).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
+
             tabla.setRowSorter(sorter);
 //            c_varios.derecha_celda(tabla, 4);
 
@@ -215,4 +249,5 @@ public class cl_prestamo {
             System.out.print(e);
         }
     }
+
 }
