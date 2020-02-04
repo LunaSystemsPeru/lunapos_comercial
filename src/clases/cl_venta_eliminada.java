@@ -156,5 +156,21 @@ public class cl_venta_eliminada {
         return registrado;
 
     }
+    
+    public boolean eliminar_cliente(int id_cliente) {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete ve.* "
+                + "from ventas_eliminadas as ve "
+                + "inner join ventas as v on v.id_ventas = ve.id_ventas "
+                + "where v.id_cliente = '" + id_cliente + "'";
+        int resultado = c_conectar.actualiza(st, query);
+        // System.out.println(query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
 
 }
