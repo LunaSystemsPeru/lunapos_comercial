@@ -321,5 +321,18 @@ public class cl_ingresos {
         c_conectar.cerrar(st);
         return registrado;
     }
+    
+    public boolean eliminar_proveedor() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete from ingresos "
+                + "where id_proveedor = '" + id_proveedor + "'";
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
 
 }
