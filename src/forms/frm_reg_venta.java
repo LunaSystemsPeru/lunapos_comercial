@@ -1390,7 +1390,7 @@ public class frm_reg_venta extends javax.swing.JInternalFrame {
 
     private void txt_nom_clienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_clienteKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_nom_cliente.getText().trim().length() > 9) {
+            if (txt_nom_cliente.getText().trim().length() > 5) {
                 //validar nombre cliente
                 c_cliente.setNombre(txt_nom_cliente.getText());
                 if (!c_cliente.comprobar_nombre_cliente()){
