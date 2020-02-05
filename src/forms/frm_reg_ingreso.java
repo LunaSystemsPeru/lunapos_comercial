@@ -84,7 +84,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         double total = 0;
         int contar_filas = t_detalle.getRowCount();
         for (int i = 0; i < contar_filas; i++) {
-            total = total + Double.parseDouble(t_detalle.getValueAt(i, 4).toString());
+            total = total + Double.parseDouble(t_detalle.getValueAt(i, 5).toString());
         }
         //lbl_pago_venta.setText("S/ " + c_varios.formato_totales(total));
         lbl_pago_venta.setText("S/ " + c_varios.formato_totales(total));
@@ -174,12 +174,12 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
                     if (itemSelected instanceof cla_empresa) {
                         int pcodigo = ((cla_empresa) itemSelected).getId_empresa();
                         String pnombre = ((cla_empresa) itemSelected).getRazon_social();
-                        int ruc = Integer.parseInt(((cla_empresa) itemSelected).getRuc());
+                        //int ruc = Integer.parseInt(((cla_empresa) itemSelected).getRuc());
                         System.out.println("producto seleccionado " + pnombre);
                         c_proveedor.setId_proveedor(pcodigo);
                         c_proveedor.cargar_datos();
                         lab_deuda.setText(c_proveedor.getTcompra() - c_proveedor.getTpagado() + "");
-                        txt_ruc_proveedor.setText(ruc + "");
+                        //txt_ruc_proveedor.setText(ruc + "");
                     } else {
                         System.out.println("El item es de un tipo desconocido");
                     }
@@ -377,7 +377,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_pago_venta, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+                    .addComponent(lbl_pago_venta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -430,24 +430,27 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(text_deudatotal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_j_efectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_j_por_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_j_efectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_j_por_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_j_faltante, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_j_faltante, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(text_deudatotal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(84, 84, 84))
         );
         jPanel6Layout.setVerticalGroup(
@@ -1204,7 +1207,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         double costo = Double.parseDouble(txt_costo.getText());
         int cantidad = Integer.parseInt(txt_cingreso.getText());
         double precio = Double.parseDouble(txt_precio.getText());
-        double parcial = costo * cantidad;
+        double parcial = precio * cantidad;
 
         if (btn_bono.getSelectedIndex() == 0) {
             Object fila[] = new Object[6];
@@ -1230,7 +1233,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         txt_j_faltante.setText(lab_deuda.getText());
-        text_deudatotal.setText(Double.parseDouble(lab_deuda.getText()) + calcular_total() + "");
+        text_deudatotal.setText((Double.parseDouble(lab_deuda.getText())) + calcular_total() + "");
         jd_fin_ingreso.setModal(true);
         jd_fin_ingreso.setSize(422, 331);
 
@@ -1303,7 +1306,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
 //                txt_buscar_productos.requestFocus();
 //            }
 
-            if (txt_razon_social.getText().length() > 8) {
+            if (txt_razon_social.getText().length() > 4) {
                 c_proveedor.setRazon_social(txt_razon_social.getText());
                 if (!c_proveedor.comprobar_nombre_proveedor()) {
                     c_proveedor.setId_proveedor(0);
