@@ -1207,7 +1207,7 @@ public class frm_reg_ingreso extends javax.swing.JInternalFrame {
         double costo = Double.parseDouble(txt_costo.getText());
         int cantidad = Integer.parseInt(txt_cingreso.getText());
         double precio = Double.parseDouble(txt_precio.getText());
-        double parcial = precio * cantidad;
+        double parcial = costo * cantidad;
 
         if (btn_bono.getSelectedIndex() == 0) {
             Object fila[] = new Object[6];
