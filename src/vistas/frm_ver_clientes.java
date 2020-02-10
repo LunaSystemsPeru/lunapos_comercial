@@ -364,6 +364,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
                     + "from clientes "
                     + "where documento like '%" + t_buscar + "%' or nombre like '%" + t_buscar + "%' "
                     + "order by nombre asc";
+            System.out.println(query);
             c_cliente.mostrar(t_clientes, query);
             txt_buscar.setText("");
         }
