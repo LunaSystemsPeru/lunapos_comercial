@@ -119,6 +119,8 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
         txt_fecha_pago = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
         txt_buca_clie = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txt_desc_pago_prov = new javax.swing.JTextField();
         jToolBar1 = new javax.swing.JToolBar();
         btn_grabar = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
@@ -131,7 +133,6 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Total Deuda:");
 
-        txt_total_deud.setForeground(new java.awt.Color(0, 0, 0));
         txt_total_deud.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_total_deud.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txt_total_deud.setEnabled(false);
@@ -182,6 +183,20 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setText("Descripcion:");
+
+        txt_desc_pago_prov.setEnabled(false);
+        txt_desc_pago_prov.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_desc_pago_provActionPerformed(evt);
+            }
+        });
+        txt_desc_pago_prov.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_desc_pago_provKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -189,29 +204,35 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_buca_clie)
+                    .addComponent(txt_desc_pago_prov, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txt_fecha_pago, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                             .addComponent(txt_apagar, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_total_deud, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
-                        .addComponent(jButton3))
-                    .addComponent(txt_buca_clie))
+                            .addComponent(txt_fecha_pago, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                            .addComponent(txt_total_deud))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
+                        .addComponent(jButton3)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_buca_clie, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_desc_pago_prov, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,8 +245,7 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_apagar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txt_apagar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jToolBar1.setFloatable(false);
@@ -278,6 +298,7 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txt_buca_clieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buca_clieKeyPressed
+
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             c_proveedor.setRazon_social(txt_buca_clie.getText());
             if (!c_proveedor.comprobar_nombre_proveedor()) {
@@ -285,12 +306,13 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
             }
 
             if (c_proveedor.getId_proveedor() != 0) {
-                jButton3.setEnabled(true);
-                c_proveedor.cargar_datos();
-                txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
-                txt_fecha_pago.setEnabled(true);
-                txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-                txt_fecha_pago.requestFocus();
+//                jButton3.setEnabled(true);
+//                c_proveedor.cargar_datos();
+//                txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
+//                txt_fecha_pago.setEnabled(true);
+//                txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+                txt_desc_pago_prov.setEnabled(true);
+                txt_desc_pago_prov.requestFocus();
             } else {
                 JOptionPane.showMessageDialog(null, "ERROR AL SELECCIONAR PROVEEDOR");
                 txt_buca_clie.setText("");
@@ -355,6 +377,24 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void txt_desc_pago_provKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_desc_pago_provKeyPressed
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            c_movimiento.setDescripcion(txt_desc_pago_prov.getText());
+            
+                jButton3.setEnabled(true);
+                c_proveedor.cargar_datos();
+                txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
+                txt_fecha_pago.setEnabled(true);
+                txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+                txt_fecha_pago.requestFocus();
+        }
+    }//GEN-LAST:event_txt_desc_pago_provKeyPressed
+
+    private void txt_desc_pago_provActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_desc_pago_provActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_desc_pago_provActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -403,6 +443,7 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -410,6 +451,7 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField txt_apagar;
     private javax.swing.JTextField txt_buca_clie;
+    private javax.swing.JTextField txt_desc_pago_prov;
     private javax.swing.JFormattedTextField txt_fecha_pago;
     private javax.swing.JTextField txt_total_deud;
     // End of variables declaration//GEN-END:variables
