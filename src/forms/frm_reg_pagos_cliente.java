@@ -310,32 +310,34 @@ public class frm_reg_pagos_cliente extends javax.swing.JDialog {
                     c_cliente.setCodigo(0);
                 }
 
-            if (c_cliente.getCodigo() != 0) {
+                if (c_cliente.getCodigo() != 0) {
 //                jButton3.setEnabled(true);
 //                c_cliente.comprobar_cliente();
 //                txt_total_deud.setText(c_varios.formato_totales(c_cliente.getVenta() - c_cliente.getPago()));
 //                txt_fecha_pago.setEnabled(true);
 //                txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
 //                txt_fecha_pago.requestFocus();
-                txt_desc_pago_client.setEnabled(true);
-                txt_desc_pago_client.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "CLIENTE NO SELECCIONADO \nSELECCIONE CON ENTER");
-                txt_buca_clie.setText("");
-                txt_buca_clie.requestFocus();
-                if (c_cliente.getCodigo() != 0) {
-                    jButton3.setEnabled(true);
-                    c_cliente.comprobar_cliente();
-                    txt_total_deud.setText(c_varios.formato_totales(c_cliente.getVenta() - c_cliente.getPago()));
-                    txt_fecha_pago.setEnabled(true);
-                    txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-                    txt_fecha_pago.requestFocus();
+                    txt_desc_pago_client.setEnabled(true);
+                    txt_desc_pago_client.requestFocus();
                 } else {
                     JOptionPane.showMessageDialog(null, "CLIENTE NO SELECCIONADO \nSELECCIONE CON ENTER");
                     txt_buca_clie.setText("");
                     txt_buca_clie.requestFocus();
+                    if (c_cliente.getCodigo() != 0) {
+                        jButton3.setEnabled(true);
+                        c_cliente.comprobar_cliente();
+                        txt_total_deud.setText(c_varios.formato_totales(c_cliente.getVenta() - c_cliente.getPago()));
+                        txt_fecha_pago.setEnabled(true);
+                        txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+                        txt_fecha_pago.requestFocus();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "CLIENTE NO SELECCIONADO \nSELECCIONE CON ENTER");
+                        txt_buca_clie.setText("");
+                        txt_buca_clie.requestFocus();
+                    }
                 }
             }
+
         }
     }//GEN-LAST:event_txt_buca_clieKeyPressed
 

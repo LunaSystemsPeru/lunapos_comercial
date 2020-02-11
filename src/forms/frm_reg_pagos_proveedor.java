@@ -306,29 +306,30 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
                     c_proveedor.setId_proveedor(0);
                 }
 
-            if (c_proveedor.getId_proveedor() != 0) {
+                if (c_proveedor.getId_proveedor() != 0) {
 //                jButton3.setEnabled(true);
 //                c_proveedor.cargar_datos();
 //                txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
 //                txt_fecha_pago.setEnabled(true);
 //                txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-                txt_desc_pago_prov.setEnabled(true);
-                txt_desc_pago_prov.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "ERROR AL SELECCIONAR PROVEEDOR");
-                txt_buca_clie.setText("");
-                txt_buca_clie.requestFocus();
-                if (c_proveedor.getId_proveedor() != 0) {
-                    jButton3.setEnabled(true);
-                    c_proveedor.cargar_datos();
-                    txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
-                    txt_fecha_pago.setEnabled(true);
-                    txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-                    txt_fecha_pago.requestFocus();
+                    txt_desc_pago_prov.setEnabled(true);
+                    txt_desc_pago_prov.requestFocus();
                 } else {
                     JOptionPane.showMessageDialog(null, "ERROR AL SELECCIONAR PROVEEDOR");
                     txt_buca_clie.setText("");
                     txt_buca_clie.requestFocus();
+                    if (c_proveedor.getId_proveedor() != 0) {
+                        jButton3.setEnabled(true);
+                        c_proveedor.cargar_datos();
+                        txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
+                        txt_fecha_pago.setEnabled(true);
+                        txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+                        txt_fecha_pago.requestFocus();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "ERROR AL SELECCIONAR PROVEEDOR");
+                        txt_buca_clie.setText("");
+                        txt_buca_clie.requestFocus();
+                    }
                 }
             }
         }
@@ -394,13 +395,13 @@ public class frm_reg_pagos_proveedor extends javax.swing.JDialog {
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             c_movimiento.setDescripcion(txt_desc_pago_prov.getText());
-            
-                jButton3.setEnabled(true);
-                c_proveedor.cargar_datos();
-                txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
-                txt_fecha_pago.setEnabled(true);
-                txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-                txt_fecha_pago.requestFocus();
+
+            jButton3.setEnabled(true);
+            c_proveedor.cargar_datos();
+            txt_total_deud.setText(c_varios.formato_totales(c_proveedor.getTcompra() - c_proveedor.getTpagado()));
+            txt_fecha_pago.setEnabled(true);
+            txt_fecha_pago.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+            txt_fecha_pago.requestFocus();
         }
     }//GEN-LAST:event_txt_desc_pago_provKeyPressed
 
