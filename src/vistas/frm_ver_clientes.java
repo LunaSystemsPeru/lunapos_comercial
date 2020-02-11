@@ -6,7 +6,13 @@
 package vistas;
 
 import clases.cl_cliente;
+import clases.cl_cliente_pago;
+import clases.cl_cobros_ventas;
+import clases.cl_movimiento_banco;
+import clases.cl_productos_ventas;
 import clases.cl_varios;
+import clases.cl_venta;
+import clases.cl_venta_eliminada;
 import clases_varios.Configuracion;
 import forms.frm_reg_cliente;
 import java.awt.Frame;
@@ -45,6 +51,18 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
 
     }
 
+    private void activar_botones() {
+        btn_modificar.setEnabled(true);
+        btn_pago.setEnabled(true);
+        btn_eliminar.setEnabled(true);
+    }
+
+    private void desactivar_botones() {
+        btn_modificar.setEnabled(false);
+        btn_pago.setEnabled(false);
+        btn_eliminar.setEnabled(false);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,6 +87,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         jToolBar1 = new javax.swing.JToolBar();
         jButton3 = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btn_pago = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
@@ -221,6 +240,19 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_modificar);
+
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setEnabled(false);
+        btn_eliminar.setFocusable(false);
+        btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_eliminar);
         jToolBar1.add(jSeparator1);
 
         btn_pago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/coins.png"))); // NOI18N
@@ -332,6 +364,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
                     + "from clientes "
                     + "where documento like '%" + t_buscar + "%' or nombre like '%" + t_buscar + "%' "
                     + "order by nombre asc";
+            System.out.println(query);
             c_cliente.mostrar(t_clientes, query);
             txt_buscar.setText("");
         }
@@ -341,15 +374,13 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 1) {
             fila_seleccionada = t_clientes.getSelectedRow();
             c_cliente.setCodigo(Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString()));
-            btn_modificar.setEnabled(true);
-            btn_pago.setEnabled(true);
+            activar_botones();
         }
     }//GEN-LAST:event_t_clientesMouseClicked
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
         int id_cliente = Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString());
-        btn_modificar.setEnabled(false);
-        btn_pago.setEnabled(false);
+        desactivar_botones();
         Frame f = JOptionPane.getRootFrame();
         frm_reg_cliente.accion = "modificar";
         frm_reg_cliente.origen = "ver_clientes";
@@ -420,8 +451,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btn_pagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pagoActionPerformed
-        btn_modificar.setEnabled(false);
-        btn_pago.setEnabled(false);
+        desactivar_botones();
         Frame f = JOptionPane.getRootFrame();
         frm_ver_clientes_pagos.c_cliente.setCodigo(c_cliente.getCodigo());
         frm_ver_clientes_pagos dialog = new frm_ver_clientes_pagos(f, true);
@@ -446,7 +476,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         Date fecha = jDateChooser1.getDate();
         if (fecha != null) {
-            
 
             String nombre_reporte = "rep_detalle_venta_cliente";
             String fechaS = new SimpleDateFormat("yyyy-MM-dd").format(fecha);
@@ -457,13 +486,13 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
                 Map<String, Object> parametros = new HashMap<>();
                 String path = miDir.getCanonicalPath();
                 String direccion = path + File.separator + "reports" + File.separator + "subreports" + File.separator;
-                
+
                 System.out.println(direccion);
                 parametros.put("SUBREPORT_DIR", direccion);
                 parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
                 parametros.put("REPORT_LOCALE", Locale.ENGLISH);
                 parametros.put("fecha", fechaS);
-                
+
                 c_varios.ver_reporte(nombre_reporte, parametros);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
@@ -477,9 +506,41 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         modalReporteDiario.setVisible(false);
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        int id_cliente = Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString());
+        desactivar_botones();
+        if (fila_seleccionada > -1) {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Cliente?");
+
+            if (JOptionPane.OK_OPTION == confirmado) {
+                cl_productos_ventas c_detalle = new cl_productos_ventas();
+                c_detalle.eliminar_cliente(id_cliente);
+                
+                cl_cobros_ventas c_cobro = new cl_cobros_ventas();
+                c_cobro.eliminar_cliente(id_cliente);
+
+                cl_venta_eliminada c_cupon = new cl_venta_eliminada();
+                c_cupon.eliminar_cliente(id_cliente);
+
+                cl_venta c_venta = new cl_venta();
+                c_venta.setId_cliente(id_cliente);
+                c_venta.eliminar_cliente();
+
+                c_cliente.setCodigo(id_cliente);
+                c_cliente.eliminar();
+
+                c_cliente.mostrar(t_clientes, query);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado una fila");
+
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cerrar;
+    private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JButton btn_pago;
     private javax.swing.JComboBox cbx_boton;

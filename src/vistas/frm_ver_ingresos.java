@@ -696,6 +696,7 @@ public class frm_ver_ingresos extends javax.swing.JInternalFrame {
                         + "where i.numero = '" + buscar + "' "
                         + "order by i.fecha asc";
             }
+            System.out.println(query);
             c_ingreso.mostrar(t_ingresos, query);
             sumar_totales();
         }

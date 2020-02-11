@@ -5,7 +5,11 @@
  */
 package vistas;
 
+import clases.cl_ingreso_pagos;
+import clases.cl_ingresos;
+import clases.cl_productos_ingresos;
 import clases.cl_proveedor;
+import clases.cl_proveedor_pago;
 import clases.cl_varios;
 import clases_varios.Configuracion;
 import forms.frm_reg_proveedor;
@@ -28,7 +32,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     int fila_seleccionada;
     cl_varios c_varios = new cl_varios();
     cl_proveedor c_proveedor = new cl_proveedor();
-    
+
     String query = "";
 
     /**
@@ -41,9 +45,21 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
                 + "from proveedor "
                 + "order by razon_social asc";
         c_proveedor.mostrar(t_proveedores, query);
-        
+
         modalReporteDiario.setSize(400, 180);
-        
+
+    }
+
+    private void activar_botones() {
+        btn_modificar.setEnabled(true);
+        btn_eliminar.setEnabled(true);
+        btn_pagos.setEnabled(true);
+    }
+    
+    private void deactivar_botones() {
+        btn_modificar.setEnabled(false);
+        btn_eliminar.setEnabled(false);
+        btn_pagos.setEnabled(false);
     }
 
     /**
@@ -65,8 +81,9 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         jToolBar1 = new javax.swing.JToolBar();
         btn_agregar = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        jButton1 = new javax.swing.JButton();
+        btn_pagos = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -176,20 +193,33 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_modificar);
-        jToolBar1.add(jSeparator2);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
-        jButton1.setText("ver Pagos");
-        jButton1.setEnabled(false);
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setEnabled(false);
+        btn_eliminar.setFocusable(false);
+        btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_eliminarActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(btn_eliminar);
+        jToolBar1.add(jSeparator2);
+
+        btn_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
+        btn_pagos.setText("ver Pagos");
+        btn_pagos.setEnabled(false);
+        btn_pagos.setFocusable(false);
+        btn_pagos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_pagos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_pagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pagosActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_pagos);
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clipboard_text.png"))); // NOI18N
         jButton5.setText("Rpt Proveedor diario");
@@ -278,7 +308,7 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -321,16 +351,14 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
     private void t_proveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_proveedoresMouseClicked
         if (evt.getClickCount() == 1) {
             fila_seleccionada = t_proveedores.getSelectedRow();
-            btn_modificar.setEnabled(true);
-            jButton1.setEnabled(true);
+            activar_botones();
         }
 
     }//GEN-LAST:event_t_proveedoresMouseClicked
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-
         int id_proveedor = Integer.parseInt(t_proveedores.getValueAt(fila_seleccionada, 0).toString());
-        btn_modificar.setEnabled(false);
+        deactivar_botones();
         Frame f = JOptionPane.getRootFrame();
         frm_reg_proveedor.accion = "modificar";
         frm_reg_proveedor.origen = "ver_proveedor";
@@ -340,14 +368,15 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_btn_modificarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_pagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pagosActionPerformed
         Frame f = JOptionPane.getRootFrame();
+        deactivar_botones();
         int id_proveedor = Integer.parseInt(t_proveedores.getValueAt(fila_seleccionada, 0).toString());
         frm_ver_proveedores_pagos.c_proveedor.setId_proveedor(id_proveedor);
         frm_ver_proveedores_pagos dialog = new frm_ver_proveedores_pagos(f, true);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_pagosActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         File miDir = new File(".");
@@ -419,11 +448,40 @@ public class frm_ver_proveedores extends javax.swing.JInternalFrame {
         modalReporteDiario.setVisible(false);
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+                int id_proveedor = Integer.parseInt(t_proveedores.getValueAt(fila_seleccionada, 0).toString());
+deactivar_botones();
+        if (fila_seleccionada > -1) {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Proveedor?");
+
+            if (JOptionPane.OK_OPTION == confirmado) {
+                cl_productos_ingresos c_detalle = new cl_productos_ingresos();
+                c_detalle.eliminar_proveedor(id_proveedor);
+                
+                cl_ingreso_pagos c_pago = new cl_ingreso_pagos();
+                c_pago.eliminar_proveedor(id_proveedor);
+
+                cl_ingresos c_ingreso = new cl_ingresos();
+                c_ingreso.setId_proveedor(id_proveedor);
+                c_ingreso.eliminar_proveedor();
+
+                c_proveedor.setId_proveedor(id_proveedor);
+                c_proveedor.eliminar();
+
+                c_proveedor.mostrar(t_proveedores, query);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado una fila");
+
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
+    private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_pagos;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

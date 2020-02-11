@@ -101,6 +101,21 @@ public class cl_ingreso_pagos {
         c_conectar.cerrar(st);
         return registrado;
     }
+    
+    public boolean eliminar_proveedor(int id_proveedor) {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete pi.* from ingreso_pagos as pi "
+                + "inner join ingresos as i on i.id_ingreso =pi.id_ingreso "
+                + "where i.id_proveedor = '" + id_proveedor + "'";
+        System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
 
     public void mostrar(JTable tabla) {
         try {

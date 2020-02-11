@@ -5,9 +5,18 @@
  */
 package vistas;
 
+import clases.cl_movimiento_banco;
 import clases.cl_varios;
 import clases.cl_prestamo;
 import clases_varios.Configuracion;
+import forms.frm_reg_pagos_prestamos;
+import forms.frm_reg_prestamo;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +26,7 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
 
     cl_varios c_varios = new cl_varios();
     cl_prestamo c_prestamo = new cl_prestamo();
+    cl_movimiento_banco c_movimiento=new cl_movimiento_banco();
     
     String query;
     /**
@@ -40,17 +50,19 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
 
         jToolBar1 = new javax.swing.JToolBar();
         btn_agregar = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
+        btn_reporte_prestamos = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
         btn_cerrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_pagos = new javax.swing.JTable();
 
-        setTitle("Ver Pagos");
+        setTitle("Ver Prestamos");
 
         jToolBar1.setRollover(true);
 
-        btn_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/accept.png"))); // NOI18N
-        btn_agregar.setText("Ver Pago");
+        btn_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        btn_agregar.setText("Agregar");
         btn_agregar.setFocusable(false);
         btn_agregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_agregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -60,6 +72,32 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_agregar);
+
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setEnabled(false);
+        btn_eliminar.setFocusable(false);
+        btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_eliminar);
+
+        btn_reporte_prestamos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/blog.png"))); // NOI18N
+        btn_reporte_prestamos.setText("Reporte");
+        btn_reporte_prestamos.setToolTipText("");
+        btn_reporte_prestamos.setFocusable(false);
+        btn_reporte_prestamos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_reporte_prestamos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_reporte_prestamos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_reporte_prestamosActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_reporte_prestamos);
 
         btn_modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/application_edit.png"))); // NOI18N
         btn_modificar.setText("Pagar");
@@ -134,11 +172,25 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        
+        frm_reg_prestamo modal=new frm_reg_prestamo(null, true);
+        modal.setLocationRelativeTo(this);
+        modal.setVisible(true);
+        query = "SELECT p.id_prestamo, p.fecha, prv.razon_social, p.monto, p.cuotas, p.fecha_pago, p.total_pagado FROM prestamos AS p INNER JOIN proveedor AS prv ON prv.id_proveedor = p.id_proveedor";
+        c_prestamo.mostrar(t_pagos, query);
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        
+        int index =t_pagos.getSelectedRow();
+        if (index !=-1) {
+            frm_reg_pagos_prestamos modal=new frm_reg_pagos_prestamos(null, true,t_pagos.getValueAt(index, 0)+"",t_pagos.getValueAt(index, 2)+"");
+            modal.setLocationRelativeTo(this);
+            modal.setVisible(true);
+            query = "SELECT p.id_prestamo, p.fecha, prv.razon_social, p.monto, p.cuotas, p.fecha_pago, p.total_pagado FROM prestamos AS p INNER JOIN proveedor AS prv ON prv.id_proveedor = p.id_proveedor";
+            c_prestamo.mostrar(t_pagos, query);
+            
+        }else{
+            
+        }
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
@@ -146,14 +198,55 @@ public class frm_ver_prestamo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_cerrarActionPerformed
 
     private void t_pagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_pagosMouseClicked
-        
+        int index =t_pagos.getSelectedRow();
+        if (index !=-1) {
+            btn_modificar.setEnabled(true);
+            btn_eliminar.setEnabled(true);
+        }
     }//GEN-LAST:event_t_pagosMouseClicked
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        int index =t_pagos.getSelectedRow();
+        if (index !=-1) {
+            c_prestamo.setIdPrestamo((int) t_pagos.getValueAt(index, 0));
+            c_prestamo.comprobar();
+            c_movimiento.setId_movimiento(c_prestamo.getIdMovimiento()); 
+            if (c_prestamo.eliminar()) { 
+                c_movimiento.eliminar();
+                query = "SELECT p.id_prestamo, p.fecha, prv.razon_social, p.monto, p.cuotas, p.fecha_pago, p.total_pagado FROM prestamos AS p INNER JOIN proveedor AS prv ON prv.id_proveedor = p.id_proveedor";
+                c_prestamo.mostrar(t_pagos, query);
+            }else{
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar este prestamo");
+            }
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void btn_reporte_prestamosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reporte_prestamosActionPerformed
+        File miDir = new File(".");
+            String nombre_reporte = "rpt_detaller_prestamo";
+            try {
+                Map<String, Object> parametros = new HashMap<>();
+                String path = miDir.getCanonicalPath();
+                String direccion = path + File.separator + "reports"  + File.separator;
+
+                System.out.println(direccion);
+                parametros.put("SUBREPORT_DIR", direccion);
+                parametros.put("JRParameter.REPORT_LOCALE", Locale.ENGLISH);
+                parametros.put("REPORT_LOCALE", Locale.ENGLISH);
+                c_varios.ver_reporte(nombre_reporte, parametros);
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+            }
+    }//GEN-LAST:event_btn_reporte_prestamosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
     private javax.swing.JButton btn_cerrar;
+    private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
+    private javax.swing.JButton btn_reporte_prestamos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable t_pagos;

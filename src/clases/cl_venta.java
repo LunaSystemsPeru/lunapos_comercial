@@ -236,6 +236,19 @@ public class cl_venta {
         c_conectar.cerrar(st);
         return registrado;
     }
+    
+    public boolean eliminar_cliente() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete from ventas "
+                + "where id_cliente = '"+id_cliente+"' ";
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
 
     public boolean entregar_separacion() {
         boolean registrado = false;

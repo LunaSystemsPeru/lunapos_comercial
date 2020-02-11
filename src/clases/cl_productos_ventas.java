@@ -97,6 +97,22 @@ public class cl_productos_ventas {
         return registrado;
     }
 
+    public boolean eliminar_cliente(int id_cliente) {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete pv.* "
+                + "from productos_ventas as pv "
+                + "inner join ventas as v on v.id_ventas = pv.id_ventas "
+                + "where v.id_cliente = '" + id_cliente + "'";
+        int resultado = c_conectar.actualiza(st, query);
+        // System.out.println(query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+
     public int contar_lineas() {
         int contar = 0;
         try {
@@ -131,7 +147,7 @@ public class cl_productos_ventas {
             while (rs.next()) {
                 Object[] fila = new Object[5];
                 fila[0] = rs.getInt("id_producto");
-                fila[1] = (rs.getString("descripcion").trim() + " - " + rs.getString("marca").trim() ).trim();
+                fila[1] = (rs.getString("descripcion").trim() + " - " + rs.getString("marca").trim()).trim();
                 int pcantidad = rs.getInt("cantidad");
                 double pprecio = rs.getDouble("precio");
                 double pparcial = pcantidad * pprecio;
@@ -154,10 +170,10 @@ public class cl_productos_ventas {
                     + "from productos_ventas as pv "
                     + "inner join productos_almacen as pa on pa.id_almacen = pv.id_almacen and pa.id_producto = pv.id_producto "
                     + "inner join productos as p on p.id_producto = pv.id_producto "
-                    + "inner join unidades_medida as um on um.id_unidad = p.id_unidad " 
+                    + "inner join unidades_medida as um on um.id_unidad = p.id_unidad "
                     + "where pv.id_ventas = '" + id_venta + "' "
                     + "order by p.descripcion asc";
-          //  System.out.println(query);
+            //  System.out.println(query);
             Statement st = c_conectar.conexion();
             ResultSet rs = c_conectar.consulta(st, query);
 
@@ -195,7 +211,7 @@ public class cl_productos_ventas {
             String query = "select pv.id_producto, p.descripcion, p.marca, pv.cantidad, pv.precio, um.nombre as und_medida "
                     + "from productos_ventas as pv "
                     + "inner join productos as p on p.id_producto = pv.id_producto "
-                    + "inner join unidades_medida as um on um.id_unidad = p.id_unidad " 
+                    + "inner join unidades_medida as um on um.id_unidad = p.id_unidad "
                     + "where id_ventas = '" + id_venta + "' "
                     + "order by p.descripcion asc";
             Statement st = c_conectar.conexion();

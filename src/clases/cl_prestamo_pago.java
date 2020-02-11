@@ -47,7 +47,20 @@ public class cl_prestamo_pago {
     public void setNro_cuota(int nro_cuota) {
         this.nro_cuota = nro_cuota;
     }
-    
+    public boolean eliminar() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "DELETE \n" +
+                        "FROM lsp_comercial.prestamo_pago \n" +
+                        "WHERE id_movimiento = '"+this.id_movimiento+"' \n" +
+                        "    AND id_prestamo = '"+this.id_prestamo+"';";
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
     public boolean registrar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
@@ -84,7 +97,7 @@ public class cl_prestamo_pago {
 
             //Creando las filas para el JTable
             while (rs.next()) {
-                Object[] fila = new Object[7];
+                Object[] fila = new Object[4];
                 fila[0] = rs.getObject("id_movimiento");
                 //fila[1] = rs.getString("clasificacion") + " " + rs.getString("descripcion").trim() + " x " + rs.getString("id_unidad");
                 fila[1] = rs.getString("fecha")   ;
@@ -95,10 +108,10 @@ public class cl_prestamo_pago {
             c_conectar.cerrar(st);
             c_conectar.cerrar(rs);
             tabla.setModel(tmodelo);
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(8);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(50); 
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(30);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(30);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(130);
 
         } catch (SQLException e) {
             System.out.print(e);
